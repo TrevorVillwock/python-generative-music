@@ -1,3 +1,14 @@
+"""
+    TODO
+    Melody harmonization
+    Articulation
+    Add rhythm to motifs
+    Motivic development
+    Imitation
+    Interval control
+    Make into class
+"""
+
 from pyo import *
 
 s = Server().boot()
@@ -6,10 +17,20 @@ s.start()
 melody_met = Metro(0.5).play()
 bass_met = Metro(2).play()
 
+articulations = {"staccato": Adsr(0.1, dur=0.25),
+                 "mezzo staccato": Adsr(attack=0.1, decay=0.5, sustain=0.707, release=0.1, dur=0.5), 
+                 "legato": Adsr(attack=0.1, decay=0, sustain=0.7, release=0.3, dur=0.75) 
+                 }
+
+current_articulation = "staccato"
+
+# print(articulations["staccato"])
+
 # number of half steps above tonic
 # tonic = first note of the scale
 # dorian mode is shown here
-scale = [0, 2, 3, 5, 7, 9, 10, 12]
+scale = [0, 2, 3, 5, 7, 9, 10, 12, 
+         14, 15, 17, 19, 21, 22]
 
 # amplitude (volume) envelopes
 # these control how the sounds start and stop
@@ -24,18 +45,21 @@ bass_env = Adsr(0.1, release=1, dur=2)
 # using scale degrees
 motifs = [[1, 3, 2, 4], [5, 5, 5, 7, 6]]
 playing_motif = False
+use_motif = 0
 motif_num = 0
 motif_step = 0
-use_motif = 0
 
 # Square waveform generator using first 5 odd harmonics
 melody_wav = SquareTable(5)
 bass_wav = SquareTable(5)
+print(melody_env)
 
-melody_synth = Osc(table=melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=melody_env)
+melody_synth = Osc(table=melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=articulations[current_articulation])
+harmonizing_synth = Osc(table=melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=articulations[current_articulation])
 bass_synth = Osc(table=bass_wav, freq=[midiToHz(36), midiToHz(36)], mul=bass_env).out()
 
 melody_reverb = Freeverb(melody_synth, 2).out()
+harmony_reverb = Freeverb(harmonizing_synth, 2).out()
 
 def play_melody():
     global playing_motif, motifs, motif_step, motif_num, use_motif
@@ -62,15 +86,20 @@ def play_melody():
             print(f"motif_step: {motif_step}")
             print(f"motifs[motif_num][motif_step]: {motifs[motif_num][motif_step]}")
             melody_synth.setFreq(midiToHz(60 + scale[motifs[motif_num][motif_step]]))
+            # harmonizing_synth.setFreq(5/4 * midiToHz(60 + scale[motifs[motif_num][motif_step]]))
+            harmonizing_synth.setFreq(midiToHz(60 + scale[(motifs[motif_num][motif_step] + 2) % 13]))
             motif_step += 1
         else:
             motif_step = 0
             playing_motif = False
     else:
-        melody_synth.setFreq(midiToHz(60 + scale[random.randint(0, 7)]))
+        random_degree = random.randint(0, 7)
+        melody_synth.setFreq(midiToHz(60 + scale[random_degree]))
+        harmonizing_synth.setFreq(midiToHz(60 + scale[(random_degree + 2) % 13]))
+        # harmonizing_synth.setFreq(5/4 * midiToHz(60 + scale[random_degree]))
         
     if play_note > 0.3:
-        melody_env.play()
+        articulations[current_articulation].play()
         print("playing melody")
 
 def play_bass():
