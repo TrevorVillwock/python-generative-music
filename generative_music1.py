@@ -18,11 +18,10 @@ melody_met = Metro(0.5).play()
 bass_met = Metro(2).play()
 
 articulations = {"staccato": Adsr(0.1, dur=0.25),
-                 "mezzo staccato": Adsr(attack=0.1, decay=0.5, sustain=0.707, release=0.1, dur=0.5), 
-                 "legato": Adsr(attack=0.1, decay=0, sustain=0.7, release=0.3, dur=0.75) 
+                 "legato": Adsr(attack=0.1, decay=0.5, sustain=0.707, release=0.1, dur=0.5) 
                  }
 
-current_articulation = "staccato"
+current_articulation = "legato"
 
 # print(articulations["staccato"])
 
