@@ -53,6 +53,7 @@ bass_wav = SquareTable(5)
 
 melody_synth = Osc(table=melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=melody_env)
 harmonizing_synth = Osc(table=melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=melody_env)
+notes_to_harmonize = 3
 bass_synth = Osc(table=bass_wav, freq=[midiToHz(36), midiToHz(36)], mul=bass_env).out()
 
 melody_reverb = Freeverb(melody_synth, 2).out()
@@ -64,6 +65,7 @@ def play_melody():
     play_note = random.random()
     change_rhythm = random.random()
     new_rhythm = random.choice([0.25, 0.5, 0.75, 1])
+    harmonize = random.random()
     
     if change_rhythm > 0.5:
         melody_met.setTime(new_rhythm)
@@ -106,7 +108,14 @@ def play_melody():
         melody_synth.setFreq(midiToHz(60 + scale[random_degree]))
         harmonizing_synth.setFreq(midiToHz(60 + scale[(random_degree + 2) % 13]))
         # harmonizing_synth.setFreq(5/4 * midiToHz(60 + scale[random_degree]))
-        
+    
+    if harmonize > 0.3 or notes_to_harmonize != 0:
+        harmonizing_synth.setMul(melody_env)
+        notes_to_harmonize = 3 + random.randint(0, 5)
+
+    else:
+        harmonizing_synth.setMul(0)
+      
     if play_note > 0.3:
         melody_env.play()
         print("playing melody")
