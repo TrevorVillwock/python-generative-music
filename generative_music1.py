@@ -7,6 +7,7 @@
     Imitation
     Interval control
     Make into class
+    Add soundfile playback - footsteps, dripping, birds, wind, conversation
 """
 
 from pyo import *
@@ -53,19 +54,30 @@ bass_wav = SquareTable(5)
 
 melody_synth = Osc(table=melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=melody_env)
 harmonizing_synth = Osc(table=melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=melody_env)
-notes_to_harmonize = 3
+notes_to_harmonize = 0
 bass_synth = Osc(table=bass_wav, freq=[midiToHz(36), midiToHz(36)], mul=bass_env).out()
 
 melody_reverb = Freeverb(melody_synth, 2).out()
 harmony_reverb = Freeverb(harmonizing_synth, 2).out()
 
+
+# if not currently harmonizing, get random value for harmonization
+# randomly determine length of harmonization (3 notes minimum), set notes to harmonize
+# play next note with harmony, decrement notes_to_harmonize
+# once notes_to_harmonize reaches 0, get random value for harmonization
+
 def play_melody():
-    global playing_motif, motifs, motif_step, motif_num, use_motif
+    global playing_motif, motifs, motif_step, motif_num, use_motif, notes_to_harmonize
     # print("play_melody")
     play_note = random.random()
     change_rhythm = random.random()
     new_rhythm = random.choice([0.25, 0.5, 0.75, 1])
-    harmonize = random.random()
+
+    print(f"notes_to_harmonize: {notes_to_harmonize}")
+    if notes_to_harmonize == 0:
+        harmonize = random.random()
+        if harmonize > 0.8:
+            notes_to_harmonize = 3 + random.randint(0, 5)
     
     if change_rhythm > 0.5:
         melody_met.setTime(new_rhythm)
@@ -109,10 +121,9 @@ def play_melody():
         harmonizing_synth.setFreq(midiToHz(60 + scale[(random_degree + 2) % 13]))
         # harmonizing_synth.setFreq(5/4 * midiToHz(60 + scale[random_degree]))
     
-    if harmonize > 0.3 or notes_to_harmonize != 0:
+    if notes_to_harmonize != 0:
         harmonizing_synth.setMul(melody_env)
-        notes_to_harmonize = 3 + random.randint(0, 5)
-
+        notes_to_harmonize -= 1
     else:
         harmonizing_synth.setMul(0)
       
