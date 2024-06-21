@@ -1,12 +1,13 @@
 """
     TODO
-    Melody harmonization
     Articulation
     Add rhythm to motifs
     Motivic development
     Imitation
-    Interval control
+    Control interval of harmonization
+    Counterpoint
     Make into class
+    Improve timbre
     Add soundfile playback - footsteps, dripping, birds, wind, conversation
 """
 
@@ -55,11 +56,10 @@ bass_wav = SquareTable(5)
 melody_synth = Osc(table=melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=melody_env)
 harmonizing_synth = Osc(table=melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=melody_env)
 notes_to_harmonize = 0
-bass_synth = Osc(table=bass_wav, freq=[midiToHz(36), midiToHz(36)], mul=bass_env).out()
+bass_synth = Osc(table=bass_wav, freq=[midiToHz(36), midiToHz(36)], mul=bass_env)
 
-melody_reverb = Freeverb(melody_synth, 2).out()
-harmony_reverb = Freeverb(harmonizing_synth, 2).out()
-
+melody_reverb = Freeverb(melody_synth, 2)
+harmony_reverb = Freeverb(harmonizing_synth, 2)
 
 # if not currently harmonizing, get random value for harmonization
 # randomly determine length of harmonization (3 notes minimum), set notes to harmonize
@@ -141,5 +141,15 @@ def play_bass():
 
 melody_player = TrigFunc(melody_met, play_melody)
 bass_player = TrigFunc(bass_met, play_bass)
+
+mixer = Mixer(chnls=4).out()
+
+mixer.addInput(0, melody_reverb)
+mixer.addInput(1, harmony_reverb)
+mixer.addInput(2, bass_synth)
+
+mixer.setAmp(0, 0, 0.1)
+mixer.setAmp(1, 0, 0.1)
+mixer.setAmp(2, 0, 0.1)
 
 s.gui(locals)
