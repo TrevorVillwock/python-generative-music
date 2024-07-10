@@ -1,6 +1,5 @@
 """
     TODO
-    Articulation
     Add rhythm to motifs
     Motivic development
     Imitation
@@ -19,19 +18,19 @@ s.start()
 melody_met = Metro(0.5).play()
 bass_met = Metro(2).play()
 
-# 0 = staccato, 1 = legato
-# articulations = [Adsr(0.1, dur=0.25), Adsr(attack=0.1, dur=0.25)]
 melody_env = Adsr(0.1, dur=0.25)
 
 current_articulation = 0
 
-# print(articulations["staccato"])
-
 # number of half steps above tonic
 # tonic = first note of the scale
 # dorian mode is shown here
-scale = [0, 2, 3, 5, 7, 9, 10, 12, 
-         14, 15, 17, 19, 21, 22]
+dorian = [0, 2, 3, 5, 7, 9, 10, 12, 
+          14, 15, 17, 19, 21, 22]
+
+lydian = [0, 2, 4, 6, 7, 9, 11, 12, 14, 16, 18, 19, 21, 23, 24]
+
+scale = lydian
 
 # amplitude (volume) envelopes
 # these control how the sounds start and stop
@@ -73,7 +72,7 @@ def play_melody():
     change_rhythm = random.random()
     new_rhythm = random.choice([0.25, 0.5, 0.75, 1])
 
-    print(f"notes_to_harmonize: {notes_to_harmonize}")
+    # print(f"notes_to_harmonize: {notes_to_harmonize}")
     if notes_to_harmonize == 0:
         harmonize = random.random()
         if harmonize > 0.8:
@@ -89,20 +88,16 @@ def play_melody():
         melody_env.setDur(new_rhythm)
     else:
         melody_env.setDur(0.25)
-  
-    # melody_synth.setMul(articulations[current_articulation])
-    # harmonizing_synth.setMul(articulations[current_articulation]) 
-    # print(f"current_articulation: {current_articulation}")
     
     if not playing_motif:
         use_motif = random.random()
         motif_num = round(random.random())
     
-    if use_motif > 0.6:
+    if use_motif > 0.3:
         playing_motif = True
         
     if playing_motif:
-        # print("playing motif")
+        print(f"playing motif {motif_num}")
         play_note = 1 # make sure no notes of the motif are replaced with rests
         if motif_step < len(motifs[motif_num]):
             # print(f"motif_num: {motif_num}")
@@ -129,7 +124,7 @@ def play_melody():
       
     if play_note > 0.3:
         melody_env.play()
-        print("playing melody")
+        # print("playing melody")
 
 def play_bass():
     # print("play_bass")
