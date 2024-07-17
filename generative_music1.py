@@ -77,7 +77,7 @@ def play_melody():
     # print(f"notes_to_harmonize: {notes_to_harmonize}")
     if notes_to_harmonize == 0:
         harmonize = random.random()
-        if harmonize > 0.8:
+        if harmonize > 1:
             notes_to_harmonize = 3 + random.randint(0, 5)
     
     if change_rhythm > 0.5:
@@ -108,10 +108,10 @@ def play_melody():
         play_note = 1 # make sure no notes of the motif are replaced with rests
         if motif_step < len(motifs[motif_num]):
             # scale[motifs[motif_num][motif_step]] gives the number of half steps above middle C
-            print(f"motif {motif_num}, motif_step {motif_step}, motif degree: {motifs[motif_num][motif_step]}, scale_note: {scale[motifs[motif_num][motif_step]]}")
-            melody_synth.setFreq(midiToHz(60 + scale[motifs[motif_num][motif_step]]))
+            print(f"motif {motif_num}, motif_step {motif_step}, motif degree: {motifs[motif_num][motif_step]}, scale_note: {scale[motifs[motif_num][motif_step] - 1]}")
+            melody_synth.setFreq(midiToHz(60 + scale[motifs[motif_num][motif_step] - 1]))
             
-            harmonizing_synth.setFreq(midiToHz(60 + scale[(motifs[motif_num][motif_step] + 2) % 13]))
+            harmonizing_synth.setFreq(midiToHz(60 + scale[(motifs[motif_num][motif_step] + 1) % 13]))
             
             # Below and is an alternate method of specifying an interval to harmonize the melody at; it's also at line 143.
             # When harmonizing the melody in 3rds using scale degrees, the interval  
@@ -153,7 +153,7 @@ def play_bass():
     bass_env.play()
 
 melody_player = TrigFunc(melody_met, play_melody)
-bass_player = TrigFunc(bass_met, play_bass)
+# bass_player = TrigFunc(bass_met, play_bass)
 
 mixer = Mixer(chnls=4).out()
 
