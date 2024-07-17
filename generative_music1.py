@@ -153,7 +153,7 @@ def play_bass():
     bass_env.play()
 
 melody_player = TrigFunc(melody_met, play_melody)
-# bass_player = TrigFunc(bass_met, play_bass)
+bass_player = TrigFunc(bass_met, play_bass)
 
 mixer = Mixer(chnls=4).out()
 
