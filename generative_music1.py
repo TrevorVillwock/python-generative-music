@@ -77,7 +77,7 @@ def play_melody():
     # print(f"notes_to_harmonize: {notes_to_harmonize}")
     if notes_to_harmonize == 0:
         harmonize = random.random()
-        if harmonize > 1:
+        if harmonize > 0.7:
             notes_to_harmonize = 3 + random.randint(0, 5)
     
     if change_rhythm > 0.5:
@@ -101,7 +101,7 @@ def play_melody():
         use_motif = random.random()
         motif_num = round(random.random())
     
-    if use_motif > 0.3:
+    if use_motif > 0.4:
         playing_motif = True
         
     if playing_motif:
