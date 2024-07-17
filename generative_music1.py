@@ -30,7 +30,7 @@ dorian = [0, 2, 3, 5, 7, 9, 10, 12,
 
 lydian = [0, 2, 4, 6, 7, 9, 11, 12, 14, 16, 18, 19, 21, 23, 24]
 
-scale = lydian
+scale = dorian
 
 # amplitude (volume) envelopes
 # these control how the sounds start and stop
@@ -42,7 +42,9 @@ scale = lydian
 bass_env = Adsr(0.1, release=1, dur=2)
 
 # using scale degrees
-motifs = [[1, 3, 2, 4], [5, 5, 5, 7, 6]]
+motifs = [[2, 5, 4, 3], [1, 5, 3, 7]]
+
+# [1, 3, 2, 4], [5, 5, 5, 7, 6], [1, 2, 6, 4]
 playing_motif = False
 use_motif = 0
 motif_num = 0
@@ -88,6 +90,12 @@ def play_melody():
         melody_env.setDur(new_rhythm)
     else:
         melody_env.setDur(0.25)
+        
+    if notes_to_harmonize != 0:
+        harmonizing_synth.setMul(melody_env)
+        notes_to_harmonize -= 1
+    else:
+        harmonizing_synth.setMul(0)
     
     if not playing_motif:
         use_motif = random.random()
@@ -97,15 +105,31 @@ def play_melody():
         playing_motif = True
         
     if playing_motif:
-        print(f"playing motif {motif_num}")
         play_note = 1 # make sure no notes of the motif are replaced with rests
         if motif_step < len(motifs[motif_num]):
-            # print(f"motif_num: {motif_num}")
-            # print(f"motif_step: {motif_step}")
-            # print(f"motifs[motif_num][motif_step]: {motifs[motif_num][motif_step]}")
+            # scale[motifs[motif_num][motif_step]] gives the number of half steps above middle C
+            print(f"motif {motif_num}, motif_step {motif_step}, motif degree: {motifs[motif_num][motif_step]}, scale_note: {scale[motifs[motif_num][motif_step]]}")
             melody_synth.setFreq(midiToHz(60 + scale[motifs[motif_num][motif_step]]))
-            # harmonizing_synth.setFreq(5/4 * midiToHz(60 + scale[motifs[motif_num][motif_step]]))
+            
             harmonizing_synth.setFreq(midiToHz(60 + scale[(motifs[motif_num][motif_step] + 2) % 13]))
+            
+            # Below and is an alternate method of specifying an interval to harmonize the melody at; it's also at line 143.
+            # When harmonizing the melody in 3rds using scale degrees, the interval  
+            # between the two voices changes between major and minor thirds depending on which scale degrees
+            # are involved. By multiplying the melody note's frequency by a fraction representing the interval of harmonization,
+            # however, we can get the same interval every time. This also makes it very easy to play with notes from
+            # the harmonic series that are in what's called "just intonation."
+            #
+            # The notes on a piano keyboard are all the same interval apart; every half step sounds the same to us.
+            # However, many different tuning systems have been used across time and in different places in the world. 
+            # Some are based on more "pure" or "just" intervals because they use simple
+            # whole number ratios for intervals like the perfect 5th (3/2 or 1.5) and the major third (5/4 or 1.25). The major third on
+            # a piano by contrast has the interval ratio of 1.259921, meaning the top note is slightly sharp compared to the just interval.
+            
+            # for a great explanation of these concepts, check out this video: https://youtu.be/Wx_kugSemfY?si=SxQimSSkHc5A6B2H
+
+            # harmonizing_synth.setFreq(5/4 * midiToHz(60 + scale[motifs[motif_num][motif_step]]))
+            
             motif_step += 1
         else:
             motif_step = 0
@@ -115,12 +139,6 @@ def play_melody():
         melody_synth.setFreq(midiToHz(60 + scale[random_degree]))
         harmonizing_synth.setFreq(midiToHz(60 + scale[(random_degree + 2) % 13]))
         # harmonizing_synth.setFreq(5/4 * midiToHz(60 + scale[random_degree]))
-    
-    if notes_to_harmonize != 0:
-        harmonizing_synth.setMul(melody_env)
-        notes_to_harmonize -= 1
-    else:
-        harmonizing_synth.setMul(0)
       
     if play_note > 0.3:
         melody_env.play()
