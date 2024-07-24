@@ -12,28 +12,26 @@
 
 from pyo import *
 
-s = Server().boot()
-s.start()
-
 class Soundtrack():
     def __init__(self, mode):
         self.melody_met = Metro(0.5).play()
         self.bass_met = Metro(2).play()
-        self.modes = {"ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
+        self.modes = {"Ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
                                  14, 16, 17, 19, 21, 23, 24],
-                      "dorian": [0, 2, 3, 5, 7, 9, 10, 12, 
+                      "Dorian": [0, 2, 3, 5, 7, 9, 10, 12, 
                                  14, 15, 17, 19, 21, 22, 24],
-                      "phrygian": [0, 1, 3, 5, 7, 8, 10, 12, 
+                      "Phrygian": [0, 1, 3, 5, 7, 8, 10, 12, 
                                    13, 15, 17, 19, 20, 22, 24],
-                      "lydian": [0, 2, 4, 6, 7, 9, 11, 12, 
+                      "Lydian": [0, 2, 4, 6, 7, 9, 11, 12, 
                                  14, 16, 18, 19, 21, 23, 24],
-                      "mixolydian": [0, 2, 4, 5, 7, 9, 11, 12, 
+                      "Mixolydian": [0, 2, 4, 5, 7, 9, 11, 12, 
                                      14, 16, 17, 19, 21, 22, 24],
-                      "aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
+                      "Aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
                                   14, 15, 17, 19, 20, 22, 24],
-                      "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
+                      "Locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
                                   13, 15, 17, 19, 20, 22, 24]}
         self.current_mode = self.modes[mode]
+        
         # amplitude (volume) envelopes
         # these control how the sounds start and stop
         # Attack Decay Sustain Release
@@ -109,7 +107,7 @@ class Soundtrack():
                 #
                 # The notes on a piano keyboard are all the same interval apart; every half step sounds the same to us.
                 # However, many different tuning systems have been used across time and in different places in the world. 
-                # Some are based on more "pure" or "just" intervals because they use simple
+                # Some are based on more "pure" or "just" intervals because which use simple
                 # whole number ratios for intervals like the perfect 5th (3/2 or 1.5) and the major third (5/4 or 1.25). The major third on
                 # a piano by contrast has the interval ratio of 1.259921, meaning the top note is slightly sharp compared to the just interval.
                 
@@ -118,9 +116,7 @@ class Soundtrack():
                 # self.harmonizing_synth.setFreq(7/4 * midiToHz(60 + scale[self.motifs[self.motif_num][self.motif_step] - 1]))
                 self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step += 1
-                print(f"setting time to {self.motifs[self.motif_num][self.motif_step][1]}")
             else:
-                print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
                 self.melody_synth.setFreq(midiToHz(60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]))
                 
                 self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step][0] + 1) % 13]))
@@ -167,7 +163,3 @@ class Soundtrack():
             # print("playing bass")
             self.bass_synth.setFreq(midiToHz(36 + self.current_mode[random.randint(0, 7)]))
         self.bass_env.play()
-
-soundtrack1 = Soundtrack("dorian")
-
-s.gui(locals)
