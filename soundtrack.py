@@ -1,6 +1,5 @@
 """
     TODO
-    Add rhythm to motifs
     Motivic development
     Imitation
     Control interval of harmonization
@@ -17,7 +16,7 @@ s = Server().boot()
 s.start()
 
 class Soundtrack():
-    def __init__(self):
+    def __init__(self, mode):
         self.melody_met = Metro(0.5).play()
         self.bass_met = Metro(2).play()
         self.modes = {"ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
@@ -33,9 +32,8 @@ class Soundtrack():
                       "aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
                                   14, 15, 17, 19, 20, 22, 24],
                       "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
-                                  13, 15, 17, 19, 20, 22, 24]
-                      }
-        self.current_mode = self.modes["dorian"]
+                                  13, 15, 17, 19, 20, 22, 24]}
+        self.current_mode = self.modes[mode]
         # amplitude (volume) envelopes
         # these control how the sounds start and stop
         # Attack Decay Sustain Release
@@ -46,8 +44,9 @@ class Soundtrack():
         self.melody_env = Adsr(0.1, dur=0.25)
         self.bass_env = Adsr(0.1, release=1, dur=2)
 
-        # using scale degrees
-        self.motifs = [[5, 5, 5, 3], [4, 4, 4, 2]]
+        # each note of the motif is represented as an array containing the scale degree and duration in seconds
+        self.motifs = [[[5, 0.5], [5, 0.25], [5, 0.25], [3, 0.5]], 
+                       [[4, 0.25], [4, 0.5], [4, 0.25], [2, 1]]]
 
         # [1, 3, 2, 4], [5, 5, 5, 7, 6], [1, 2, 6, 4]
         self.playing_motif = False
@@ -85,45 +84,21 @@ class Soundtrack():
         play_note = random.random()
         change_rhythm = random.random()
         new_rhythm = random.choice([0.25, 0.5, 0.75, 1])
-
-        # print(f"notes_to_harmonize: {notes_to_harmonize}")
-        if self.notes_to_harmonize == 0:
-            harmonize = random.random()
-            if harmonize > 1:
-                self.notes_to_harmonize = 3 + random.randint(0, 5)
-        
-        if change_rhythm > 0.5:
-            self.melody_met.setTime(new_rhythm)
-        
-        # 0 = staccato, 1 = legato
-        current_articulation = round(random.random())
-        if current_articulation == 1:
-            # if legato, make duration of envelope same as note length
-            self.melody_env.setDur(new_rhythm)
-        else:
-            self.melody_env.setDur(0.25)
-            
-        if self.notes_to_harmonize != 0:
-            self.harmonizing_synth.setMul(self.melody_env)
-            self.notes_to_harmonize -= 1
-        else:
-            self.harmonizing_synth.setMul(0)
         
         if not self.playing_motif:
             self.use_motif = random.random()
             self.motif_num = round(random.random())
         
-        if self.use_motif > 0.5:
+        if self.use_motif > 0.4:
             self.playing_motif = True
             
         if self.playing_motif:
             play_note = 1 # make sure no notes of the motif are replaced with rests
-            if self.motif_step < len(self.motifs[self.motif_num]):
+            if self.motif_step < len(self.motifs[self.motif_num]) - 1:
                 # scale[self.motifs[self.motif_num][self.motif_step] - 1] gives the number of half steps above middle C
-                print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step] - 1]}")
-                self.melody_synth.setFreq(midiToHz(60 + self.current_mode[self.motifs[self.motif_num][self.motif_step] - 1]))
-                
-                self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step] + 1) % 13]))
+                # print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
+                self.melody_synth.setFreq(midiToHz(60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]))
+                self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step][0] + 1) % 13]))
                 
                 # Below and is an alternate method of specifying an interval to harmonize the melody at; it's also at line 143.
                 # When harmonizing the melody in 3rds using scale degrees, the interval  
@@ -140,18 +115,47 @@ class Soundtrack():
                 
                 # for a great explanation of these concepts, check out this video: https://youtu.be/Wx_kugSemfY?si=SxQimSSkHc5A6B2H
 
-                # harmonizing_synth.setFreq(7/4 * midiToHz(60 + scale[self.motifs[self.motif_num][self.motif_step] - 1]))
-                
+                # self.harmonizing_synth.setFreq(7/4 * midiToHz(60 + scale[self.motifs[self.motif_num][self.motif_step] - 1]))
+                self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step += 1
+                print(f"setting time to {self.motifs[self.motif_num][self.motif_step][1]}")
             else:
+                print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
+                self.melody_synth.setFreq(midiToHz(60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]))
+                
+                self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step][0] + 1) % 13]))
+                self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step = 0
                 self.playing_motif = False
         else:
             random_degree = random.randint(0, 7)
             self.melody_synth.setFreq(midiToHz(60 + self.current_mode[random_degree]))
             self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(random_degree + 2) % 13]))
-            # harmonizing_synth.setFreq(7/4 * midiToHz(60 + scale[random_degree]))
+            # self.harmonizing_synth.setFreq(7/4 * midiToHz(60 + scale[random_degree]))
+
+        # print(f"notes_to_harmonize: {notes_to_harmonize}")
+        if self.notes_to_harmonize == 0:
+            harmonize = random.random()
+            if harmonize > 0.5:
+                self.notes_to_harmonize = 3 + random.randint(0, 5)
         
+        if change_rhythm > 0.5 and not self.playing_motif:
+            self.melody_met.setTime(new_rhythm)
+        
+        # 0 = staccato, 1 = legato
+        current_articulation = round(random.random())
+        if current_articulation == 1:
+            # if legato, make duration of envelope same as note length
+            self.melody_env.setDur(new_rhythm)
+        else:
+            self.melody_env.setDur(0.25)
+            
+        if self.notes_to_harmonize != 0:
+            self.harmonizing_synth.setMul(self.melody_env)
+            self.notes_to_harmonize -= 1
+        else:
+            self.harmonizing_synth.setMul(0)
+          
         if play_note > 0.3:
             self.melody_env.play()
             # print("playing melody")
@@ -164,6 +168,6 @@ class Soundtrack():
             self.bass_synth.setFreq(midiToHz(36 + self.current_mode[random.randint(0, 7)]))
         self.bass_env.play()
 
-soundtrack = Soundtrack()
+soundtrack1 = Soundtrack("dorian")
 
 s.gui(locals)
