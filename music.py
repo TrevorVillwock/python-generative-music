@@ -1,16 +1,9 @@
 """
     TODO
-    Motivic development
-        - notes
-        - rhythms
     Imitation
     Control interval of harmonization
     Counterpoint
-    Improve timbre
-    Add soundfile playback - footsteps, dripping, birds, wind, conversation
-    Create command line choose your own adventure type thing with different rooms for different modes, instruments you can play, and other objects/controls that change the soundtrack
     Instruments you can play from the command line
- 
 """
 
 from pyo import *
@@ -66,7 +59,7 @@ class Music():
         # self.harmonizing_synth = Osc(table=self.melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=self.melody_env)
         self.harmony_note = 57
         # self.bass_synth = Osc(table=self.bass_wav, freq=[midiToHz(36), midiToHz(36)], mul=self.bass_env)
-        self.bass_note = 48
+        self.bass_note = 28
         
         self.melody_vol = 0.3
         self.harmony_vol = 0.3
@@ -99,7 +92,8 @@ class Music():
                 try:
                     self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i}.aif"))
                 except Exception as e:
-                    print("exception: " + str(e))
+                    pass
+                    # print("exception: " + str(e))
 
     def play_melody(self):
         # print("play_melody")
@@ -201,10 +195,11 @@ class Music():
             self.harmony_vol = 0
           
         if play_note > 0.3:
-            self.melody_env.play()
+            # self.melody_env.play()
             self.play_guitar(self.melody_note)
             self.play_guitar(self.harmony_note)
             # print("playing melody")
+            pass
 
     def play_bass(self):
         # print("play_bass")
@@ -212,8 +207,9 @@ class Music():
         if change_note > 0.3:
             # print("playing bass")
             # self.bass_synth.setFreq(midiToHz(36 + self.current_mode[random.randint(0, 7)]))
-            self.bass_note = 36 + self.current_mode[random.randint(0, 7)]
-        self.bass_env.play()
+            self.bass_note = self.midi_numbers[random.randint(0, 7)]
+        # self.bass_env.play()
+        self.play_guitar(self.bass_note)
         
     def play_guitar(self, note):
         self.guitar_samples[note][0].out()
