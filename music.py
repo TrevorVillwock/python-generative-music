@@ -1,6 +1,8 @@
 """
     TODO
     Motivic development
+        - notes
+        - rhythms
     Imitation
     Control interval of harmonization
     Counterpoint
@@ -8,11 +10,13 @@
     Add soundfile playback - footsteps, dripping, birds, wind, conversation
     Create command line choose your own adventure type thing with different rooms for different modes, instruments you can play, and other objects/controls that change the soundtrack
     Instruments you can play from the command line
+ 
 """
 
 from pyo import *
+from math import floor
 
-class Soundtrack():
+class Music():
     def __init__(self, mode):
         self.melody_met = Metro(0.5).play()
         self.bass_met = Metro(2).play()
@@ -43,6 +47,7 @@ class Soundtrack():
         self.bass_env = Adsr(0.1, release=1, dur=2)
 
         # each note of the motif is represented as an array containing the scale degree and duration in seconds
+        # 1 = quarter note, 0.5 = eighth, etc.
         self.motifs = [[[5, 0.5], [5, 0.25], [5, 0.25], [3, 0.5]], 
                        [[4, 0.25], [4, 0.5], [4, 0.25], [2, 1]]]
 
@@ -67,7 +72,7 @@ class Soundtrack():
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.bass_player = TrigFunc(self.bass_met, self.play_bass)
 
-        self.mixer = Mixer(chnls=4).out()
+        self.mixer = Mixer(chnls=4)
 
         self.mixer.addInput(0, self.melody_reverb)
         self.mixer.addInput(1, self.harmony_reverb)
@@ -81,7 +86,9 @@ class Soundtrack():
         # print("play_melody")
         play_note = random.random()
         change_rhythm = random.random()
-        new_rhythm = random.choice([0.25, 0.5, 0.75, 1])
+        new_rhythm = random.choice([0.25, 0.5, 0.75, 1])   
+        modify_motif_pitch = random.random()
+        modify_motif_rhythm = random.random()
         
         if not self.playing_motif:
             self.use_motif = random.random()
@@ -91,6 +98,19 @@ class Soundtrack():
             self.playing_motif = True
             
         if self.playing_motif:
+            if modify_motif_pitch > 0.8:
+                # print(f"old motif pitches: {self.motifs[self.motif_num]}")
+                note_to_change = floor(random.random() * 4)
+                change_interval = random.choice([-1, 1])
+                self.motifs[self.motif_num][note_to_change][0] = self.motifs[self.motif_num][note_to_change][0] + change_interval
+                # print(f"new motif pitches: {self.motifs[self.motif_num]}")
+                
+            if modify_motif_rhythm > 0.8:
+                # print(f"old motif rhythm: {self.motifs[self.motif_num]}")
+                note_to_change = floor(random.random() * 4)
+                self.motifs[self.motif_num][note_to_change][1] = random.choice([r for r in [0.25, 0.5, 0.75, 1] if r != self.motifs[self.motif_num][note_to_change][1]])
+                # print(f"new motif rhythm: {self.motifs[self.motif_num]}")
+                
             play_note = 1 # make sure no notes of the motif are replaced with rests
             if self.motif_step < len(self.motifs[self.motif_num]) - 1:
                 # scale[self.motifs[self.motif_num][self.motif_step] - 1] gives the number of half steps above middle C
