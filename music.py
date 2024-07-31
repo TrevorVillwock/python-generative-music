@@ -166,11 +166,12 @@ class Music():
                 self.motif_step = 0
                 self.playing_motif = False
         else:
-            random_degree = random.randint(0, 7)
+            # random_degree = random.randint(0, 7)
+            random_degree = random.randrange(0, 23)
             # self.melody_synth.setFreq(midiToHz(60 + self.current_mode[random_degree]))
-            self.melody_note = random.choice(self.midi_numbers)
+            self.melody_note = self.midi_numbers[random_degree]
             # self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(random_degree + 2) % 13]))
-            # self.harmony_note = 60 + self.current_mode[(random_degree + 2) % 13]
+            self.harmony_note = self.midi_numbers[random_degree - 2]
             
             # self.harmonizing_synth.setFreq(7/4 * midiToHz(60 + scale[random_degree]))
 
@@ -202,7 +203,7 @@ class Music():
         if play_note > 0.3:
             self.melody_env.play()
             self.play_guitar(self.melody_note)
-            # self.play_guitar(self.harmony_note)
+            self.play_guitar(self.harmony_note)
             # print("playing melody")
 
     def play_bass(self):
@@ -216,5 +217,4 @@ class Music():
         
     def play_guitar(self, note):
         self.guitar_samples[note][0].out()
-        print(note)
-        
+        print(note)  
