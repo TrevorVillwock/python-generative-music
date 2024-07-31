@@ -69,9 +69,6 @@ class Music():
         # self.melody_reverb = Freeverb(self.melody_synth, 2)
         # self.harmony_reverb = Freeverb(self.harmonizing_synth, 2)
 
-        self.melody_player = TrigFunc(self.melody_met, self.play_melody)
-        self.bass_player = TrigFunc(self.bass_met, self.play_bass)
-
         self.mixer = Mixer(chnls=4)
 
         # self.mixer.addInput(0, self.melody_reverb)
@@ -94,6 +91,9 @@ class Music():
                 except Exception as e:
                     pass
                     # print("exception: " + str(e))
+                    
+        self.melody_player = TrigFunc(self.melody_met, self.play_melody)
+        self.bass_player = TrigFunc(self.bass_met, self.play_bass)
 
     def play_melody(self):
         # print("play_melody")
