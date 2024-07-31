@@ -61,26 +61,45 @@ class Music():
         self.melody_wav = SquareTable(5)
         self.bass_wav = SquareTable(5)
 
-        self.melody_synth = Osc(table=self.melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=self.melody_env)
-        self.harmonizing_synth = Osc(table=self.melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=self.melody_env)
+        # self.melody_synth = Osc(table=self.melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=self.melody_env)
+        self.melody_note = 60
+        # self.harmonizing_synth = Osc(table=self.melody_wav, freq=[midiToHz(60), midiToHz(60)], mul=self.melody_env)
+        self.harmony_note = 57
+        # self.bass_synth = Osc(table=self.bass_wav, freq=[midiToHz(36), midiToHz(36)], mul=self.bass_env)
+        self.bass_note = 48
+        
+        self.melody_vol = 0.3
+        self.harmony_vol = 0.3
+        
         self.notes_to_harmonize = 0
-        self.bass_synth = Osc(table=self.bass_wav, freq=[midiToHz(36), midiToHz(36)], mul=self.bass_env)
-
-        self.melody_reverb = Freeverb(self.melody_synth, 2)
-        self.harmony_reverb = Freeverb(self.harmonizing_synth, 2)
+        
+        # self.melody_reverb = Freeverb(self.melody_synth, 2)
+        # self.harmony_reverb = Freeverb(self.harmonizing_synth, 2)
 
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.bass_player = TrigFunc(self.bass_met, self.play_bass)
 
         self.mixer = Mixer(chnls=4)
 
-        self.mixer.addInput(0, self.melody_reverb)
-        self.mixer.addInput(1, self.harmony_reverb)
-        self.mixer.addInput(2, self.bass_synth)
+        # self.mixer.addInput(0, self.melody_reverb)
+        # self.mixer.addInput(1, self.harmony_reverb)
+        # self.mixer.addInput(2, self.bass_synth)
 
-        self.mixer.setAmp(0, 0, 0.1)
-        self.mixer.setAmp(1, 0, 0.1)
-        self.mixer.setAmp(2, 0, 0.1)
+        # self.mixer.setAmp(0, 0, 0.1)
+        # self.mixer.setAmp(1, 0, 0.1)
+        # self.mixer.setAmp(2, 0, 0.1)
+        
+        # create a dictionary where each key is a midi number and each value is an array containing that note at all possible dynamics
+        # randomly select dynamic to play
+        self.guitar_samples = {}
+        midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
+        for m in midi_numbers:
+            self.guitar_samples[m] = []
+            for i in range (1, 6):
+                try:
+                    self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i}.aif"))
+                except Exception as e:
+                    print("exception: " + str(e))
 
     def play_melody(self):
         # print("play_melody")
@@ -115,8 +134,10 @@ class Music():
             if self.motif_step < len(self.motifs[self.motif_num]) - 1:
                 # scale[self.motifs[self.motif_num][self.motif_step] - 1] gives the number of half steps above middle C
                 # print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
-                self.melody_synth.setFreq(midiToHz(60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]))
-                self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step][0] + 1) % 13]))
+                # self.melody_synth.setFreq(midiToHz(60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]))
+                self.melody_note = 60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]
+                # self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step][0] + 1) % 13]))
+                self.harmony_note = 60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step][0] + 1) % 13]
                 
                 # Below and is an alternate method of specifying an interval to harmonize the melody at; it's also at line 143.
                 # When harmonizing the melody in 3rds using scale degrees, the interval  
@@ -137,16 +158,20 @@ class Music():
                 self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step += 1
             else:
-                self.melody_synth.setFreq(midiToHz(60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]))
-                
-                self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step][0] + 1) % 13]))
+                # self.melody_synth.setFreq(midiToHz(60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]))
+                self.melody_note = 60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]
+                # self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step][0] + 1) % 13]))
+                self.harmony_note = 60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]
                 self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step = 0
                 self.playing_motif = False
         else:
             random_degree = random.randint(0, 7)
-            self.melody_synth.setFreq(midiToHz(60 + self.current_mode[random_degree]))
-            self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(random_degree + 2) % 13]))
+            # self.melody_synth.setFreq(midiToHz(60 + self.current_mode[random_degree]))
+            self.melody_note = 60 + self.current_mode[random_degree]
+            # self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(random_degree + 2) % 13]))
+            self.harmony_note = 60 + self.current_mode[(random_degree + 2) % 13]
+            
             # self.harmonizing_synth.setFreq(7/4 * midiToHz(60 + scale[random_degree]))
 
         # print(f"notes_to_harmonize: {notes_to_harmonize}")
@@ -167,13 +192,17 @@ class Music():
             self.melody_env.setDur(0.25)
             
         if self.notes_to_harmonize != 0:
-            self.harmonizing_synth.setMul(self.melody_env)
+            # self.harmonizing_synth.setMul(self.melody_env)
+            self.harmony_vol = self.melody_vol
             self.notes_to_harmonize -= 1
         else:
-            self.harmonizing_synth.setMul(0)
+            # self.harmonizing_synth.setMul(0)
+            self.harmony_vol = 0
           
         if play_note > 0.3:
             self.melody_env.play()
+            self.play_guitar(self.melody_note)
+            self.play_guitar(self.harmony_note)
             # print("playing melody")
 
     def play_bass(self):
@@ -181,5 +210,10 @@ class Music():
         change_note = random.random()
         if change_note > 0.3:
             # print("playing bass")
-            self.bass_synth.setFreq(midiToHz(36 + self.current_mode[random.randint(0, 7)]))
+            # self.bass_synth.setFreq(midiToHz(36 + self.current_mode[random.randint(0, 7)]))
+            self.bass_note = 36 + self.current_mode[random.randint(0, 7)]
         self.bass_env.play()
+        
+    def play_guitar(self, note):
+        print(note)
+        

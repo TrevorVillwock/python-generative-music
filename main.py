@@ -40,9 +40,9 @@ class Main():
         self.ambient_noise = AmbientNoise()
         self.mixer = Mixer(chnls=2).out()
         
-        self.mixer.addInput(0, self.music.melody_reverb)
-        self.mixer.addInput(1, self.music.harmony_reverb)
-        self.mixer.addInput(2, self.music.bass_synth)
+        # self.mixer.addInput(0, self.music.melody_reverb)
+        # self.mixer.addInput(1, self.music.harmony_reverb)
+        # self.mixer.addInput(2, self.music.bass_synth)
         self.mixer.addInput(3, self.ambient_noise.noise)
         
         self.mixer.setAmp(0, 0, 0.1)
