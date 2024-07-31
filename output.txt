@@ -1,0 +1,220 @@
+Input a number to enter the corresponding room:
+
+ 1. Ionian
+ 2. Dorian
+ 3. Phrygian
+ 4. Lydian
+ 5. Mixolydian
+ 6. Aeolian
+ 7. Locrian
+
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 67
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 67
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 67
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 67
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 67
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 67
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 67
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 67
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 67
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 204, in play_melody
+    self.play_guitar(self.melody_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.11/site-packages/pyo/lib/_core.py", line 847, in __call__
+    return self.method(self.target, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 205, in play_melody
+    self.play_guitar(self.harmony_note)
+  File "/Users/trevorvillwock/Desktop/Teaching/MATM/Python/generative_music/music.py", line 218, in play_guitar
+    self.guitar_samples[note][0].play()
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 65

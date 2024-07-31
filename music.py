@@ -92,8 +92,8 @@ class Music():
         # create a dictionary where each key is a midi number and each value is an array containing that note at all possible dynamics
         # randomly select dynamic to play
         self.guitar_samples = {}
-        midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
-        for m in midi_numbers:
+        self.midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
+        for m in self.midi_numbers:
             self.guitar_samples[m] = []
             for i in range (1, 6):
                 try:
@@ -113,7 +113,7 @@ class Music():
             self.use_motif = random.random()
             self.motif_num = round(random.random())
         
-        if self.use_motif > 0.4:
+        if self.use_motif > 1:
             self.playing_motif = True
             
         if self.playing_motif:
@@ -168,9 +168,9 @@ class Music():
         else:
             random_degree = random.randint(0, 7)
             # self.melody_synth.setFreq(midiToHz(60 + self.current_mode[random_degree]))
-            self.melody_note = 60 + self.current_mode[random_degree]
+            self.melody_note = random.choice(self.midi_numbers)
             # self.harmonizing_synth.setFreq(midiToHz(60 + self.current_mode[(random_degree + 2) % 13]))
-            self.harmony_note = 60 + self.current_mode[(random_degree + 2) % 13]
+            # self.harmony_note = 60 + self.current_mode[(random_degree + 2) % 13]
             
             # self.harmonizing_synth.setFreq(7/4 * midiToHz(60 + scale[random_degree]))
 
@@ -202,7 +202,7 @@ class Music():
         if play_note > 0.3:
             self.melody_env.play()
             self.play_guitar(self.melody_note)
-            self.play_guitar(self.harmony_note)
+            # self.play_guitar(self.harmony_note)
             # print("playing melody")
 
     def play_bass(self):
@@ -215,5 +215,6 @@ class Music():
         self.bass_env.play()
         
     def play_guitar(self, note):
+        self.guitar_samples[note][0].out()
         print(note)
         
