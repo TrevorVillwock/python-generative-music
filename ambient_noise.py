@@ -12,7 +12,7 @@ Locrian - Dungeon (under metallic floor)
 
 class AmbientNoise():
     def __init__(self):
-        self.noise = SfPlayer("./soundfiles/cafe-weekday-afternoon.wav", loop=True).out()
+        self.noise = SfPlayer("./soundfiles/ambient_noise/birds.mp3", loop=True).out()
         
     def play(self):
         self.noise.play()
