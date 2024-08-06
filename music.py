@@ -4,6 +4,7 @@
     Control interval of harmonization
     Counterpoint
     Instruments you can play from the command line
+    Potions/powerups - echoes, reversal in time
 """
 
 from pyo import *
@@ -13,19 +14,19 @@ class Music():
     def __init__(self, mode):
         self.melody_met = Metro(0.5).play()
         self.bass_met = Metro(2).play()
-        self.modes = {"Ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
+        self.modes = {"ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
                                  14, 16, 17, 19, 21, 23, 24],
-                      "Dorian": [0, 2, 3, 5, 7, 9, 10, 12, 
+                      "dorian": [0, 2, 3, 5, 7, 9, 10, 12, 
                                  14, 15, 17, 19, 21, 22, 24],
-                      "Phrygian": [0, 1, 3, 5, 7, 8, 10, 12, 
+                      "phrygian": [0, 1, 3, 5, 7, 8, 10, 12, 
                                    13, 15, 17, 19, 20, 22, 24],
-                      "Lydian": [0, 2, 4, 6, 7, 9, 11, 12, 
+                      "lydian": [0, 2, 4, 6, 7, 9, 11, 12, 
                                  14, 16, 18, 19, 21, 23, 24],
-                      "Mixolydian": [0, 2, 4, 5, 7, 9, 11, 12, 
+                      "mixolydian": [0, 2, 4, 5, 7, 9, 11, 12, 
                                      14, 16, 17, 19, 21, 22, 24],
-                      "Aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
+                      "aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
                                   14, 15, 17, 19, 20, 22, 24],
-                      "Locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
+                      "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
                                   13, 15, 17, 19, 20, 22, 24]}
         self.current_mode = self.modes[mode]
         
@@ -199,7 +200,6 @@ class Music():
             self.play_guitar(self.melody_note)
             self.play_guitar(self.harmony_note)
             # print("playing melody")
-            pass
 
     def play_bass(self):
         # print("play_bass")
@@ -213,4 +213,7 @@ class Music():
         
     def play_guitar(self, note):
         self.guitar_samples[note][0].out()
-        print(note)  
+        # print(note)  
+        
+    def change_mode(self, mode):
+        self.current_mode = self.modes[mode]
