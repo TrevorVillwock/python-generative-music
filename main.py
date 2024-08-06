@@ -8,37 +8,43 @@ s.start()
 class Main():  
     def __init__(self):
         self.input_is_valid = 0
-        self.mode = "Ionian" # default mode
+        self.mode = "ionian" # default mode
+        self.music = Music(self.mode)
+        self.ambient_sounds = AmbientSounds()
+        self.mixer = Mixer(chnls=2).out()
         self.room_selection = input("Input a number to enter the corresponding room:\n\n 1. Ionian\n 2. Dorian\n 3. Phrygian\n 4. Lydian\n 5. Mixolydian\n 6. Aeolian\n 7. Locrian\n\n")
         while self.input_is_valid == 0:
             match self.room_selection:
                 case "1": 
                     self.mode = "ionian"
+                    self.ambient_sounds.start_first_sound("dining_hall")
                     self.input_is_valid = 1
                 case "2": 
                     self.mode = "dorian"
+                    self.ambient_sounds.start_first_sound("river")
                     self.input_is_valid = 1
                 case "3": 
                     self.mode = "phrygian"
+                    self.ambient_sounds.start_first_sound("wind")
                     self.input_is_valid = 1
                 case "4": 
                     self.mode = "lydian"
+                    self.ambient_sounds.start_first_sound("birds")
                     self.input_is_valid = 1
                 case "5": 
                     self.mode = "mixolydian"
+                    self.ambient_sounds.start_first_sound("footsteps")
                     self.input_is_valid = 1
                 case "6": 
                     self.mode = "aeolian"
+                    self.ambient_sounds.start_first_sound("underwater")
                     self.input_is_valid = 1
                 case "7": 
                     self.mode = "locrian"
+                    self.ambient_sounds.start_first_sound("dungeon")
                     self.input_is_valid = 1
                 case _:
                     self.room_selection = input("Please enter a number between 1 and 7:")
-        
-        self.music = Music(self.mode)
-        self.ambient_sounds = AmbientSounds()
-        self.mixer = Mixer(chnls=2).out()
         
         # self.mixer.addInput(0, self.music.melody_reverb)
         # self.mixer.addInput(1, self.music.harmony_reverb)
@@ -64,7 +70,7 @@ class Main():
                     self.ambient_sounds.change_sound("river")
                 case "3": 
                     self.music.change_mode("phrygian")
-                    self.ambient_sounds.change_sound("river")
+                    self.ambient_sounds.change_sound("wind")
                 case "4": 
                     self.music.change_mode("lydian")
                     self.ambient_sounds.change_sound("birds")
@@ -73,12 +79,10 @@ class Main():
                     self.ambient_sounds.change_sound("footsteps")
                 case "6": 
                     self.music.change_mode("aeolian")
-                    self.ambient_sounds.change_sound("river")
-
+                    self.ambient_sounds.change_sound("underwater")
                 case "7": 
                     self.music.change_mode("locrian")
                     self.ambient_sounds.change_sound("dungeon")
-
                 case "q":
                     # fade master volume
                     pass
