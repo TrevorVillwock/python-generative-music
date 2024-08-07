@@ -1,6 +1,6 @@
 # Castle of Sound
 
-This choose-your-own adventure command line game includes a soundtrack that the user can manipulate through moving to different parts of the castle and acquiring various objects. The soundtrack includes music that is generated using algorithms with random components as well as recordings of various ambient noises like footsteps, birds, and background conversation. Run it from the command line with `python3 main.py`.
+This choose-your-own-adventure command line game includes a soundtrack that the user can manipulate through moving to different parts of the castle and acquiring various objects. The soundtrack includes music that is generated using algorithms with random components as well as recordings of various ambient noises like footsteps, birds, and background conversation. Run it from the command line with `python3 main.py`.
 
 Download the soundfiles needed from [here](https://drive.google.com/drive/folders/1GT2uNe9idCnJlRWD0WYllIviSZOjfrqh?usp=sharing) and place in the `soundfiles` directory. Soundfiles are relatively large even when using the most space-efficient .mp3 format. Git's way of storing and transmitting them along with the rest of the repo is way less efficient than simply uploading to a cloud service.
 
