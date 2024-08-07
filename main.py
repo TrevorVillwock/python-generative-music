@@ -45,10 +45,7 @@ class Main():
                     self.input_is_valid = 1
                 case _:
                     self.room_selection = input("Please enter a number between 1 and 7:")
-        
-        # self.mixer.addInput(0, self.music.melody_reverb)
-        # self.mixer.addInput(1, self.music.harmony_reverb)
-        # self.mixer.addInput(2, self.music.bass_synth)
+
         self.mixer.addInput(3, self.ambient_sounds.sound1)
         self.mixer.addInput(4, self.ambient_sounds.sound2)
         self.mixer.setAmp(0, 0, 0.1)

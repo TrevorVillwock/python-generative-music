@@ -43,23 +43,20 @@ class Music():
         
         self.current_mode_name = mode
         
-        self.mode_primary_triads = {"ionian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
-                      "dorian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
-                      "phrygian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
-                      "lydian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
-                      "mixolydian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
-                      "aeolian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
-                      "locrian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]]}
+        # Simple progressions using the primary triads (I, IV, and V) in each mode.
+        # The I chord is repeated to help establish the mode and we use open voicings to make
+        # the chords more full and less muddy in the low registers. To make an open voicing, we
+        # move the middle note of the triad up an octave by adding 12 to the original midi number.
+        
+        self.mode_primary_triads = {"ionian": [[31, 47, 38], [31, 47, 38], [36, 52, 43], [38, 54, 45]],
+                      "dorian": [[33, 48, 40], [33, 48, 40], [38, 54, 45], [40, 55, 47]],
+                      "phrygian": [[35, 50, 42], [35, 50, 42], [40, 55, 47], [42, 57, 48]],
+                      "lydian": [[36, 52, 43], [36, 52, 43], [42, 57, 48], [43, 59, 50]],
+                      "mixolydian": [[38, 54, 45], [38, 54, 45], [43, 59, 50], [45, 60, 52]],
+                      "aeolian": [[28, 43, 35], [28, 43, 35], [33, 48, 40], [35, 50, 42]],
+                      "locrian": [[30, 45, 36], [30, 45, 36], [35, 50, 42], [36, 52, 43]]}
         
         self.current_triad = 0
-        
-        # amplitude (volume) envelopes
-        # these control how the sounds start and stop
-        # Attack Decay Sustain Release
-        # Attack - how long the sound takes to start (seconds)
-        # Decay - how long the sound takes to reach sustain volume from max (seconds)
-        # Sustain - volume level when note is held (volume from 0.0-1.0)
-        # Release - how long the note takes to fade away
 
         # each note of the motif is represented as an array containing the scale degree and duration in seconds
         # 1 = quarter note, 0.5 = eighth, etc.
@@ -172,12 +169,12 @@ class Music():
             # print("playing melody")
 
     def play_chords(self):
-        print(f"self.current_triad: {self.current_triad}")
+        # print(f"self.current_triad: {self.current_triad}")
         self.play_guitar(self.mode_primary_triads[self.current_mode_name][self.current_triad][0])
         self.play_guitar(self.mode_primary_triads[self.current_mode_name][self.current_triad][1])
         self.play_guitar(self.mode_primary_triads[self.current_mode_name][self.current_triad][2])
         
-        if self.current_triad < 2:
+        if self.current_triad < 3:
             self.current_triad += 1
         else:
             self.current_triad = 0
