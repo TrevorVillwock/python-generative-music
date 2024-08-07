@@ -2,11 +2,6 @@ from pyo import Metro, SfPlayer, Mixer, TrigFunc
 import random
 from math import floor
 
-"""
-Create dictionary mapping modes to primary triads
-Create new current_mode_name attribute?
-    
-"""
 class Music():
     def __init__(self, mode):
         self.melody_met = Metro(0.5).play()
