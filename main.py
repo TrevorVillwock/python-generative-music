@@ -12,9 +12,9 @@ class Main():
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(chnls=2).out()
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
-        self.room_selection = input("What do you want to do?\n\n 1. Eat food (Ionian)\n 2. Go to the river (Dorian)\n 3. Go to the top of the tower (Phrygian)\n 4. Go to the garden (Lydian)\n 5. Go for a hike (Mixolydian) \n 6. Swim in the river (Aeolian) \n 7. Go to the dungeon (Locrian\n\n Input a number to choose: ")
+        self.action_selection = input("What do you want to do?\n\n 1. Eat food (Ionian)\n 2. Go to the river (Dorian)\n 3. Go to the top of the tower (Phrygian)\n 4. Go to the garden (Lydian)\n 5. Go for a hike (Mixolydian) \n 6. Swim in the river (Aeolian) \n 7. Go to the dungeon (Locrian\n\n Input a number to choose: ")
         while self.input_is_valid == 0:
-            match self.room_selection:
+            match self.action_selection:
                 case "1": 
                     # don't need to change modes since the default is ionian
                     self.ambient_sounds.start_first_sound("dining_hall")
@@ -44,7 +44,7 @@ class Main():
                     self.ambient_sounds.start_first_sound("dungeon")
                     self.input_is_valid = 1
                 case _:
-                    self.room_selection = input("Please enter a number between 1 and 7:")
+                    self.action_selection = input("Please enter a number between 1 and 7:")
 
         self.mixer.addInput(3, self.ambient_sounds.sound1)
         self.mixer.addInput(4, self.ambient_sounds.sound2)
@@ -84,7 +84,7 @@ class Main():
                     # fade master volume
                     pass
                 case _:
-                    self.room_selection = input("Please enter a valid command: ")
+                    self.action_selection = input("Please enter a valid command: ")
             # print(user_command)
             
 main = Main()
