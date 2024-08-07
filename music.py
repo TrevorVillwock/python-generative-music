@@ -66,10 +66,6 @@ class Music():
         self.notes_to_harmonize = 0
 
         self.mixer = Mixer(chnls=4)
-
-        # self.mixer.setAmp(0, 0, 0.1)
-        # self.mixer.setAmp(1, 0, 0.1)
-        # self.mixer.setAmp(2, 0, 0.1)
         
         # create a dictionary where each key is a midi number and each value is an array containing that note at all possible dynamics
         # randomly select dynamic to play

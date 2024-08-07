@@ -85,7 +85,7 @@ class Main():
                     pass
                 case _:
                     self.room_selection = input("Please enter a valid command: ")
-            print(user_command)
+            # print(user_command)
             
 main = Main()
 
