@@ -12,7 +12,7 @@ class Main():
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(chnls=2).out()
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
-        self.room_selection = input("What do you want to do? Input a number to choose:\n\n 1. Eat breakfast (Ionian)\n 2. Go to the river (Dorian)\n 3. Go to the top of the tower (Phrygian)\n 4. Go to the garden (Lydian)\n 5. Go for a hike (Mixolydian) \n 6. Swim in the river (Aeolian) \n 7. Go to the dungeon (Locrian\n\n")
+        self.room_selection = input("What do you want to do?\n\n 1. Eat food (Ionian)\n 2. Go to the river (Dorian)\n 3. Go to the top of the tower (Phrygian)\n 4. Go to the garden (Lydian)\n 5. Go for a hike (Mixolydian) \n 6. Swim in the river (Aeolian) \n 7. Go to the dungeon (Locrian\n\n Input a number to choose: ")
         while self.input_is_valid == 0:
             match self.room_selection:
                 case "1": 
@@ -57,7 +57,7 @@ class Main():
     def run_input_loop(self):
         user_command = None
         while user_command != "q":
-            user_command = input("Enter next command: ")
+            user_command = input("\n\nEnter next command: ")
             match user_command:
                 case "1": 
                     self.music.change_mode("ionian")

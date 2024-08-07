@@ -3,11 +3,11 @@ from pyo import SfPlayer, Fader
 """
 Ionian - Dining Hall
 Dorian - Next to the river
-Phrygian - Top of the tower - wind
+Phrygian - Top of the tower
 Lydian - Garden with birds
 Mixolydian - Going for a hike
 Aeolian - In the river
-Locrian - Dungeon (under metallic floor)
+Locrian - Dungeon
 """
   
 class AmbientSounds():
@@ -30,21 +30,21 @@ class AmbientSounds():
         
     def change_sound(self, new_sound):
         # fade out old sound and fade in new
-        print(new_sound)
+        # print(new_sound)
         if self.current_sound == 1:
             self.sound2.setPath(self.sounds[new_sound])
             self.fader1.stop()
             self.sound2.out()
             self.fader2.play()
             self.current_sound = 2
-            print("if")
+            # print("if")
         else:
             self.sound1.setPath(self.sounds[new_sound])
             self.fader2.stop()
             self.sound1.play()
             self.fader1.play()
             self.current_sound = 1
-            print("else")
+            # print("else")
             
     def start_first_sound(self, first_sound):
         self.sound1.setPath(self.sounds[first_sound])

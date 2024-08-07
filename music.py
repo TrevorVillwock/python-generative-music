@@ -1,15 +1,3 @@
-"""
-    TODO
-    Make motifs work with guitar
-    Make basslines and melodies more distinctively in the mode
-    Make each soundtrack more different musically
-    Imitation
-    Control interval of harmonization
-    Counterpoint
-    Instruments you can play from the command line
-    Potions/powerups - echoes, reversal in time
-"""
-
 from pyo import Metro, SfPlayer, Mixer, TrigFunc
 import random
 from math import floor
