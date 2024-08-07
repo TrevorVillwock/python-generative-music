@@ -1,6 +1,6 @@
 from music import Music
 from ambient_sounds import AmbientSounds
-from pyo import *
+from pyo import Server, Mixer
 
 s = Server().boot()
 s.start()
@@ -8,39 +8,39 @@ s.start()
 class Main():  
     def __init__(self):
         self.input_is_valid = 0
-        self.mode = "ionian" # default mode
-        self.music = Music(self.mode)
+        self.music = Music("ionian") # default mode
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(chnls=2).out()
-        self.room_selection = input("Input a number to enter the corresponding room:\n\n 1. Ionian\n 2. Dorian\n 3. Phrygian\n 4. Lydian\n 5. Mixolydian\n 6. Aeolian\n 7. Locrian\n\n")
+        print("\n\nWelcome to CASTLE OF SOUND\n\n")
+        self.room_selection = input("What do you want to do? Input a number to choose:\n\n 1. Eat breakfast (Ionian)\n 2. Go to the river (Dorian)\n 3. Go to the top of the tower (Phrygian)\n 4. Go to the garden (Lydian)\n 5. Go for a hike (Mixolydian) \n 6. Swim in the river (Aeolian) \n 7. Go to the dungeon (Locrian\n\n")
         while self.input_is_valid == 0:
             match self.room_selection:
                 case "1": 
-                    self.mode = "ionian"
+                    # don't need to change modes since the default is ionian
                     self.ambient_sounds.start_first_sound("dining_hall")
                     self.input_is_valid = 1
                 case "2": 
-                    self.mode = "dorian"
+                    self.music.change_mode("dorian")
                     self.ambient_sounds.start_first_sound("river")
                     self.input_is_valid = 1
                 case "3": 
-                    self.mode = "phrygian"
+                    self.music.change_mode("phrygian")
                     self.ambient_sounds.start_first_sound("wind")
                     self.input_is_valid = 1
                 case "4": 
-                    self.mode = "lydian"
+                    self.music.change_mode("lydian")
                     self.ambient_sounds.start_first_sound("birds")
                     self.input_is_valid = 1
                 case "5": 
-                    self.mode = "mixolydian"
+                    self.music.change_mode("mixolydian")
                     self.ambient_sounds.start_first_sound("footsteps")
                     self.input_is_valid = 1
                 case "6": 
-                    self.mode = "aeolian"
+                    self.music.change_mode("aeolian")
                     self.ambient_sounds.start_first_sound("underwater")
                     self.input_is_valid = 1
                 case "7": 
-                    self.mode = "locrian"
+                    self.music.change_mode("locrian")
                     self.ambient_sounds.start_first_sound("dungeon")
                     self.input_is_valid = 1
                 case _:

@@ -1,5 +1,8 @@
 """
     TODO
+    Make motifs work with guitar
+    Make basslines and melodies more distinctively in the mode
+    Make each soundtrack more different musically
     Imitation
     Control interval of harmonization
     Counterpoint
@@ -7,13 +10,20 @@
     Potions/powerups - echoes, reversal in time
 """
 
-from pyo import *
+from pyo import Metro, SfPlayer, Mixer, TrigFunc
+import random
 from math import floor
 
+"""
+Create dictionary mapping modes to primary triads
+Create new current_mode_name attribute?
+    
+"""
 class Music():
     def __init__(self, mode):
         self.melody_met = Metro(0.5).play()
         self.bass_met = Metro(2).play()
+        self.chord_met = Metro(2).play()
         self.modes = {"ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
                                  14, 16, 17, 19, 21, 23, 24],
                       "dorian": [0, 2, 3, 5, 7, 9, 10, 12, 
@@ -28,7 +38,20 @@ class Music():
                                   14, 15, 17, 19, 20, 22, 24],
                       "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
                                   13, 15, 17, 19, 20, 22, 24]}
+        
         self.current_mode = self.modes[mode]
+        
+        self.current_mode_name = mode
+        
+        self.mode_primary_triads = {"ionian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
+                      "dorian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
+                      "phrygian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
+                      "lydian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
+                      "mixolydian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
+                      "aeolian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]],
+                      "locrian": [[28, 31, 35], [33, 36, 40], [35, 38, 42]]}
+        
+        self.current_triad = 0
         
         # amplitude (volume) envelopes
         # these control how the sounds start and stop
@@ -77,7 +100,8 @@ class Music():
                     # print("exception: " + str(e))
                     
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
-        self.bass_player = TrigFunc(self.bass_met, self.play_bass)
+        # self.bass_player = TrigFunc(self.bass_met, self.play_bass)
+        self.chord_player = TrigFunc(self.chord_met, self.play_chords)
 
     def play_melody(self):
         # print("play_melody")
@@ -147,6 +171,17 @@ class Music():
             self.play_guitar(self.harmony_note)
             # print("playing melody")
 
+    def play_chords(self):
+        print(f"self.current_triad: {self.current_triad}")
+        self.play_guitar(self.mode_primary_triads[self.current_mode_name][self.current_triad][0])
+        self.play_guitar(self.mode_primary_triads[self.current_mode_name][self.current_triad][1])
+        self.play_guitar(self.mode_primary_triads[self.current_mode_name][self.current_triad][2])
+        
+        if self.current_triad < 2:
+            self.current_triad += 1
+        else:
+            self.current_triad = 0
+            
     def play_bass(self):
         # print("play_bass")
         change_note = random.random()
@@ -159,4 +194,6 @@ class Music():
         # print(note)  
         
     def change_mode(self, mode):
+        self.current_mode_name = mode
         self.current_mode = self.modes[mode]
+        
