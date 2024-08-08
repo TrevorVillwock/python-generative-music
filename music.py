@@ -53,6 +53,7 @@ class Music():
 
         self.melody_note = 60
         self.harmony_note = 57
+        self.harmonizing = False
         self.bass_note = 28
         
         self.melody_vol = 0.3
@@ -105,11 +106,11 @@ class Music():
             self.use_motif = random.random()
             self.motif_num = round(random.random())
         
-        if self.use_motif > 0:
+        if self.use_motif > 0.3:
             self.playing_motif = True
             
         if self.playing_motif:
-            if modify_motif_pitch > 1:
+            if modify_motif_pitch > 0.5:
                 # print(f"old motif pitches: {self.motifs[self.motif_num]}")
                 note_to_change = floor(random.random() * 4)
                 change_interval = random.choice([-1, 1])
@@ -118,7 +119,7 @@ class Music():
                 self.motifs[self.motif_num][note_to_change][0] = self.motifs[self.motif_num][note_to_change][0] + change_interval
                 # print(f"new motif pitches: {self.motifs[self.motif_num]}")
                 
-            if modify_motif_rhythm > 0.8:
+            if modify_motif_rhythm > 0.5:
                 # print(f"old motif rhythm: {self.motifs[self.motif_num]}")
                 note_to_change = floor(random.random() * 4)
                 
@@ -150,21 +151,23 @@ class Music():
         # print(f"notes_to_harmonize: {notes_to_harmonize}")
         if self.notes_to_harmonize == 0:
             harmonize = random.random()
-            if harmonize > 1:
+            if harmonize > 0.8:
+                self.harmonizing = True
                 self.notes_to_harmonize = 3 + random.randint(0, 5)
+            else:
+                self.harmonizing = False
         
         if change_rhythm > 0.5 and not self.playing_motif:
             self.melody_met.setTime(new_rhythm)
             
         if self.notes_to_harmonize != 0:
-            self.harmony_vol = self.melody_vol
             self.notes_to_harmonize -= 1
-        else:
-            self.harmony_vol = 0
           
         if play_note > 0.3:
             self.play_guitar(self.melody_note)
-            self.play_guitar(self.harmony_note)
+            if self.harmonizing:   
+                self.play_guitar(self.harmony_note)
+        
             # print("playing melody")
 
     def play_chords(self):
@@ -192,4 +195,9 @@ class Music():
     def change_mode(self, mode):
         self.current_mode_name = mode
         self.current_mode = self.modes[mode]
+        
+    def stop(self):
+        self.melody_met.stop()
+        self.chord_met.stop()
+        self.bass_met.stop()
         

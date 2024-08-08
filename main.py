@@ -2,6 +2,7 @@ from music import Music
 from ambient_sounds import AmbientSounds
 from pyo import Server, Mixer
 import sys
+import time
 
 s = Server().boot()
 s.start()
@@ -11,7 +12,7 @@ class Main():
         self.input_is_valid = 0
         self.music = Music("ionian") # default mode
         self.ambient_sounds = AmbientSounds()
-        self.mixer = Mixer(chnls=2).out()
+        self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
         self.action_selection = input("What do you want to do?\n\n 1 - Eat food (Ionian)\n 2 - Go to the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n q - Quit \n\n Input a number or letter to choose: ")
         while self.input_is_valid == 0:
@@ -46,6 +47,10 @@ class Main():
                     self.input_is_valid = 1
                 case "q":
                     # fade master volume
+                    # TODO: fix clicking noise when stopping
+                    self.mixer.setMul(0.0)
+                    self.music.stop()
+                    time.sleep(1)
                     s.stop()
                     sys.exit()
                 case _:
@@ -57,6 +62,8 @@ class Main():
         self.mixer.setAmp(1, 0, 0.1)
         self.mixer.setAmp(2, 0, 0.1)
         self.mixer.setAmp(3, 0, 0.5)
+        self.mixer.setTime(0.01)
+        self.mixer.setMul(1)
         self.run_input_loop()
         
     def run_input_loop(self):
@@ -87,6 +94,10 @@ class Main():
                     self.ambient_sounds.change_sound("dungeon")
                 case "q":
                     # fade master volume
+                    # TODO: fix clicking noise when stopping
+                    self.mixer.setMul(0.0)
+                    self.music.stop()
+                    time.sleep(2)
                     s.stop()
                     sys.exit()
                 case _:
