@@ -62,18 +62,30 @@ class Music():
 
         self.mixer = Mixer(chnls=4)
         
-        # create a dictionary where each key is a midi number and each value is an array containing that note at all possible dynamics
-        # randomly select dynamic to play
+        # Below we create a dictionary where each key is a midi number and each value
+        # is an array containing that note at all possible dynamics.
+        
+        # At the moment we're only using the lowest dynamic to simplify things
+        # but later we'll randomly select a dynamic to play as well make it possible
+        # to control crescendos and diminuendos.
+        
         self.guitar_samples = {}
-        self.midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
+        self.midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
+                             50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
         for m in self.midi_numbers:
             self.guitar_samples[m] = []
             for i in range (1, 6):
                 try:
                     self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i}.aif"))
                 except Exception as e:
-                    pass
+                    self.guitar_samples[m].append(None)
+                    
+                    # We do this because different notes have different numbers of samples; some are sampled
+                    # at 5 dynamic levels while others have only 2 or 3. 
+                    # Uncomment the line below to see the exception message.
+                    
                     # print("exception: " + str(e))
+                    
                     
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         # self.bass_player = TrigFunc(self.bass_met, self.play_bass)
@@ -87,24 +99,30 @@ class Music():
         modify_motif_pitch = random.random()
         modify_motif_rhythm = random.random()
         
+        # if we're not already playing a motif, randomly 
+        # determine if we'll start one on the next note
         if not self.playing_motif:
             self.use_motif = random.random()
             self.motif_num = round(random.random())
         
-        if self.use_motif > 1:
+        if self.use_motif > 0:
             self.playing_motif = True
             
         if self.playing_motif:
-            if modify_motif_pitch > 0.8:
+            if modify_motif_pitch > 1:
                 # print(f"old motif pitches: {self.motifs[self.motif_num]}")
                 note_to_change = floor(random.random() * 4)
                 change_interval = random.choice([-1, 1])
+                
+                # pitch is the first number in the motif array so we access it with [0]
                 self.motifs[self.motif_num][note_to_change][0] = self.motifs[self.motif_num][note_to_change][0] + change_interval
                 # print(f"new motif pitches: {self.motifs[self.motif_num]}")
                 
             if modify_motif_rhythm > 0.8:
                 # print(f"old motif rhythm: {self.motifs[self.motif_num]}")
                 note_to_change = floor(random.random() * 4)
+                
+                # rhythm is the second number in the motif array so we access it with [1]
                 self.motifs[self.motif_num][note_to_change][1] = random.choice([r for r in [0.25, 0.5, 0.75, 1] if r != self.motifs[self.motif_num][note_to_change][1]])
                 # print(f"new motif rhythm: {self.motifs[self.motif_num]}")
                 
@@ -112,13 +130,15 @@ class Music():
             if self.motif_step < len(self.motifs[self.motif_num]) - 1:
                 # scale[self.motifs[self.motif_num][self.motif_step] - 1] gives the number of half steps above middle C
                 # print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
-                self.melody_note = 60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]
-                self.harmony_note = 60 + self.current_mode[(self.motifs[self.motif_num][self.motif_step][0] + 1) % 13]
+                
+                self.melody_note = self.midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
+                
+                self.harmony_note = self.midi_numbers[10 + self.motifs[self.motif_num][self.motif_step][0]]
                 self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step += 1
             else:
-                self.melody_note = 60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]
-                self.harmony_note = 60 + self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]
+                self.melody_note = self.midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
+                self.harmony_note = self.midi_numbers[10 + self.motifs[self.motif_num][self.motif_step][0]]
                 self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step = 0
                 self.playing_motif = False
@@ -130,7 +150,7 @@ class Music():
         # print(f"notes_to_harmonize: {notes_to_harmonize}")
         if self.notes_to_harmonize == 0:
             harmonize = random.random()
-            if harmonize > 0.5:
+            if harmonize > 1:
                 self.notes_to_harmonize = 3 + random.randint(0, 5)
         
         if change_rhythm > 0.5 and not self.playing_motif:
