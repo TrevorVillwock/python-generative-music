@@ -50,8 +50,8 @@ class Main():
                     # TODO: fix clicking noise when stopping
                     self.mixer.setMul(0.0)
                     self.music.stop()
-                    time.sleep(1)
-                    s.stop()
+                    time.sleep(2)
+                    s.shutdown()
                     sys.exit()
                 case _:
                     self.action_selection = input("Please enter a number between 1 and 7:")
@@ -98,7 +98,7 @@ class Main():
                     self.mixer.setMul(0.0)
                     self.music.stop()
                     time.sleep(2)
-                    s.stop()
+                    s.shutdown()
                     sys.exit()
                 case _:
                     self.action_selection = input("Please enter a valid command: ")

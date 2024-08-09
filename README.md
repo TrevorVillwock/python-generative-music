@@ -7,7 +7,6 @@ Download the soundfiles needed from [here](https://drive.google.com/drive/folder
 In the early days of computers, people didn't have the same user interfaces that we have today. Instead of a brightly lit multicolored screen, early consumer computers in the 1960s mainly consisted of typing commands directly into a textbox called the Command Line Interface. Previously computers had to be programmed with punch cards. 
 
 TODO:
- - Make motifs work with guitar
  - Make each soundtrack more different musically
  - Instruments you can play from the command line
  - Potions/spells/powerups/knowledge - echoes, reversal in time, high pass, low pass, band pass, 7th chords, extensions, atonality, micropolyphony

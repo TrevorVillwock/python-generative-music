@@ -77,7 +77,7 @@ class Music():
             self.guitar_samples[m] = []
             for i in range (1, 6):
                 try:
-                    self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i}.aif"))
+                    self.guitar_samples[m].append(SfPlayer([f"soundfiles/guitar_samples/{m}-{i}.aif", f"soundfiles/guitar_samples/{m}-{i}.aif"]))
                 except Exception as e:
                     self.guitar_samples[m].append(None)
                     
