@@ -7,7 +7,24 @@ import time
 s = Server().boot()
 s.start()
 
-class Main():  
+class Main():
+    def quit_program(self):
+            print("\n\nFarewell", end = "", flush=True)
+            self.mixer.setMul(0.0)
+            self.music.stop()
+            # print("music stopped")
+            time.sleep(1)
+            print(".", end = " ", flush=True)
+            time.sleep(1)
+            print(".", end = " ", flush=True)
+            time.sleep(1)
+            print(".", end = " ", flush=True)
+            s.shutdown()
+            # print("server shutdown")
+            # time.sleep(2)
+            # print("exit")
+            sys.exit()
+    
     def __init__(self):
         self.input_is_valid = 0
         self.music = Music("ionian") # default mode
@@ -46,18 +63,13 @@ class Main():
                     self.ambient_sounds.start_first_sound("dungeon")
                     self.input_is_valid = 1
                 case "q":
-                    # fade master volume
-                    # TODO: fix clicking noise when stopping
-                    self.mixer.setMul(0.0)
-                    self.music.stop()
-                    time.sleep(2)
-                    s.shutdown()
-                    sys.exit()
+                    self.quit_program() 
                 case _:
                     self.action_selection = input("Please enter a number between 1 and 7:")
 
         self.mixer.addInput(3, self.ambient_sounds.sound1)
         self.mixer.addInput(4, self.ambient_sounds.sound2)
+        self.mixer.addInput(5, self.music.guitar_mixer)
         self.mixer.setAmp(0, 0, 0.1)
         self.mixer.setAmp(1, 0, 0.1)
         self.mixer.setAmp(2, 0, 0.1)
@@ -65,7 +77,7 @@ class Main():
         self.mixer.setTime(0.01)
         self.mixer.setMul(1)
         self.run_input_loop()
-        
+
     def run_input_loop(self):
         user_command = None
         while user_command != "q":
@@ -93,17 +105,11 @@ class Main():
                     self.music.change_mode("locrian")
                     self.ambient_sounds.change_sound("dungeon")
                 case "q":
-                    # fade master volume
-                    # TODO: fix clicking noise when stopping
-                    self.mixer.setMul(0.0)
-                    self.music.stop()
-                    time.sleep(2)
-                    s.shutdown()
-                    sys.exit()
+                    self.quit_program()
                 case _:
                     self.action_selection = input("Please enter a valid command: ")
             # print(user_command)
-            
+         
 main = Main()
 
 s.gui(locals)

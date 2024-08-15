@@ -8,6 +8,7 @@ In the early days of computers, people didn't have the same user interfaces that
 
 TODO:
  - Make each soundtrack more different musically
+ - Add dynamics and velocity variation
  - Instruments you can play from the command line
  - Potions/spells/powerups/knowledge - echoes, reversal in time, high pass, low pass, band pass, 7th chords, extensions, atonality, micropolyphony
  - Create commands for user to use similar to shell commands that activate certain instruments or equip certain powerups

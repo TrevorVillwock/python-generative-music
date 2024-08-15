@@ -1,0 +1,284 @@
+Pyo warning: Portaudio input device `MacBook Air Microphone` has fewer channels (1) than requested (2).
+Pyo warning: Portmidi warning: no midi device found!
+Portmidi closed.
+m: 28
+i: 1
+self.guitar_channel: 0
+i: 2
+self.guitar_channel: 1
+i: 3
+self.guitar_channel: 2
+i: 4
+self.guitar_channel: 3
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/28-5.aif') info
+m: 30
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/30-5.aif') info
+m: 31
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: Could not get file (b'soundfiles/guitar_samples/31-4.aif') info
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/31-5.aif') info
+m: 33
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: '<' not supported between instances of 'list' and 'int'
+m: 35
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: Could not get file (b'soundfiles/guitar_samples/35-4.aif') info
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/35-5.aif') info
+m: 36
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: '<' not supported between instances of 'list' and 'int'
+m: 38
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/38-5.aif') info
+m: 40
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: '<' not supported between instances of 'list' and 'int'
+m: 42
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/42-5.aif') info
+m: 43
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: Could not get file (b'soundfiles/guitar_samples/43-4.aif') info
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/43-5.aif') info
+m: 45
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: '<' not supported between instances of 'list' and 'int'
+m: 47
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: '<' not supported between instances of 'list' and 'int'
+m: 48
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/48-5.aif') info
+m: 50
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/50-5.aif') info
+m: 52
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: '<' not supported between instances of 'list' and 'int'
+m: 54
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: '<' not supported between instances of 'list' and 'int'
+m: 55
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: '<' not supported between instances of 'list' and 'int'
+m: 57
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: '<' not supported between instances of 'list' and 'int'
+m: 59
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/59-5.aif') info
+m: 60
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: Could not get file (b'soundfiles/guitar_samples/60-2.aif') info
+i: 3
+exception: Could not get file (b'soundfiles/guitar_samples/60-3.aif') info
+i: 4
+exception: Could not get file (b'soundfiles/guitar_samples/60-4.aif') info
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/60-5.aif') info
+m: 62
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/62-5.aif') info
+m: 64
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/64-5.aif') info
+m: 66
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: '<' not supported between instances of 'list' and 'int'
+i: 4
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/66-5.aif') info
+m: 69
+i: 1
+exception: '<' not supported between instances of 'list' and 'int'
+i: 2
+exception: bad argument at position 0 to "Mixer" (PyoObject expected, got <class 'NoneType'>)
+i: 3
+exception: Could not get file (b'soundfiles/guitar_samples/69-3.aif') info
+i: 4
+exception: Could not get file (b'soundfiles/guitar_samples/69-4.aif') info
+i: 5
+exception: Could not get file (b'soundfiles/guitar_samples/69-5.aif') info
+
+
+Welcome to CASTLE OF SOUND
+
+
+What do you want to do?
+
+ 1 - Eat food (Ionian)
+ 2 - Go to the river (Dorian)
+ 3 - Go to the top of the castle (Phrygian)
+ 4 - Go to the garden (Lydian)
+ 5 - Go for a hike (Mixolydian) 
+ 6 - Swim in the river (Aeolian) 
+ 7 - Go to the dungeon (Locrian)
+ q - Quit 
+
+ Input a number or letter to choose: 
