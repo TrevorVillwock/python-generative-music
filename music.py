@@ -82,31 +82,41 @@ class Music():
         for m in self.midi_numbers:
             # We make the first element of the array None so that the number of the guitar sample
             # (i.e. the 1 in 28-1) aligns with its index in the list
-            self.guitar_samples[m] = []
-            self.guitar_samples[m].append(None)
-            print(f"m: {m}")
-            for i in range (1, 6):
-                print(f"i: {i}")
-                try:
-                    # the array here makes it so that the mono guitar sample will play in stereo;
-                    # two elements are inputs for the left and right channels
-                    # self.guitar_samples[m].append(SfPlayer([f"soundfiles/guitar_samples/{m}-{i}.aif", f"soundfiles/guitar_samples/{m}-{i}.aif"]))
-                    self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i}.aif").stop())
-                    # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
-                    self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
-                    self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.01)
-                    print(f"self.guitar_channel: {self.guitar_channel}")
-                    self.guitar_channel += 1
-                except Exception as e:
-                    pass
-                    # self.guitar_samples[m].append(None)
-                    # We do this because different notes have different numbers of samples; some are sampled
-                    # at 5 dynamic levels while others have only 2 or 3. 
-                    # Uncomment the line below to see the exception message.
+            self.guitar_samples[m] = SfPlayer(f"soundfiles/guitar_samples/{m}-1.aif").stop()
+            # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
+            self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m])
+            self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.1)
+            print(f"self.guitar_channel: {self.guitar_channel}")
+            self.guitar_channel += 1
+        
+        # attempt below to add all velocities for every note
+        # for m in self.midi_numbers:
+        #     # We make the first element of the array None so that the number of the guitar sample
+        #     # (i.e. the 1 in 28-1) aligns with its index in the list
+        #     self.guitar_samples[m] = []
+        #     self.guitar_samples[m].append(None)
+        #     print(f"m: {m}")
+        #     for i in range (1, 6):
+        #         print(f"i: {i}")
+        #         try:
+        #             # the array here makes it so that the mono guitar sample will play in stereo;
+        #             # two elements are inputs for the left and right channels
+        #             # self.guitar_samples[m].append(SfPlayer([f"soundfiles/guitar_samples/{m}-{i}.aif", f"soundfiles/guitar_samples/{m}-{i}.aif"]))
+        #             self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i}.aif").stop())
+        #             # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
+        #             self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
+        #             self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.01)
+        #             print(f"self.guitar_channel: {self.guitar_channel}")
+        #             self.guitar_channel += 1
+        #         except Exception as e:
+        #             pass
+        #             # self.guitar_samples[m].append(None)
+        #             # We do this because different notes have different numbers of samples; some are sampled
+        #             # at 5 dynamic levels while others have only 2 or 3. 
+        #             # Uncomment the line below to see the exception message.
                     
-                    # print("exception: " + str(e))
-                    
-                    
+        #             # print("exception: " + str(e))
+                             
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         # self.bass_player = TrigFunc(self.bass_met, self.play_bass)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
@@ -208,9 +218,9 @@ class Music():
         self.play_guitar(self.bass_note)
         
     def play_guitar(self, note):
-        self.guitar_samples[note][1].play()
-        print(self.guitar_samples[note][1].path)
-        print(note)  
+        self.guitar_samples[note].play()
+        # print(self.guitar_samples[note][1].path)
+        # print(note)  
         
     def change_mode(self, mode):
         self.current_mode_name = mode
