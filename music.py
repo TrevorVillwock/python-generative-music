@@ -43,7 +43,7 @@ class Music():
 
         # each note of the motif is represented as an array containing the scale degree and duration in seconds
         # 1 = quarter note, 0.5 = eighth, etc.
-        self.motifs = [[[5, 0.5], [5, 0.25], [5, 0.25], [3, 0.5]], 
+        self.motifs = [[[5, 0.25], [5, 0.25], [5, 0.25], [3, 0.5]], 
                        [[4, 0.25], [4, 0.5], [4, 0.25], [2, 1]]]
 
         self.playing_motif = False
@@ -61,7 +61,9 @@ class Music():
         
         self.notes_to_harmonize = 0
 
-        self.mixer = Mixer(chnls=4)
+        self.mixer = Mixer(chnls=4).out()
+        self.guitar_mixer = Mixer(chnls=100, mul=0.3).out()
+        self.guitar_channel = 0
         
         # Below we create a dictionary where each key is a midi number and each value
         # is an array containing that note at all possible dynamics.
@@ -73,23 +75,31 @@ class Music():
         self.guitar_samples = {}
         self.midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
                              50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
+        # for m in self.midi_numbers:
+        #     self.guitar_samples[m] = []
+        #     for i in range (1, 6):
+        #         try:
+        #             self.guitar_samples[m].append(SfPlayer([f"soundfiles/guitar_samples/{m}-{i}.aif", f"soundfiles/guitar_samples/{m}-{i}.aif"]))
+        #         except Exception as e:
+        #             self.guitar_samples[m].append(None)
+                    
+        #             # We do this because different notes have different numbers of samples; some are sampled
+        #             # at 5 dynamic levels while others have only 2 or 3. 
+        #             # Uncomment the line below to see the exception message.
+                    
+        #             # print("exception: " + str(e))
+        
         for m in self.midi_numbers:
-            self.guitar_samples[m] = []
-            for i in range (1, 6):
-                try:
-                    self.guitar_samples[m].append(SfPlayer([f"soundfiles/guitar_samples/{m}-{i}.aif", f"soundfiles/guitar_samples/{m}-{i}.aif"]))
-                except Exception as e:
-                    self.guitar_samples[m].append(None)
-                    
-                    # We do this because different notes have different numbers of samples; some are sampled
-                    # at 5 dynamic levels while others have only 2 or 3. 
-                    # Uncomment the line below to see the exception message.
-                    
-                    # print("exception: " + str(e))
-                    
-                    
+            # We make the first element of the array None so that the number of the guitar sample
+            # (i.e. the 1 in 28-1) aligns with its index in the list
+            self.guitar_samples[m] = SfPlayer(f"soundfiles/guitar_samples/{m}-1.aif").stop()
+            # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
+            self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m])
+            self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.1)
+            print(f"self.guitar_channel: {self.guitar_channel}")
+            self.guitar_channel += 1
+                           
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
-        # self.bass_player = TrigFunc(self.bass_met, self.play_bass)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
 
     def play_melody(self):
@@ -189,7 +199,7 @@ class Music():
         self.play_guitar(self.bass_note)
         
     def play_guitar(self, note):
-        self.guitar_samples[note][0].out()
+        self.guitar_samples[note].play()
         # print(note)  
         
     def change_mode(self, mode):
