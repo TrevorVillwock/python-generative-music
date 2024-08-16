@@ -36,7 +36,7 @@ class Main():
             match self.action_selection:
                 case "1": 
                     # don't need to change modes since the default is ionian
-                    self.ambient_sounds.start_first_sound("dining_hall")
+                    # self.ambient_sounds.start_first_sound("dining_hall")
                     self.input_is_valid = 1
                 case "2": 
                     self.music.change_mode("dorian")
@@ -84,8 +84,9 @@ class Main():
             user_command = input("\n\nEnter next command: ")
             match user_command:
                 case "1": 
-                    self.music.change_mode("ionian")
-                    self.ambient_sounds.change_sound("dining_hall")
+                    pass
+                    # self.music.change_mode("ionian")
+                    # self.ambient_sounds.change_sound("dining_hall")
                 case "2": 
                     self.music.change_mode("dorian")
                     self.ambient_sounds.change_sound("river")

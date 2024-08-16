@@ -74,7 +74,7 @@ class Music():
         self.midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
                              50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
         
-        self.guitar_mixer = Mixer(chnls=100).out()
+        self.guitar_mixer = Mixer(chnls=100, mul=0.5).out()
         
         # this will be incremented every time we add a guitar sample to the mixer to provide the channel number 
         self.guitar_channel = 0
