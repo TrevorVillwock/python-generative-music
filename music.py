@@ -148,7 +148,10 @@ class Music():
         else:
             random_degree = random.randint(0, 23)
             self.melody_note = self.midi_numbers[random_degree]
-            self.harmony_note = self.midi_numbers[random_degree + self.harmony_interval]
+            try:
+                self.harmony_note = self.midi_numbers[random_degree + self.harmony_interval]
+            except:
+                pass
 
         # print(f"notes_to_harmonize: {notes_to_harmonize}")
         if self.notes_to_harmonize == 0:
@@ -156,8 +159,9 @@ class Music():
             if harmonize > 0.8:
                 self.harmonizing = True
                 self.notes_to_harmonize = 3 + random.randint(0, 5)
-                self.harmony_interval = random.randint(3, 5)
+                self.harmony_interval = random.randint(2, 5)
                 print(f"self.harmony_interval: {self.harmony_interval}")
+                print(f"interval of harmonization: {self.harmony_interval + 1}")
             else:
                 self.harmonizing = False
         
