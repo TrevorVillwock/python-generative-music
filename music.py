@@ -116,7 +116,7 @@ class Music():
                 # self.guitar_channel += 1
                 try:
                     print(f"i: {i}")
-                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+2}.aif").out()
+                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").out()
                     # self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").stop())
                     # print(f"length: {len(self.guitar_samples[m])}")
                     # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
