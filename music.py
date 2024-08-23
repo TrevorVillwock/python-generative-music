@@ -54,6 +54,7 @@ class Music():
 
         self.melody_note = 60
         self.harmony_note = 57
+        self.harmony_interval = 5
         self.harmonizing = False
         self.bass_note = 28
         
@@ -63,72 +64,23 @@ class Music():
         self.notes_to_harmonize = 0
 
         self.mixer = Mixer(chnls=4).out()
-        self.guitar_mixer = Mixer(chnls=150, mul=0.3).out()
-        self.guitar_channel = 0
-        
-        # Below we create a dictionary where each key is a midi number and each value
-        # is an array containing that note at all possible dynamics.
-        
-        # At the moment we're only using the lowest dynamic to simplify things
-        # but later we'll randomly select a dynamic to play as well make it possible
-        # to control crescendos and diminuendos.
         
         self.guitar_samples = {}
         self.midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
                              50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
-        
-        # This uses a dictionary of arrays 
-        
-        # for m in self.midi_numbers:
-        #     # glitchiness seems to occur from adding more than one element to the list of samples
-        #     print(f"m: {m}")
-        #     self.guitar_samples[m] = []
-        #     for i in range(0, 1):
-        #         try:
-        #             print(f"i: {i}")
-        #             self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").stop())
-        #             print(f"length: {len(self.guitar_samples[m])}")
-        #             # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
-        #             self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
-        #             self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.1)
-        #             print(f"self.guitar_channel: {self.guitar_channel}")
-        #             self.guitar_channel += 1
-        #         except Exception as e:
-        #             print("exception: " + str(e))
-        
-        # This uses only a dictionary
                  
         for m in self.midi_numbers:
-            # We make the first element of the array None so that the number of the guitar sample
-            # (i.e. the 1 in 28-1) aligns with its index in the list
-            
-            # glitchiness seems to occur from adding more than one element to the list of samples
-            print(f"m: {m}")
-            for i in range(0, 3):
-                # print(f"i: {i}")
-                # self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").stop()
-                # # self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").stop())
-                # # print(f"length: {len(self.guitar_samples[m])}")
-                # # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
-                # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[f"{m}-{i+1}"])
-                # self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.1)
-                # print(f"self.guitar_channel: {self.guitar_channel}")
-                # self.guitar_channel += 1
+            # print(f"m: {m}")
+            for i in range(0, 2):
                 try:
-                    print(f"i: {i}")
-                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").out()
-                    # self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").stop())
-                    # print(f"length: {len(self.guitar_samples[m])}")
-                    # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
-                    # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[f"{m}-{i+1}"])
-                    #self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.1)
-                    print(f"self.guitar_channel: {self.guitar_channel}")
-                    self.guitar_channel += 1
+                    # print(f"i: {i}")
+                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", mul=0.5)
+                    # print(f"self.guitar_channel: {self.guitar_channel}")
                 except Exception as e:
-                    print("exception: " + str(e))
+                    # print("exception: " + str(e))
+                    pass
                     
-        # print([hex(id(r)) for r in self.guitar_samples])
-        print(self.guitar_samples)                   
+        # print(self.guitar_samples)                   
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
 
@@ -170,25 +122,33 @@ class Music():
                 # print(f"new motif rhythm: {self.motifs[self.motif_num]}")
                 
             play_note = 1 # make sure no notes of the motif are replaced with rests
+            
             if self.motif_step < len(self.motifs[self.motif_num]) - 1:
-                # scale[self.motifs[self.motif_num][self.motif_step] - 1] gives the number of half steps above middle C
                 # print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
                 
                 self.melody_note = self.midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
                 
-                self.harmony_note = self.midi_numbers[10 + self.motifs[self.motif_num][self.motif_step][0]]
+                # if the harmony note is out of range, don't play it
+                try:
+                    self.harmony_note = self.midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
+                except:
+                    pass
+                
                 self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step += 1
             else:
                 self.melody_note = self.midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
-                self.harmony_note = self.midi_numbers[10 + self.motifs[self.motif_num][self.motif_step][0]]
+                try:
+                    self.harmony_note = self.midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
+                except:
+                    pass
                 self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step = 0
                 self.playing_motif = False
         else:
             random_degree = random.randint(0, 23)
             self.melody_note = self.midi_numbers[random_degree]
-            self.harmony_note = self.midi_numbers[random_degree - 2]
+            self.harmony_note = self.midi_numbers[random_degree + self.harmony_interval]
 
         # print(f"notes_to_harmonize: {notes_to_harmonize}")
         if self.notes_to_harmonize == 0:
@@ -196,6 +156,8 @@ class Music():
             if harmonize > 0.8:
                 self.harmonizing = True
                 self.notes_to_harmonize = 3 + random.randint(0, 5)
+                self.harmony_interval = random.randint(3, 5)
+                print(f"self.harmony_interval: {self.harmony_interval}")
             else:
                 self.harmonizing = False
         
@@ -225,9 +187,11 @@ class Music():
         
     def play_guitar(self, note):
         dynamic_level = random.choice([1, 2])
-        self.guitar_samples[f"{note}-{dynamic_level}"].out()
-        #print(f"{note}-1")  
-        pass
+        try:
+            self.guitar_samples[f"{note}-{dynamic_level}"].out()
+        except Exception as e:
+            # print(e)
+            pass
         
     def change_mode(self, mode):
         self.current_mode_name = mode
