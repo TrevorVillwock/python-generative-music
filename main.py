@@ -46,9 +46,8 @@ class Main():
                     self.ambient_sounds.start_first_sound("dungeon")
                     self.input_is_valid = 1
                 case "q":
-                    # fade master volume
-                    # TODO: fix clicking noise when stopping
                     self.mixer.setMul(0.0)
+                    # self.music.guitar_mixer.setMul(0.0)
                     self.music.stop()
                     time.sleep(2)
                     s.shutdown()
@@ -94,7 +93,6 @@ class Main():
                     self.ambient_sounds.change_sound("dungeon")
                 case "q":
                     # fade master volume
-                    # TODO: fix clicking noise when stopping
                     self.mixer.setMul(0.0)
                     self.music.stop()
                     time.sleep(2)

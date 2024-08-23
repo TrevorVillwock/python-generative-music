@@ -1,4 +1,5 @@
 from pyo import Metro, SfPlayer, Mixer, TrigFunc
+from collections import defaultdict
 import random
 from math import floor
 
@@ -62,7 +63,7 @@ class Music():
         self.notes_to_harmonize = 0
 
         self.mixer = Mixer(chnls=4).out()
-        self.guitar_mixer = Mixer(chnls=100, mul=0.3).out()
+        self.guitar_mixer = Mixer(chnls=150, mul=0.3).out()
         self.guitar_channel = 0
         
         # Below we create a dictionary where each key is a midi number and each value
@@ -75,30 +76,59 @@ class Music():
         self.guitar_samples = {}
         self.midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
                              50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
-        # for m in self.midi_numbers:
-        #     self.guitar_samples[m] = []
-        #     for i in range (1, 6):
-        #         try:
-        #             self.guitar_samples[m].append(SfPlayer([f"soundfiles/guitar_samples/{m}-{i}.aif", f"soundfiles/guitar_samples/{m}-{i}.aif"]))
-        #         except Exception as e:
-        #             self.guitar_samples[m].append(None)
-                    
-        #             # We do this because different notes have different numbers of samples; some are sampled
-        #             # at 5 dynamic levels while others have only 2 or 3. 
-        #             # Uncomment the line below to see the exception message.
-                    
-        #             # print("exception: " + str(e))
         
+        # This uses a dictionary of arrays 
+        
+        # for m in self.midi_numbers:
+        #     # glitchiness seems to occur from adding more than one element to the list of samples
+        #     print(f"m: {m}")
+        #     self.guitar_samples[m] = []
+        #     for i in range(0, 1):
+        #         try:
+        #             print(f"i: {i}")
+        #             self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").stop())
+        #             print(f"length: {len(self.guitar_samples[m])}")
+        #             # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
+        #             self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
+        #             self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.1)
+        #             print(f"self.guitar_channel: {self.guitar_channel}")
+        #             self.guitar_channel += 1
+        #         except Exception as e:
+        #             print("exception: " + str(e))
+        
+        # This uses only a dictionary
+                 
         for m in self.midi_numbers:
             # We make the first element of the array None so that the number of the guitar sample
             # (i.e. the 1 in 28-1) aligns with its index in the list
-            self.guitar_samples[m] = SfPlayer(f"soundfiles/guitar_samples/{m}-1.aif").stop()
-            # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
-            self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m])
-            self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.1)
-            print(f"self.guitar_channel: {self.guitar_channel}")
-            self.guitar_channel += 1
-                           
+            
+            # glitchiness seems to occur from adding more than one element to the list of samples
+            print(f"m: {m}")
+            for i in range(0, 3):
+                # print(f"i: {i}")
+                # self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").stop()
+                # # self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").stop())
+                # # print(f"length: {len(self.guitar_samples[m])}")
+                # # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
+                # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[f"{m}-{i+1}"])
+                # self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.1)
+                # print(f"self.guitar_channel: {self.guitar_channel}")
+                # self.guitar_channel += 1
+                try:
+                    print(f"i: {i}")
+                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+2}.aif").out()
+                    # self.guitar_samples[m].append(SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif").stop())
+                    # print(f"length: {len(self.guitar_samples[m])}")
+                    # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[m][i])
+                    # self.guitar_mixer.addInput(self.guitar_channel, self.guitar_samples[f"{m}-{i+1}"])
+                    #self.guitar_mixer.setAmp(self.guitar_channel, 0, 0.1)
+                    print(f"self.guitar_channel: {self.guitar_channel}")
+                    self.guitar_channel += 1
+                except Exception as e:
+                    print("exception: " + str(e))
+                    
+        # print([hex(id(r)) for r in self.guitar_samples])
+        print(self.guitar_samples)                   
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
 
@@ -134,6 +164,8 @@ class Music():
                 note_to_change = floor(random.random() * 4)
                 
                 # rhythm is the second number in the motif array so we access it with [1]
+                # the list comprehension here makes it so that we always change to a new rhythmic value
+                # rather than randomly selecting the same one  
                 self.motifs[self.motif_num][note_to_change][1] = random.choice([r for r in [0.25, 0.5, 0.75, 1] if r != self.motifs[self.motif_num][note_to_change][1]])
                 # print(f"new motif rhythm: {self.motifs[self.motif_num]}")
                 
@@ -190,24 +222,19 @@ class Music():
             self.current_triad += 1
         else:
             self.current_triad = 0
-            
-    def play_bass(self):
-        # print("play_bass")
-        change_note = random.random()
-        if change_note > 0.3:
-            self.bass_note = self.midi_numbers[random.randint(0, 7)]
-        self.play_guitar(self.bass_note)
         
     def play_guitar(self, note):
-        self.guitar_samples[note].play()
-        # print(note)  
+        dynamic_level = random.choice([1, 2])
+        self.guitar_samples[f"{note}-{dynamic_level}"].out()
+        #print(f"{note}-1")  
+        pass
         
     def change_mode(self, mode):
         self.current_mode_name = mode
         self.current_mode = self.modes[mode]
         
     def stop(self):
+        self.guitar_mixer.setMul(0)
         self.melody_met.stop()
         self.chord_met.stop()
         self.bass_met.stop()
-        
