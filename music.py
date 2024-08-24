@@ -160,8 +160,8 @@ class Music():
                 self.harmonizing = True
                 self.notes_to_harmonize = 3 + random.randint(0, 5)
                 self.harmony_interval = random.randint(2, 5)
-                print(f"self.harmony_interval: {self.harmony_interval}")
-                print(f"interval of harmonization: {self.harmony_interval + 1}")
+                # print(f"self.harmony_interval: {self.harmony_interval}")
+                # print(f"interval of harmonization: {self.harmony_interval + 1}")
             else:
                 self.harmonizing = False
         
@@ -202,7 +202,8 @@ class Music():
         self.current_mode = self.modes[mode]
         
     def stop(self):
-        self.guitar_mixer.setMul(0)
+        for s in self.guitar_samples:
+            self.guitar_samples[s].setMul(0)
         self.melody_met.stop()
         self.chord_met.stop()
         self.bass_met.stop()

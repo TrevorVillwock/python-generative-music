@@ -55,8 +55,8 @@ class Main():
                 case _:
                     self.action_selection = input("Please enter a number between 1 and 7:")
 
-        self.mixer.addInput(3, self.ambient_sounds.sound1)
-        self.mixer.addInput(4, self.ambient_sounds.sound2)
+        self.mixer.addInput(3, self.ambient_sounds.sound_set_1[0])
+        self.mixer.addInput(4, self.ambient_sounds.sound_set_2[0])
         self.mixer.setAmp(0, 0, 0.1)
         self.mixer.setAmp(1, 0, 0.1)
         self.mixer.setAmp(2, 0, 0.1)
