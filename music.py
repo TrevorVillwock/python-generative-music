@@ -1,4 +1,4 @@
-from pyo import Metro, SfPlayer, Mixer, TrigFunc
+from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay
 from collections import defaultdict
 import random
 from math import floor
@@ -190,10 +190,11 @@ class Music():
             self.current_triad = 0
         
     def play_guitar(self, note):
-        dynamic_level = random.choice([1, 2])
+        dynamic_level = random.randint(1, 3)
         try:
             self.guitar_samples[f"{note}-{dynamic_level}"].out()
         except Exception as e:
+            self.guitar_samples[f"{note}-{dynamic_level-1}"].out()
             # print(e)
             pass
         

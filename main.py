@@ -47,9 +47,9 @@ class Main():
                     self.input_is_valid = 1
                 case "q":
                     self.mixer.setMul(0.0)
-                    # self.music.guitar_mixer.setMul(0.0)
                     self.music.stop()
-                    time.sleep(2)
+                    print("\nFarewell\n")
+                    time.sleep(1)
                     s.shutdown()
                     sys.exit()
                 case _:
@@ -92,10 +92,10 @@ class Main():
                     self.music.change_mode("locrian")
                     self.ambient_sounds.change_sound("dungeon")
                 case "q":
-                    # fade master volume
                     self.mixer.setMul(0.0)
                     self.music.stop()
-                    time.sleep(2)
+                    print("\nFarewell\n")
+                    time.sleep(1)
                     s.shutdown()
                     sys.exit()
                 case _:
