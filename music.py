@@ -71,10 +71,10 @@ class Music():
                  
         for m in self.midi_numbers:
             # print(f"m: {m}")
-            for i in range(0, 2):
+            for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", mul=0.5)
+                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", mul=[0.5, 0.5])
                     # print(f"self.guitar_channel: {self.guitar_channel}")
                 except Exception as e:
                     # print("exception: " + str(e))
