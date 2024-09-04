@@ -6,7 +6,7 @@ import os
 Ionian - Dining Hall
 Dorian - Next to the river
 Phrygian - Top of the tower
-Lydian - Garden with birds
+Lydian - Garden
 Mixolydian - Going for a hike
 Aeolian - In the river
 Locrian - Dungeon
@@ -69,3 +69,9 @@ class AmbientSounds():
     def start_first_sound(self, first_sound):
         self.sound_set_1[0].setPath(self.sound_sets[first_sound])
         self.fader1.play()
+        
+    def stop(self):
+        if self.current_sound_set == 1:
+            self.fader1.stop()
+        else:
+            self.fader2.stop()

@@ -14,7 +14,7 @@ class Main():
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
-        self.action_selection = input("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Go to the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n q - Quit \n\n Input a number or letter to choose: ")
+        self.action_selection = input("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n q - Quit \n\n Input a number or letter to choose: ")
         while self.input_is_valid == 0:
             match self.action_selection:
                 case "1": 
@@ -48,7 +48,8 @@ class Main():
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()
-                    print("\nFarewell\n")
+                    self.ambient_sounds.stop()
+                    print("\nFarewell!\n")
                     time.sleep(1)
                     s.shutdown()
                     sys.exit()
@@ -94,7 +95,8 @@ class Main():
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()
-                    print("\nFarewell\n")
+                    self.ambient_sounds.stop()
+                    print("\nFarewell!\n")
                     time.sleep(1)
                     s.shutdown()
                     sys.exit()
