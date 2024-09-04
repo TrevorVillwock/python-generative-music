@@ -61,6 +61,8 @@ class Music():
         self.harmony_vol = 0.3
         
         self.notes_to_harmonize = 0
+        
+        self.guitar_sample_speed = 1
 
         self.mixer = Mixer(chnls=4).out()
         
@@ -200,6 +202,34 @@ class Music():
     def change_mode(self, mode):
         self.current_mode_name = mode
         self.current_mode = self.modes[mode]
+        
+    def reverse_samples(self):
+        if self.guitar_sample_speed == 1:
+            for m in self.midi_numbers:
+                # print(f"m: {m}")
+                for i in range(0, 3):
+                    try:
+                        # print(f"i: {i}")
+                        self.guitar_sample_speed = -1
+                        self.guitar_samples[f"{m}-{i+1}"].setSpeed(-1)
+                        # print(f"self.guitar_channel: {self.guitar_channel}")
+                    except Exception as e:
+                        print("exception: " + str(e))
+                        pass          
+        else:
+            for m in self.midi_numbers:
+                # print(f"m: {m}")
+                for i in range(0, 3):
+                    try:
+                        # print(f"i: {i}")
+                        self.guitar_sample_speed = 1
+                        self.guitar_samples[f"{m}-{i+1}"].setSpeed(1)
+                        # print(f"self.guitar_channel: {self.guitar_channel}")
+                    except Exception as e:
+                        print("exception: " + str(e))
+                        pass
+            
+        
         
     def stop(self):
         for s in self.guitar_samples:
