@@ -21,6 +21,7 @@ class Main():
                     # don't need to change modes since the default is ionian
                     self.ambient_sounds.start_first_sound("dining_hall")
                     self.input_is_valid = 1
+                    print("case 1")
                 case "2": 
                     self.music.change_mode("dorian")
                     self.ambient_sounds.start_first_sound("river")
@@ -47,6 +48,7 @@ class Main():
                     self.input_is_valid = 1
                 case "rt":
                     self.music.reverse_samples()
+                    self.input_is_valid = 1
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()
@@ -76,6 +78,7 @@ class Main():
                 case "1": 
                     self.music.change_mode("ionian")
                     self.ambient_sounds.change_sound("dining_hall")
+                    print("case 1")
                 case "2": 
                     self.music.change_mode("dorian")
                     self.ambient_sounds.change_sound("river")
@@ -94,6 +97,8 @@ class Main():
                 case "7": 
                     self.music.change_mode("locrian")
                     self.ambient_sounds.change_sound("dungeon")
+                case "rt":
+                    self.music.reverse_samples()
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()

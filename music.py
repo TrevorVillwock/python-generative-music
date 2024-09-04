@@ -1,6 +1,7 @@
 from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay
 import random
 from math import floor
+from time import sleep
 
 class Music():
     def __init__(self, mode):
@@ -204,9 +205,10 @@ class Music():
         self.current_mode = self.modes[mode]
         
     def reverse_samples(self):
+        # print("reverse_samples")
         if self.guitar_sample_speed == 1:
             for m in self.midi_numbers:
-                # print(f"m: {m}")
+                # print(f"if m: {m}")
                 for i in range(0, 3):
                     try:
                         # print(f"i: {i}")
@@ -214,11 +216,11 @@ class Music():
                         self.guitar_samples[f"{m}-{i+1}"].setSpeed(-1)
                         # print(f"self.guitar_channel: {self.guitar_channel}")
                     except Exception as e:
-                        print("exception: " + str(e))
+                        # print("exception: " + str(e))
                         pass          
         else:
             for m in self.midi_numbers:
-                # print(f"m: {m}")
+                # print(f"else m: {m}")
                 for i in range(0, 3):
                     try:
                         # print(f"i: {i}")
@@ -226,11 +228,9 @@ class Music():
                         self.guitar_samples[f"{m}-{i+1}"].setSpeed(1)
                         # print(f"self.guitar_channel: {self.guitar_channel}")
                     except Exception as e:
-                        print("exception: " + str(e))
+                        # print("exception: " + str(e))
                         pass
-            
-        
-        
+ 
     def stop(self):
         for s in self.guitar_samples:
             self.guitar_samples[s].setMul(0)
