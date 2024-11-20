@@ -44,7 +44,7 @@ class Music():
 
         # each note of the motif is represented as an array containing the scale degree and duration in seconds
         # 1 = quarter note, 0.5 = eighth, etc.
-        self.motifs = [[[5, 0.25], [5, 0.25], [5, 0.25], [3, 0.5]], 
+        self.motifs = [[[4, 0.25], [5, 0.25], [6, 0.25], [7, 0.5]], 
                        [[4, 0.25], [4, 0.5], [4, 0.25], [2, 1]]]
 
         self.playing_motif = False
@@ -100,11 +100,11 @@ class Music():
             self.use_motif = random.random()
             self.motif_num = round(random.random())
         
-        if self.use_motif > 0.3:
+        if self.use_motif > 0:
             self.playing_motif = True
             
         if self.playing_motif:
-            if modify_motif_pitch > 0.5:
+            if modify_motif_pitch > 1:
                 # print(f"old motif pitches: {self.motifs[self.motif_num]}")
                 note_to_change = floor(random.random() * 4)
                 change_interval = random.choice([-1, 1])
@@ -113,7 +113,7 @@ class Music():
                 self.motifs[self.motif_num][note_to_change][0] = self.motifs[self.motif_num][note_to_change][0] + change_interval
                 # print(f"new motif pitches: {self.motifs[self.motif_num]}")
                 
-            if modify_motif_rhythm > 0.5:
+            if modify_motif_rhythm > 1:
                 # print(f"old motif rhythm: {self.motifs[self.motif_num]}")
                 note_to_change = floor(random.random() * 4)
                 
