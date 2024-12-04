@@ -1,4 +1,4 @@
-from pyo import SfPlayer, Fader, Delay, Mixer
+from pyo import SfPlayer, Fader, Delay, Mixer, Switch, Selector
 import os
 
 
@@ -43,7 +43,8 @@ class AmbientSounds():
         self.mixer.setAmp(4, 0, 0.5)
         self.mixer.setAmp(5, 0, 0.5)
         
-        self.delay = Delay(self.mixer[0], 0.5, 0.7).out()
+        self.delay = Delay(self.mixer[0], 0.5, 0.7)
+        self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=0).out()
         
         self.current_sound_set = 1
         self.sound_set_1_speed = 1
@@ -96,7 +97,13 @@ class AmbientSounds():
         for s in self.sound_set_2:
             # print(s)
             s.setSpeed(s.speed * -1)    
-    
+            
+    def toggle_delay(self):
+        if self.delay_selector.voice == 0:
+            self.delay_selector.voice = 1
+        else:
+            self.delay_selector.voice = 0
+        
     def stop(self):
         if self.current_sound_set == 1:
             self.fader1.stop()

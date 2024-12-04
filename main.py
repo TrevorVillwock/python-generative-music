@@ -14,7 +14,7 @@ class Main():
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
-        self.action_selection = input("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n rt - Reverse time \nq - Quit \n\n Input a number or letter to choose: ")
+        self.action_selection = input("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n e - add echo effect\n rt - Reverse time \nq - Quit \n\n Input a number or letter to choose: ")
         while self.input_is_valid == 0:
             match self.action_selection:
                 case "1": 
@@ -49,6 +49,8 @@ class Main():
                     self.music.reverse_samples()
                     self.ambient_sounds.reverse_sounds()
                     self.input_is_valid = 1
+                case "e":
+                    self.ambient_sounds.toggle_delay()
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()
@@ -97,6 +99,8 @@ class Main():
                 case "7": 
                     self.music.change_mode("locrian")
                     self.ambient_sounds.change_sound("dungeon")
+                case "e":
+                    self.ambient_sounds.toggle_delay()
                 case "rt":
                     self.music.reverse_samples()
                     self.ambient_sounds.reverse_sounds()
