@@ -1,6 +1,5 @@
-from pyo import SfPlayer, Fader, Delay, Mixer, Switch, Selector
+from pyo import SfPlayer, Fader, Delay, Mixer, Selector
 import os
-
 
 """
 Ionian - Dining Hall

@@ -1,4 +1,4 @@
-from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay
+from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector
 import random
 from math import floor
 from time import sleep
@@ -8,6 +8,12 @@ class Music():
         self.melody_met = Metro(0.5).play()
         self.bass_met = Metro(2).play()
         self.chord_met = Metro(2).play()
+        
+        # A "mode" in music theory is a version of a scale that starts on a different note than the 
+        # conventional one but retains the same collection and order of notes.
+        # Sometimes more complicated definitions are given, but that's the most simple and practical one.
+        # The numbers in these arrays represent the number of half steps above the first note of the mode.
+        # The first mode Ionian is the same as the major scale.
         self.modes = {"ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
                                  14, 16, 17, 19, 21, 23, 24],
                       "dorian": [0, 2, 3, 5, 7, 9, 10, 12, 
@@ -64,19 +70,30 @@ class Music():
         self.notes_to_harmonize = 0
         
         self.guitar_sample_speed = 1
-
-        self.mixer = Mixer(chnls=4).out()
         
         self.guitar_samples = {}
         self.midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
                              50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
+        
+        self.guitar_mixer = Mixer()
+        self.current_guitar_channel = 0
+        
+        self.guitar_delay = Delay(self.guitar_mixer[0], 0.5, 0.7)
+        
+        # the .mix() method lets us output in stereo
+        self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], voice=1).mix(2).out()
                  
         for m in self.midi_numbers:
             # print(f"m: {m}")
             for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", mul=[0.75, 0.75])
+                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", mul=[0.75, 0.75]).stop()
+                    if self.current_guitar_channel < 100:
+                        self.guitar_mixer.addInput(self.current_guitar_channel, self.guitar_samples[f"{m}-{i+1}"])
+                        self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 0.5)
+                        self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 0.5)
+                        self.current_guitar_channel += 1
                     # print(f"self.guitar_channel: {self.guitar_channel}")
                 except Exception as e:
                     # print("exception: " + str(e))
@@ -194,9 +211,9 @@ class Music():
     def play_guitar(self, note):
         dynamic_level = random.randint(1, 3)
         try:
-            self.guitar_samples[f"{note}-{dynamic_level}"].out()
+            self.guitar_samples[f"{note}-{dynamic_level}"].play()
         except Exception as e:
-            self.guitar_samples[f"{note}-{dynamic_level-1}"].out()
+            self.guitar_samples[f"{note}-{dynamic_level-1}"].play()
             # print(e)
             pass
         
