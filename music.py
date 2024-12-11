@@ -1,12 +1,6 @@
 from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector
 import random
 from math import floor
-from time import sleep
-
-"""
-TODO:
-Create other chord progressions 
-"""
 
 class Music():
     def __init__(self, mode):
