@@ -4,6 +4,13 @@ from pyo import Server, Mixer
 import sys
 import time
 
+"""
+TODO:
+Add toggle guitar delay command
+Add toggle ambient sounds command
+
+"""
+
 s = Server().boot()
 s.start()
 

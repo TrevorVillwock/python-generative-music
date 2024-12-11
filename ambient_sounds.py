@@ -29,12 +29,15 @@ class AmbientSounds():
         self.sound_set_2 = [SfPlayer(self.sound_sets["dining_hall"], loop=True, mul=self.fader2), SfPlayer(self.sound_sets["dining_hall"], loop=True, mul=self.fader2), SfPlayer(self.sound_sets["dining_hall"], loop=True, mul=self.fader2)]
         
         self.mixer = Mixer(chnls=6)
+        
         self.mixer.addInput(0, self.sound_set_1[0])
         self.mixer.addInput(1, self.sound_set_1[1])
         self.mixer.addInput(2, self.sound_set_1[2])
+        
         self.mixer.addInput(3, self.sound_set_2[0])
         self.mixer.addInput(4, self.sound_set_2[1])
         self.mixer.addInput(5, self.sound_set_2[2])
+        
         self.mixer.setAmp(0, 0, 0.5)
         self.mixer.setAmp(1, 0, 0.5)
         self.mixer.setAmp(2, 0, 0.5)
@@ -86,7 +89,17 @@ class AmbientSounds():
             # print("else")
             
     def start_first_sound(self, first_sound):
-        self.sound_set_1[0].setPath(self.sound_sets[first_sound])
+        # print("start_first_sound")
+        sounds_started = 0
+        
+        while sounds_started < self.sound_count[first_sound]:
+            self.sound_set_1[sounds_started].setPath(self.sound_sets[first_sound])
+            sounds_started += 1
+        
+        while sounds_started < 3:
+            self.sound_set_1[sounds_started].setMul(0)
+            sounds_started += 1
+
         self.fader1.play()
         
     def reverse_sounds(self):

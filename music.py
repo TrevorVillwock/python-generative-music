@@ -3,6 +3,11 @@ import random
 from math import floor
 from time import sleep
 
+"""
+TODO:
+Create other chord progressions 
+"""
+
 class Music():
     def __init__(self, mode):
         self.melody_met = Metro(0.5).play()
@@ -78,7 +83,7 @@ class Music():
         self.guitar_mixer = Mixer()
         self.current_guitar_channel = 0
         
-        self.guitar_delay = Delay(self.guitar_mixer[0], 0.5, 0.7)
+        self.guitar_delay = Delay(self.guitar_mixer[0], 0.1, 0.7)
         
         # the .mix() method lets us output in stereo
         self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], voice=1).mix(2).out()
@@ -91,8 +96,8 @@ class Music():
                     self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", mul=[0.75, 0.75]).stop()
                     if self.current_guitar_channel < 100:
                         self.guitar_mixer.addInput(self.current_guitar_channel, self.guitar_samples[f"{m}-{i+1}"])
-                        self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 0.5)
-                        self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 0.5)
+                        self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
+                        self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 1)
                         self.current_guitar_channel += 1
                     # print(f"self.guitar_channel: {self.guitar_channel}")
                 except Exception as e:
