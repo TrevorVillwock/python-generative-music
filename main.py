@@ -8,7 +8,7 @@ import time
 TODO:
 Add toggle guitar delay command
 Add toggle ambient sounds command
-
+Add command to change delay times
 """
 
 s = Server().boot()
