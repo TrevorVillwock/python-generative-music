@@ -59,6 +59,7 @@ class Main():
                     self.input_is_valid = 1
                 case "e":
                     self.ambient_sounds.toggle_delay()
+                    self.input_is_valid = 1
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()

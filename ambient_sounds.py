@@ -111,10 +111,12 @@ class AmbientSounds():
             s.setSpeed(s.speed * -1)    
             
     def toggle_delay(self):
+        # print("toggle delay start")
         if self.delay_selector.voice == 0:
             self.delay_selector.voice = 1
         else:
             self.delay_selector.voice = 0
+        # print("toggle delay end")
         
     def stop(self):
         if self.current_sound_set == 1:
