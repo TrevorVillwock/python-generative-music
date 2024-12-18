@@ -60,6 +60,9 @@ class Main():
                 case "e":
                     self.ambient_sounds.toggle_delay()
                     self.input_is_valid = 1
+                case "ge":
+                    self.music.toggle_guitar_delay()
+                    self.input_is_valid = 1
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()
@@ -113,6 +116,8 @@ class Main():
                 case "rt":
                     self.music.reverse_samples()
                     self.ambient_sounds.reverse_sounds()
+                case "ge":
+                    self.music.toggle_guitar_delay()
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()

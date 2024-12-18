@@ -80,7 +80,7 @@ class Music():
         self.guitar_delay = Delay(self.guitar_mixer[0], 0.1, 0.7)
         
         # the .mix() method lets us output in stereo
-        self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], voice=1).mix(2).out()
+        self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], voice=1).out()
                  
         for m in self.midi_numbers:
             # print(f"m: {m}")
@@ -216,6 +216,14 @@ class Music():
             # print(e)
             pass
         
+    def toggle_guitar_delay(self):
+        # print("toggle delay start")
+        if self.delay_selector.voice == 0:
+            self.delay_selector.voice = 1
+        else:
+            self.delay_selector.voice = 0
+        # print("toggle delay end")
+
     def change_mode(self, mode):
         self.current_mode_name = mode
         self.current_mode = self.modes[mode]
