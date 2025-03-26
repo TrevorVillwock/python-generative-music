@@ -45,6 +45,8 @@ class AmbientSounds():
         self.mixer.setAmp(4, 0, 0.5)
         self.mixer.setAmp(5, 0, 0.5)
         
+        self.is_playing = False
+
         self.delay = Delay(self.mixer[0], 0.5, 0.7)
         self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=0).out()
         
@@ -54,7 +56,27 @@ class AmbientSounds():
         
     def play(self):
         self.current_sound_set[0].play()
+        self.is_playing = True
         
+    def volume_toggle(self):
+        print("ambient sounds toggled, is", self.is_playing)
+        if self.is_playing:
+            self.mixer.setAmp(0, 0, 0)
+            self.mixer.setAmp(1, 0, 0)
+            self.mixer.setAmp(2, 0, 0)
+            self.mixer.setAmp(3, 0, 0)
+            self.mixer.setAmp(4, 0, 0)
+            self.mixer.setAmp(5, 0, 0)
+        else:
+            self.mixer.setAmp(0, 0, 0.5)
+            self.mixer.setAmp(1, 0, 0.5)
+            self.mixer.setAmp(2, 0, 0.5)
+            self.mixer.setAmp(3, 0, 0.5)
+            self.mixer.setAmp(4, 0, 0.5)
+            self.mixer.setAmp(5, 0, 0.5)
+        self.is_playing = not self.is_playing
+        print("toggled to", self.is_playing)
+
     def change_sound(self, new_sound):
         # fade out old sounds and fade in new
         # print(new_sound)

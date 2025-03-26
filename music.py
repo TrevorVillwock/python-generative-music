@@ -80,6 +80,7 @@ class Music():
         self.guitar_delay = Delay(self.guitar_mixer[0], 0.1, 0.7)
         
         self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], voice=1, mul=[0.5, 0.5]).out()
+        
         # self.delay_mixer = Mixer().out()
         # self.delay_mixer.addInput(0, self.delay_selector)
         # self.delay_mixer.setAmp(0, 1, 0.5)
