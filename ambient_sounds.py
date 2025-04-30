@@ -38,12 +38,6 @@ class AmbientSounds():
         self.mixer.addInput(4, self.sound_set_2[1])
         self.mixer.addInput(5, self.sound_set_2[2])
         
-        self.mixer.setAmp(0, 0, 0.5)
-        self.mixer.setAmp(1, 0, 0.5)
-        self.mixer.setAmp(2, 0, 0.5)
-        self.mixer.setAmp(3, 0, 0.5)
-        self.mixer.setAmp(4, 0, 0.5)
-        self.mixer.setAmp(5, 0, 0.5)
         
         self.is_playing = False
 
@@ -54,26 +48,38 @@ class AmbientSounds():
         self.sound_set_1_speed = 1
         self.sound_set_2_speed = 1
         
+        
     def play(self):
         self.current_sound_set[0].play()
         self.is_playing = True
         
     def volume_toggle(self):
         print("ambient sounds toggled, is", self.is_playing)
+        
+        # if self.is_playing:
+        #     self.mixer.setAmp(0, 0, 0)
+        #     self.mixer.setAmp(1, 0, 0)
+        #     self.mixer.setAmp(2, 0, 0)
+        #     self.mixer.setAmp(3, 0, 0)
+        #     self.mixer.setAmp(4, 0, 0)
+        #     self.mixer.setAmp(5, 0, 0)
+        # else:
+        #     self.mixer.setAmp(0, 0, 0.5)
+        #     self.mixer.setAmp(1, 0, 0.5)
+        #     self.mixer.setAmp(2, 0, 0.5)
+        #     self.mixer.setAmp(3, 0, 0.5)
+        #     self.mixer.setAmp(4, 0, 0.5)
+        #     self.mixer.setAmp(5, 0, 0.5)
         if self.is_playing:
-            self.mixer.setAmp(0, 0, 0)
-            self.mixer.setAmp(1, 0, 0)
-            self.mixer.setAmp(2, 0, 0)
-            self.mixer.setAmp(3, 0, 0)
-            self.mixer.setAmp(4, 0, 0)
-            self.mixer.setAmp(5, 0, 0)
+            if self.current_sound_set == 1:
+                self.fader1.stop()
+            else:
+                self.fader2.stop()
         else:
-            self.mixer.setAmp(0, 0, 0.5)
-            self.mixer.setAmp(1, 0, 0.5)
-            self.mixer.setAmp(2, 0, 0.5)
-            self.mixer.setAmp(3, 0, 0.5)
-            self.mixer.setAmp(4, 0, 0.5)
-            self.mixer.setAmp(5, 0, 0.5)
+            if self.current_sound_set == 1:
+                self.fader1.play()
+            else:
+                self.fader2.play()
         self.is_playing = not self.is_playing
         print("toggled to", self.is_playing)
 
@@ -92,8 +98,9 @@ class AmbientSounds():
             while sounds_loaded < 3:
                 self.sound_set_2[sounds_loaded].setMul(0)
                 sounds_loaded += 1
-            self.fader1.stop()
-            self.fader2.play()
+            if self.is_playing:
+                self.fader1.stop()
+                self.fader2.play()
             self.current_sound_set = 2
             # print("if")
         else:
@@ -105,8 +112,9 @@ class AmbientSounds():
             while sounds_loaded < 3:
                 self.sound_set_1[sounds_loaded].setMul(0)
                 sounds_loaded += 1
-            self.fader2.stop()
-            self.fader1.play()
+            if self.is_playing:
+                self.fader2.stop()
+                self.fader1.play()
             self.current_sound_set = 1
             # print("else")
             
