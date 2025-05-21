@@ -21,8 +21,10 @@ class Main():
         self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
         self.action_selection = input("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n e - Drink Essence of Bat\n rt - Drink Elixir of Time \n ge - Toggle guitar echo\n as - Toggle ambient sounds\n q - Quit \n\n Input a number or letter to choose: ")
+        self.action_selection_array = self.action_selection.split(' ')
+        print(self.action_selection_array)
         while self.input_is_valid == 0:
-            match self.action_selection:
+            match self.action_selection_array[0]:
                 case "1": 
                     # don't need to change modes since the default is ionian
                     self.ambient_sounds.start_first_sound("dining_hall")
@@ -64,6 +66,11 @@ class Main():
                 case "as":
                     self.ambient_sounds.volume_toggle()
                     self.input_is_valid = 1
+                case "time":
+                    delay = float(self.action_selection_array[1])
+                    self.ambient_sounds.change_delay(delay)
+                    self.music.change_guitar_delay(delay)
+                    self.input_is_valid = 1
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()
@@ -73,7 +80,7 @@ class Main():
                     s.shutdown()
                     sys.exit()
                 case _:
-                    self.action_selection = input("Please enter a number between 1 and 7:")
+                    self.action_selection = input("Please enter a number between 1 and 7: ")
 
         self.mixer.addInput(3, self.ambient_sounds.sound_set_1[0])
         self.mixer.addInput(4, self.ambient_sounds.sound_set_2[0])
@@ -121,6 +128,10 @@ class Main():
                     self.music.toggle_guitar_delay()
                 case "as":
                     self.ambient_sounds.volume_toggle()
+                case "time":
+                    delay = float(self.action_selection_array[1])
+                    self.ambient_sounds.change_delay(delay)
+                    self.music.change_guitar_delay(delay)
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()

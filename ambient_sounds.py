@@ -41,7 +41,7 @@ class AmbientSounds():
         
         self.is_playing = False
 
-        self.delay = Delay(self.mixer[0], 0.5, 0.7)
+        self.delay = Delay(self.mixer[0], 0.5, 0.7, 5)
         self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=0).out()
         
         self.current_sound_set = 1
@@ -147,6 +147,12 @@ class AmbientSounds():
         else:
             self.delay_selector.voice = 0
         # print("toggle delay end")
+        
+
+    def change_delay(self, delay):
+        print('called change_delay')
+        self.delay.setDelay(delay)
+
         
     def stop(self):
         if self.current_sound_set == 1:

@@ -77,7 +77,7 @@ class Music():
         self.guitar_mixer = Mixer()
         self.current_guitar_channel = 0
         
-        self.guitar_delay = Delay(self.guitar_mixer[0], 0.1, 0.7)
+        self.guitar_delay = Delay(self.guitar_mixer[0], 0.1, 0.7, 5)
         
         self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], voice=1, mul=[0.5, 0.5]).out()
         
@@ -227,6 +227,9 @@ class Music():
             self.delay_selector.voice = 0
         # print("toggle delay end")
 
+    def change_guitar_delay(self, delay):
+        print('called change_guitar_delay')
+        self.guitar_delay.setDelay(delay)
     def change_mode(self, mode):
         self.current_mode_name = mode
         self.current_mode = self.modes[mode]
