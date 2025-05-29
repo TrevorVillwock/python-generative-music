@@ -20,7 +20,7 @@ class Main():
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
-        self.action_selection = input("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n e - Drink Essence of Bat\n rt - Drink Elixir of Time \n ge - Toggle guitar echo\n as - Toggle ambient sounds\n q - Quit \n\n Input a number or letter to choose: ")
+        self.action_selection = input("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n e - Drink Essence of Bat\n rt - Drink Elixir of Time \n ge - Toggle guitar echo\n time - Change echo length\n as - Toggle ambient sounds\n q - Quit \n\n Input a number or letter to choose: ")
         self.action_selection_array = self.action_selection.split(' ')
         print(self.action_selection_array)
         while self.input_is_valid == 0:
@@ -58,6 +58,7 @@ class Main():
                     self.ambient_sounds.reverse_sounds()
                     self.input_is_valid = 1
                 case "e":
+                    print("case e")
                     self.ambient_sounds.toggle_delay()
                     self.input_is_valid = 1
                 case "ge":
@@ -120,6 +121,7 @@ class Main():
                     self.music.change_mode("locrian")
                     self.ambient_sounds.change_sound("dungeon")
                 case "e":
+                    print("case e")
                     self.ambient_sounds.toggle_delay()
                 case "rt":
                     self.music.reverse_samples()

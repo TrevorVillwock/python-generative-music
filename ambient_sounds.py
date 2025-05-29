@@ -41,8 +41,8 @@ class AmbientSounds():
         
         self.is_playing = False
 
-        self.delay = Delay(self.mixer[0], 0.5, 0.7, 5)
-        self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=0).out()
+        self.delay = Delay(self.mixer[0], 0.5, 0.7, 5).out()
+        self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=1).out()
         
         self.current_sound_set = 1
         self.sound_set_1_speed = 1
@@ -56,20 +56,6 @@ class AmbientSounds():
     def volume_toggle(self):
         print("ambient sounds toggled, is", self.is_playing)
         
-        # if self.is_playing:
-        #     self.mixer.setAmp(0, 0, 0)
-        #     self.mixer.setAmp(1, 0, 0)
-        #     self.mixer.setAmp(2, 0, 0)
-        #     self.mixer.setAmp(3, 0, 0)
-        #     self.mixer.setAmp(4, 0, 0)
-        #     self.mixer.setAmp(5, 0, 0)
-        # else:
-        #     self.mixer.setAmp(0, 0, 0.5)
-        #     self.mixer.setAmp(1, 0, 0.5)
-        #     self.mixer.setAmp(2, 0, 0.5)
-        #     self.mixer.setAmp(3, 0, 0.5)
-        #     self.mixer.setAmp(4, 0, 0.5)
-        #     self.mixer.setAmp(5, 0, 0.5)
         if self.is_playing:
             if self.current_sound_set == 1:
                 self.fader1.stop()
@@ -141,12 +127,14 @@ class AmbientSounds():
             s.setSpeed(s.speed * -1)    
             
     def toggle_delay(self):
-        # print("toggle delay start")
+        print("toggle ambient sound delay start")
         if self.delay_selector.voice == 0:
+            print("if")
             self.delay_selector.voice = 1
         else:
+            print("else")
             self.delay_selector.voice = 0
-        # print("toggle delay end")
+        print("toggle ambient sound delay end")
         
 
     def change_delay(self, delay):
