@@ -10,7 +10,7 @@ Mixolydian - Going for a hike
 Aeolian - In the river
 Locrian - Dungeon
 """
-  
+ 
 class AmbientSounds():
     def __init__(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -38,23 +38,28 @@ class AmbientSounds():
         self.mixer.addInput(4, self.sound_set_2[1])
         self.mixer.addInput(5, self.sound_set_2[2])
         
+        self.mixer.setAmp(0, 0, 0.5)
+        self.mixer.setAmp(1, 0, 0.5)
+        self.mixer.setAmp(2, 0, 0.5)
+        self.mixer.setAmp(3, 0, 0.5)
+        self.mixer.setAmp(4, 0, 0.5)
+        self.mixer.setAmp(5, 0, 0.5)
         
         self.is_playing = False
 
-        self.delay = Delay(self.mixer[0], 0.5, 0.7, 5).out()
-        self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=1).out()
+        self.delay = Delay(self.mixer[0], 0.5, 0.7, 5)
+        self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=0).out()
         
         self.current_sound_set = 1
         self.sound_set_1_speed = 1
         self.sound_set_2_speed = 1
-        
-        
+          
     def play(self):
         self.current_sound_set[0].play()
         self.is_playing = True
         
     def volume_toggle(self):
-        print("ambient sounds toggled, is", self.is_playing)
+        #print("ambient sounds toggled, is", self.is_playing)
         
         if self.is_playing:
             if self.current_sound_set == 1:
@@ -67,7 +72,8 @@ class AmbientSounds():
             else:
                 self.fader2.play()
         self.is_playing = not self.is_playing
-        print("toggled to", self.is_playing)
+        
+        #print("toggled to", self.is_playing)
 
     def change_sound(self, new_sound):
         # fade out old sounds and fade in new
@@ -118,6 +124,9 @@ class AmbientSounds():
 
         self.fader1.play()
         
+        self.is_playing = True
+        self.current_sound_set = 1
+        
     def reverse_sounds(self):
         for s in self.sound_set_1:
             # print(s)
@@ -127,18 +136,18 @@ class AmbientSounds():
             s.setSpeed(s.speed * -1)    
             
     def toggle_delay(self):
-        print("toggle ambient sound delay start")
+        # print("toggle ambient sound delay start")
         if self.delay_selector.voice == 0:
             print("if")
             self.delay_selector.voice = 1
         else:
             print("else")
             self.delay_selector.voice = 0
-        print("toggle ambient sound delay end")
+        # print("toggle ambient sound delay end")
         
 
     def change_delay(self, delay):
-        print('called change_delay')
+        # print('called change_delay')
         self.delay.setDelay(delay)
 
         

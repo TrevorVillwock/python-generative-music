@@ -16,62 +16,93 @@ s.start()
 class Main():  
     def __init__(self):
         self.input_is_valid = 0
+        self.first_sound_started = 0
         self.music = Music("ionian") # default mode
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
-        self.action_selection = input("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n e - Drink Essence of Bat\n rt - Drink Elixir of Time \n ge - Toggle guitar echo\n time - Change echo length\n as - Toggle ambient sounds\n q - Quit \n\n Input a number or letter to choose: ")
+        print("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n e - Drink Essence of Bat\n rt - Drink Elixir of Time \n ge - Toggle guitar echo\n time - Change echo length\n as - Toggle ambient sounds\n q - Quit \n\n")
+        self.action_selection = input("Input a number or letter to choose: ")
         self.action_selection_array = self.action_selection.split(' ')
-        print(self.action_selection_array)
-        while self.input_is_valid == 0:
+        # print(self.action_selection_array)
+        
+        self.mixer.addInput(3, self.ambient_sounds.sound_set_1[0])
+        self.mixer.addInput(4, self.ambient_sounds.sound_set_2[0])
+        self.mixer.setAmp(0, 0, 0.1)
+        self.mixer.setAmp(1, 0, 0.1)
+        self.mixer.setAmp(2, 0, 0.1)
+        self.mixer.setAmp(3, 0, 0.5)
+        self.mixer.setTime(0.01)
+        self.mixer.setMul(1)
+        
+        while True:
+            print("\n")
             match self.action_selection_array[0]:
                 case "1": 
                     # don't need to change modes since the default is ionian
-                    self.ambient_sounds.start_first_sound("dining_hall")
-                    self.input_is_valid = 1
+                    if not self.first_sound_started:
+                        self.ambient_sounds.start_first_sound("dining_hall")
+                        self.first_sound_started = 1
+                    else:
+                        self.ambient_sounds.change_sound("dining_hall")
+                        self.music.change_mode("ionian")    
                 case "2": 
-                    self.music.change_mode("dorian")
-                    self.ambient_sounds.start_first_sound("river")
-                    self.input_is_valid = 1
+                    if not self.first_sound_started:
+                        self.ambient_sounds.start_first_sound("river")
+                        self.first_sound_started = 1
+                    else:
+                        self.ambient_sounds.change_sound("river")
+                        self.music.change_mode("dorian")
                 case "3": 
-                    self.music.change_mode("phrygian")
-                    self.ambient_sounds.start_first_sound("top_of_castle")
-                    self.input_is_valid = 1
-                case "4": 
-                    self.music.change_mode("lydian")
-                    self.ambient_sounds.start_first_sound("birds")
-                    self.input_is_valid = 1
+                    if not self.first_sound_started:
+                        self.ambient_sounds.start_first_sound("top_of_castle")
+                        self.first_sound_started = 1
+                    else:
+                        self.ambient_sounds.change_sound("top_of_castle")
+                        self.music.change_mode("phrygian")
+                case "4":
+                    if not self.first_sound_started:
+                        self.ambient_sounds.start_first_sound("birds")
+                        self.first_sound_started = 1
+                    else:
+                        self.ambient_sounds.change_sound("birds")
+                        self.music.change_mode("lydian")
                 case "5": 
-                    self.music.change_mode("mixolydian")
-                    self.ambient_sounds.start_first_sound("hike")
-                    self.input_is_valid = 1
+                    if not self.first_sound_started:
+                        self.ambient_sounds.start_first_sound("hike")
+                        self.first_sound_started = 1
+                    else:
+                        self.ambient_sounds.change_sound("hike")
+                        self.music.change_mode("mixolydian")
                 case "6": 
-                    self.music.change_mode("aeolian")
-                    self.ambient_sounds.start_first_sound("underwater")
-                    self.input_is_valid = 1
+                    if not self.first_sound_started:
+                        self.ambient_sounds.start_first_sound("underwater")
+                        self.first_sound_started = 1
+                    else:
+                        self.ambient_sounds.change_sound("underwater")
+                        self.music.change_mode("aeolian")
                 case "7": 
-                    self.music.change_mode("locrian")
-                    self.ambient_sounds.start_first_sound("dungeon")
-                    self.input_is_valid = 1
+                    if not self.first_sound_started:
+                        self.ambient_sounds.start_first_sound("dungeon")
+                        self.first_sound_started = 1
+                    else:
+                        self.ambient_sounds.change_sound("dungeon")
+                        self.music.change_mode("locrian")
                 case "rt":
                     self.music.reverse_samples()
                     self.ambient_sounds.reverse_sounds()
-                    self.input_is_valid = 1
                 case "e":
                     print("case e")
+                    self.music.toggle_guitar_delay()
                     self.ambient_sounds.toggle_delay()
-                    self.input_is_valid = 1
                 case "ge":
                     self.music.toggle_guitar_delay()
-                    self.input_is_valid = 1
                 case "as":
                     self.ambient_sounds.volume_toggle()
-                    self.input_is_valid = 1
                 case "time":
                     delay = float(self.action_selection_array[1])
                     self.ambient_sounds.change_delay(delay)
                     self.music.change_guitar_delay(delay)
-                    self.input_is_valid = 1
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()
@@ -82,69 +113,9 @@ class Main():
                     sys.exit()
                 case _:
                     self.action_selection = input("Please enter a number between 1 and 7: ")
-
-        self.mixer.addInput(3, self.ambient_sounds.sound_set_1[0])
-        self.mixer.addInput(4, self.ambient_sounds.sound_set_2[0])
-        self.mixer.setAmp(0, 0, 0.1)
-        self.mixer.setAmp(1, 0, 0.1)
-        self.mixer.setAmp(2, 0, 0.1)
-        self.mixer.setAmp(3, 0, 0.5)
-        self.mixer.setTime(0.01)
-        self.mixer.setMul(1)
-        self.run_input_loop()
-        
-    def run_input_loop(self):
-        user_command = None
-        while user_command != "q":
-            user_command = input("\n\nEnter next command: ")
-            match user_command:
-                case "1": 
-                    self.music.change_mode("ionian")
-                    self.ambient_sounds.change_sound("dining_hall")
-                    print("case 1")
-                case "2": 
-                    self.music.change_mode("dorian")
-                    self.ambient_sounds.change_sound("river")
-                case "3": 
-                    self.music.change_mode("phrygian")
-                    self.ambient_sounds.change_sound("top_of_castle")
-                case "4": 
-                    self.music.change_mode("lydian")
-                    self.ambient_sounds.change_sound("birds")
-                case "5": 
-                    self.music.change_mode("mixolydian")
-                    self.ambient_sounds.change_sound("hike")
-                case "6": 
-                    self.music.change_mode("aeolian")
-                    self.ambient_sounds.change_sound("underwater")
-                case "7": 
-                    self.music.change_mode("locrian")
-                    self.ambient_sounds.change_sound("dungeon")
-                case "e":
-                    print("case e")
-                    self.ambient_sounds.toggle_delay()
-                case "rt":
-                    self.music.reverse_samples()
-                    self.ambient_sounds.reverse_sounds()
-                case "ge":
-                    self.music.toggle_guitar_delay()
-                case "as":
-                    self.ambient_sounds.volume_toggle()
-                case "time":
-                    delay = float(self.action_selection_array[1])
-                    self.ambient_sounds.change_delay(delay)
-                    self.music.change_guitar_delay(delay)
-                case "q":
-                    self.mixer.setMul(0.0)
-                    self.music.stop()
-                    self.ambient_sounds.stop()
-                    print("\nFarewell!\n")
-                    time.sleep(1)
-                    s.shutdown()
-                    sys.exit()
-                case _:
-                    self.action_selection = input("Please enter a valid command: ")
-            # print(user_command)
+                    
+            self.action_selection = input("Enter next command: ")
+            self.action_selection_array = self.action_selection.split(' ')
             
 main = Main()
 
