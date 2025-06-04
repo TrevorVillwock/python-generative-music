@@ -37,13 +37,14 @@ class Music():
         # the chords more full and less muddy in the low registers. To make an open voicing, we
         # move the middle note of the triad up an octave by adding 12 to the original midi number.
         
-        self.mode_primary_triads = {"ionian": [[31, 47, 38], [31, 47, 38], [36, 52, 43], [38, 54, 45]],
-                      "dorian": [[33, 48, 40], [33, 48, 40], [38, 54, 45], [40, 55, 47]],
-                      "phrygian": [[35, 50, 42], [35, 50, 42], [40, 55, 47], [42, 57, 48]],
-                      "lydian": [[36, 52, 43], [36, 52, 43], [42, 57, 48], [43, 59, 50]],
-                      "mixolydian": [[38, 54, 45], [38, 54, 45], [43, 59, 50], [45, 60, 52]],
-                      "aeolian": [[28, 43, 35], [28, 43, 35], [33, 48, 40], [35, 50, 42]],
-                      "locrian": [[30, 45, 36], [30, 45, 36], [35, 50, 42], [36, 52, 43]]}
+        self.mode_primary_triads = {
+            "ionian": [['G1', 'B2', 'D2'], ['G1', 'B2', 'D2'], ['C2', 'E3', 'G2'], ['D2', 'F#3', 'A2']],
+            "dorian": [['A1', 'C3', 'E2'], ['A1', 'C3', 'E2'], ['D2', 'F#3', 'A2'], ['E2', 'G3', 'B2']],
+            "phrygian": [['B1', 'D3', 'F#2'], ['B1', 'D3', 'F#2'], ['E2', 'G3', 'B2'], ['F#2', 'A3', 'C3']],
+            "lydian": [['C2', 'E3', 'G2'], ['C2', 'E3', 'G2'], ['F#2', 'A3', 'C3'], ['G2', 'B3', 'D3']],
+            "mixolydian": [['D2', 'F#3', 'A2'], ['D2', 'F#3', 'A2'], ['G2', 'B3', 'D3'], ['A2', 'C4', 'E3']],
+            "aeolian": [['E1', 'G2', 'B1'], ['E1', 'G2', 'B1'], ['A1', 'C3', 'E2'], ['B1', 'D3', 'F#2']],
+            "locrian": [['F#1', 'A2', 'C2'], ['F#1', 'A2', 'C2'], ['B1', 'D3', 'F#2'], ['C2', 'E3', 'G2']]}
         
         self.current_triad = 0
 
@@ -123,7 +124,7 @@ class Music():
             self.playing_motif = True
             
         if self.playing_motif:
-            if modify_motif_pitch > 1:
+            if modify_motif_pitch > 0.75:
                 # print(f"old motif pitches: {self.motifs[self.motif_num]}")
                 note_to_change = floor(random.random() * 4)
                 change_interval = random.choice([-1, 1])
@@ -132,7 +133,7 @@ class Music():
                 self.motifs[self.motif_num][note_to_change][0] = self.motifs[self.motif_num][note_to_change][0] + change_interval
                 # print(f"new motif pitches: {self.motifs[self.motif_num]}")
                 
-            if modify_motif_rhythm > 1:
+            if modify_motif_rhythm > 0.75:
                 # print(f"old motif rhythm: {self.motifs[self.motif_num]}")
                 note_to_change = floor(random.random() * 4)
                 
@@ -177,7 +178,7 @@ class Music():
         # print(f"notes_to_harmonize: {notes_to_harmonize}")
         if self.notes_to_harmonize == 0:
             harmonize = random.random()
-            if harmonize > 0.8:
+            if harmonize > 0.6:
                 self.harmonizing = True
                 self.notes_to_harmonize = 3 + random.randint(0, 5)
                 self.harmony_interval = random.randint(2, 5)
@@ -201,9 +202,9 @@ class Music():
 
     def play_chords(self):
         # print(f"self.current_triad: {self.current_triad}")
-        self.play_guitar(self.mode_primary_triads[self.current_mode_name][self.current_triad][0])
-        self.play_guitar(self.mode_primary_triads[self.current_mode_name][self.current_triad][1])
-        self.play_guitar(self.mode_primary_triads[self.current_mode_name][self.current_triad][2])
+        self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][0]))
+        self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][1]))
+        self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][2]))
         
         if self.current_triad < 3:
             self.current_triad += 1
@@ -262,6 +263,76 @@ class Music():
                         # print("exception: " + str(e))
                         pass
  
+    # Thank you Claude 4 Sonnet
+    def note_to_midi(self, note):
+        """
+        Convert a music note string to MIDI number.
+        
+        Args:
+            note (str): Note in format like "C4", "Eb3", "G#5", "F##2", "Bbb6"
+            
+        Returns:
+            int: MIDI number (0-127)
+            
+        Examples:
+            >>> note_to_midi("C4")
+            60
+            >>> note_to_midi("Eb3")
+            51
+            >>> note_to_midi("G#5")
+            80
+        """
+        # Note name to semitone mapping (C = 0)
+        note_values = {
+            'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
+        }
+        
+        # Parse the note string
+        note = note.strip().upper()
+        
+        # Extract note name (first character)
+        note_name = note[0]
+        if note_name not in note_values:
+            raise ValueError(f"Invalid note name: {note_name}")
+        
+        # Find where the octave number starts
+        octave_start = 1
+        accidentals = ""
+        
+        # Extract accidentals (sharps and flats)
+        for i in range(1, len(note)):
+            if note[i].isdigit() or note[i] == '-':
+                octave_start = i
+                break
+            accidentals += note[i]
+        
+        # Extract octave number
+        try:
+            octave = int(note[octave_start:])
+        except ValueError:
+            raise ValueError(f"Invalid octave number in note: {note}")
+        
+        # Calculate base MIDI number
+        base_midi = note_values[note_name] + (octave + 1) * 12
+        
+        # Apply accidentals
+        accidental_offset = 0
+        for char in accidentals:
+            if char == '#':
+                accidental_offset += 1
+            elif char == 'b':  # Flat
+                accidental_offset -= 1
+            else:
+                raise ValueError(f"Invalid accidental: {char}")
+        
+        midi_number = base_midi + accidental_offset
+        
+        # Ensure MIDI number is in valid range (0-127)
+        if midi_number < 0 or midi_number > 127:
+            raise ValueError(f"MIDI number {midi_number} out of range (0-127)")
+        
+        return midi_number
+
     def stop(self):
         for s in self.guitar_samples:
             self.guitar_samples[s].setMul(0)

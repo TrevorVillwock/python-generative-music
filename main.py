@@ -20,6 +20,10 @@ class Main():
         self.music = Music("ionian") # default mode
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
+        print("testing note to midi")
+        print(self.music.note_to_midi("C4"))
+        print(self.music.note_to_midi("C5"))
+        print(self.music.note_to_midi("C6"))
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
         print("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n e - Drink Essence of Bat\n rt - Drink Elixir of Time \n ge - Toggle guitar echo\n time - Change echo length\n as - Toggle ambient sounds\n q - Quit \n\n")
         self.action_selection = input("Input a number or letter to choose: ")

@@ -14,8 +14,8 @@ Locrian - Dungeon
 class AmbientSounds():
     def __init__(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        self.fader1 = Fader(fadein=2, fadeout=2)
-        self.fader2 = Fader(fadein=2, fadeout=2)
+        self.fader1 = Fader(fadein=2, fadeout=2, mul=0.25)
+        self.fader2 = Fader(fadein=2, fadeout=2, mul=0.25)
         self.sound_sets = {"birds": [os.path.join(current_dir, "soundfiles", "ambient_sound", "birds.mp3")],
                        "dining_hall": [os.path.join(current_dir, "soundfiles", "ambient_sound", "dining_hall.mp3")], 
                        "dungeon": [os.path.join(current_dir, "soundfiles", "ambient_sound", "dungeon.mp3")],
