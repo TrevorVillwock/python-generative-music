@@ -263,25 +263,9 @@ class Music():
                         # print("exception: " + str(e))
                         pass
  
-    # Thank you Claude 4 Sonnet
+    # Converts notes written in pitch/octave format like "C4" to MIDI numbers 0-127
+    # Written by Claude 4 Sonnet
     def note_to_midi(self, note):
-        """
-        Convert a music note string to MIDI number.
-        
-        Args:
-            note (str): Note in format like "C4", "Eb3", "G#5", "F##2", "Bbb6"
-            
-        Returns:
-            int: MIDI number (0-127)
-            
-        Examples:
-            >>> note_to_midi("C4")
-            60
-            >>> note_to_midi("Eb3")
-            51
-            >>> note_to_midi("G#5")
-            80
-        """
         # Note name to semitone mapping (C = 0)
         note_values = {
             'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
