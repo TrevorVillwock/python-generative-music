@@ -38,7 +38,7 @@ class Music():
         # move the middle note of the triad up an octave by adding 12 to the original midi number.
         
         self.mode_primary_triads = {
-            "ionian": [['G1', 'B2', 'D2'], ['G1', 'B2', 'D2'], ['C2', 'E3', 'G2'], ['D2', 'F#3', 'A2']],
+            "ionian": [['G1', 'B2', 'D2'], ['G1', 'B2', 'D2'], ['C2', 'E3', 'G2'], ['D2', 'F#3', 'A2'], ['E2', 'F#3', 'B2']],
             "dorian": [['A1', 'C3', 'E2'], ['A1', 'C3', 'E2'], ['D2', 'F#3', 'A2'], ['E2', 'G3', 'B2']],
             "phrygian": [['B1', 'D3', 'F#2'], ['B1', 'D3', 'F#2'], ['E2', 'G3', 'B2'], ['F#2', 'A3', 'C3']],
             "lydian": [['C2', 'E3', 'G2'], ['C2', 'E3', 'G2'], ['F#2', 'A3', 'C3'], ['G2', 'B3', 'D3']],
@@ -201,15 +201,17 @@ class Music():
             # print("playing melody")
 
     def play_chords(self):
-        # print(f"self.current_triad: {self.current_triad}")
+        print(f"self.current_triad: {self.current_triad}")
+        print(len(self.mode_primary_triads[self.current_mode_name]))
+        if self.current_triad <= len(self.mode_primary_triads[self.current_mode_name]):
+            self.current_triad += 1
+        else:
+            self.current_triad = 0
+
         self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][0]))
         self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][1]))
         self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][2]))
         
-        if self.current_triad < 3:
-            self.current_triad += 1
-        else:
-            self.current_triad = 0
         
     def play_guitar(self, note):
         dynamic_level = random.randint(1, 3)
