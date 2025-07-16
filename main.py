@@ -49,7 +49,8 @@ class Main():
                         self.first_sound_started = 1
                     else:
                         self.ambient_sounds.change_sound("dining_hall")
-                        self.music.change_mode("ionian")    
+                        self.music.change_mode("ionian")
+                        self.music.current_triad = 0    
                 case "2": 
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("river")
@@ -57,6 +58,7 @@ class Main():
                     else:
                         self.ambient_sounds.change_sound("river")
                         self.music.change_mode("dorian")
+                        self.music.current_triad = 0
                 case "3": 
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("top_of_castle")
@@ -64,6 +66,7 @@ class Main():
                     else:
                         self.ambient_sounds.change_sound("top_of_castle")
                         self.music.change_mode("phrygian")
+                        self.music.current_triad = 0
                 case "4":
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("birds")
@@ -71,6 +74,7 @@ class Main():
                     else:
                         self.ambient_sounds.change_sound("birds")
                         self.music.change_mode("lydian")
+                        self.music.current_triad = 0
                 case "5": 
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("hike")
@@ -78,6 +82,7 @@ class Main():
                     else:
                         self.ambient_sounds.change_sound("hike")
                         self.music.change_mode("mixolydian")
+                        self.music.current_triad = 0
                 case "6": 
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("underwater")
@@ -85,6 +90,7 @@ class Main():
                     else:
                         self.ambient_sounds.change_sound("underwater")
                         self.music.change_mode("aeolian")
+                        self.music.current_triad = 0
                 case "7": 
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("dungeon")
@@ -92,6 +98,7 @@ class Main():
                     else:
                         self.ambient_sounds.change_sound("dungeon")
                         self.music.change_mode("locrian")
+                        self.music.current_triad = 0
                 case "rt":
                     self.music.reverse_samples()
                     self.ambient_sounds.reverse_sounds()

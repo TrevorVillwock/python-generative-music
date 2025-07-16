@@ -1,4 +1,4 @@
-from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector
+from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine
 import random
 from math import floor
 
@@ -38,7 +38,7 @@ class Music():
         # move the middle note of the triad up an octave by adding 12 to the original midi number.
         
         self.mode_primary_triads = {
-            "ionian": [['G1', 'B2', 'D2'], ['G1', 'B2', 'D2'], ['C2', 'E3', 'G2'], ['D2', 'F#3', 'A2'], ['E2', 'F#3', 'B2']],
+            "ionian": [['G1', 'B2', 'D2'], ['G1', 'B2', 'D2'], ['C2', 'E3', 'G2'], ['D2', 'F#3', 'A2'], ['E2', 'F#3', 'B2'], ['B3', 'C4', 'D4']],
             "dorian": [['A1', 'C3', 'E2'], ['A1', 'C3', 'E2'], ['D2', 'F#3', 'A2'], ['E2', 'G3', 'B2']],
             "phrygian": [['B1', 'D3', 'F#2'], ['B1', 'D3', 'F#2'], ['E2', 'G3', 'B2'], ['F#2', 'A3', 'C3']],
             "lydian": [['C2', 'E3', 'G2'], ['C2', 'E3', 'G2'], ['F#2', 'A3', 'C3'], ['G2', 'B3', 'D3']],
@@ -81,7 +81,7 @@ class Music():
         self.guitar_delay = Delay(self.guitar_mixer[0], 0.1, 0.7, 5)
         
         self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], mul=[0.5, 0.5]).out()
-        
+        self.pitch_lfo = Sine(freq=11, mul=0, add=1)
         # self.delay_mixer = Mixer().out()
         # self.delay_mixer.addInput(0, self.delay_selector)
         # self.delay_mixer.setAmp(0, 1, 0.5)
@@ -91,7 +91,7 @@ class Music():
             for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", mul=[0.75, 0.75]).stop()
+                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", speed=self.pitch_lfo, mul=[0.75, 0.75]).stop()
                     if self.current_guitar_channel < 100:
                         self.guitar_mixer.addInput(self.current_guitar_channel, self.guitar_samples[f"{m}-{i+1}"])
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
@@ -201,16 +201,18 @@ class Music():
             # print("playing melody")
 
     def play_chords(self):
-        print(f"self.current_triad: {self.current_triad}")
-        print(len(self.mode_primary_triads[self.current_mode_name]))
-        if self.current_triad <= len(self.mode_primary_triads[self.current_mode_name]):
+        # print(f"self.current_triad before: {self.current_triad}")
+        # print(len(self.mode_primary_triads[self.current_mode_name]))
+        self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][0]))
+        self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][1]))
+        self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][2]))
+        
+        if self.current_triad < len(self.mode_primary_triads[self.current_mode_name]) - 1:
             self.current_triad += 1
         else:
             self.current_triad = 0
 
-        self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][0]))
-        self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][1]))
-        self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][2]))
+        # print(f"self.current_triad after: {self.current_triad}")
         
         
     def play_guitar(self, note):
