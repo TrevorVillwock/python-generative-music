@@ -3,6 +3,7 @@ from ambient_sounds import AmbientSounds
 from pyo import Server, Mixer, Record
 import sys
 import time
+import yaml
 
 """
 TODO:
@@ -20,9 +21,28 @@ class Main():
         self.music = Music("ionian") # default mode
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
+        self.config = {}
         
-        # modify the filename here to make multiple recordings
-        self.recorder = Record(self.mixer[0], filename="recording.wav")
+        with open("config.yaml") as settings:
+            try:
+                self.config = yaml.safe_load(settings)
+            except:
+                print("error")
+        
+        print(self.config)
+        print(self.config["recording_number"])
+        
+        # the file number is taken from config.yaml and incremented each time the program runs
+        self.recorder = Record(self.mixer[0], filename=f"recording-{self.config['recording_number']}.wav")
+        
+        self.config['recording_number'] += 1
+        
+        with open("config.yaml", "w") as settings:
+            try:
+                yaml.dump({"recording_number": self.config['recording_number']}, settings)
+            except:
+                print("error")
+        
         
         self.mixer.addInput(0, self.ambient_sounds.delay_selector)
         self.mixer.addInput(1, self.music.delay_selector)
@@ -143,8 +163,6 @@ class Main():
                     
             self.action_selection = input("Enter next command: ")
             self.action_selection_array = self.action_selection.split(' ')
-            
-if __name__ == "__main__":
-    main = Main()
-
-    s.gui(locals)
+                     
+main = Main()
+s.gui(locals)
