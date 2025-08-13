@@ -80,8 +80,12 @@ class Music():
         
         self.guitar_delay = Delay(self.guitar_mixer[0], 0.1, 0.7, 5)
         
-        self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], mul=[0.5, 0.5]).out()
-        self.pitch_lfo = Sine(freq=11, mul=0, add=1)
+        self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], mul=[0.5, 0.5])
+        
+        # LFO = Low Frequency Oscillator - a signal used to modulate some paramater of the sound like pitch or volume 
+        # Modulate is a fancy way of saying change over time
+        self.pitch_lfo = Sine(freq=0, mul=1, add=1)
+        
         # self.delay_mixer = Mixer().out()
         # self.delay_mixer.addInput(0, self.delay_selector)
         # self.delay_mixer.setAmp(0, 1, 0.5)

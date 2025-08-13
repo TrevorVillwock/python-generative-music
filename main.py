@@ -1,6 +1,6 @@
 from music import Music
 from ambient_sounds import AmbientSounds
-from pyo import Server, Mixer
+from pyo import Server, Mixer, Record
 import sys
 import time
 
@@ -20,24 +20,21 @@ class Main():
         self.music = Music("ionian") # default mode
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
-        print("testing note to midi")
-        print(self.music.note_to_midi("C4"))
-        print(self.music.note_to_midi("C5"))
-        print(self.music.note_to_midi("C6"))
+        
+        # modify the filename here to make multiple recordings
+        self.recorder = Record(self.mixer[0], filename="recording.wav")
+        
+        self.mixer.addInput(0, self.ambient_sounds.delay_selector)
+        self.mixer.addInput(1, self.music.delay_selector)
+        self.mixer.setAmp(0, 0, 0.5)
+        self.mixer.setAmp(1, 0, 0.1)
+        self.mixer.setTime(0.01)
+        self.mixer.setMul(1)
+        
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
         print("What do you want to do?\n\n 1 - Eat breakfast (Ionian)\n 2 - Sit by the river (Dorian)\n 3 - Go to the top of the castle (Phrygian)\n 4 - Go to the garden (Lydian)\n 5 - Go for a hike (Mixolydian) \n 6 - Swim in the river (Aeolian) \n 7 - Go to the dungeon (Locrian)\n e - Drink Essence of Bat\n rt - Drink Elixir of Time \n ge - Toggle guitar echo\n time - Change echo length\n as - Toggle ambient sounds\n q - Quit \n\n")
         self.action_selection = input("Input a number or letter to choose: ")
         self.action_selection_array = self.action_selection.split(' ')
-        # print(self.action_selection_array)
-        
-        self.mixer.addInput(3, self.ambient_sounds.sound_set_1[0])
-        self.mixer.addInput(4, self.ambient_sounds.sound_set_2[0])
-        self.mixer.setAmp(0, 0, 0.1)
-        self.mixer.setAmp(1, 0, 0.1)
-        self.mixer.setAmp(2, 0, 0.1)
-        self.mixer.setAmp(3, 0, 0.5)
-        self.mixer.setTime(0.01)
-        self.mixer.setMul(1)
         
         while True:
             print("\n")

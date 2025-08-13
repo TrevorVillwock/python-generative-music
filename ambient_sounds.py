@@ -48,7 +48,7 @@ class AmbientSounds():
         self.is_playing = False
 
         self.delay = Delay(self.mixer[0], 0.5, 0.7, 5)
-        self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=0).out()
+        self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=0)
         
         self.current_sound_set = 1
         self.sound_set_1_speed = 1
@@ -109,6 +109,8 @@ class AmbientSounds():
                 self.fader1.play()
             self.current_sound_set = 1
             # print("else")
+        
+        print(f"self.current_sound_set: {self.current_sound_set}")
             
     def start_first_sound(self, first_sound):
         # print("start_first_sound")
