@@ -37,7 +37,7 @@ class Main():
         self.action_selection_array = self.action_selection.split(' ')
         
         while True:
-            print("\n")
+            print("\n", self.action_selection_array, "\n", len(self.action_selection_array), "\n")
             match self.action_selection_array[0]:
                 case "1": 
                     # don't need to change modes since the default is ionian
@@ -111,6 +111,25 @@ class Main():
                     delay = float(self.action_selection_array[1])
                     self.ambient_sounds.change_delay(delay)
                     self.music.change_guitar_delay(delay)
+                case "v":
+                    if len(self.action_selection_array) == 1:
+                        print("requires a argument\n\nUse 'v freq' to change the frequency of the vibrato\nUse 'v mult' to change the multiplyer fo the vibrato")
+                        pass
+
+                    elif len(self.action_selection_array) == 2:
+                        print(f"argument '{self.action_selection_array[1]}' requires an argument in the form of an decimal")
+                        pass
+
+                    elif self.action_selection_array[1] != "freq" or "mult":
+                        print("requires a argument\n\nUse 'v freq' to change the frequency of the vibrato\nUse 'v mult' to change the multiplyer fo the vibrato")
+                        pass
+
+                    else:
+                        if self.action_selection_array == "freq":
+                            self.music.pitch_lfo.setFreq(float(self.action_selection_array[2]))
+                        elif self.action_selection_array == "mult":
+                            self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
+
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()
@@ -125,6 +144,7 @@ class Main():
             self.action_selection = input("Enter next command: ")
             self.action_selection_array = self.action_selection.split(' ')
             
-main = Main()
+if __name__ == "__main__":
+    main = Main()
 
-s.gui(locals)
+    s.gui(locals)
