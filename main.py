@@ -132,6 +132,8 @@ class Main():
                     self.ambient_sounds.change_delay(delay)
                     self.music.change_guitar_delay(delay)
                 case "v":
+                    print("self.action_selection_array[1] != 'freq' or 'mult': " + str(self.action_selection_array[1] != "freq" or "mult"))
+                    print("self.action_selection_array[1] != 'freq' and self.action_selection_array[1] != 'mult': " + str(self.action_selection_array[1] != "freq" and self.action_selection_array[1] !=  "mult"))
                     if len(self.action_selection_array) == 1:
                         print("requires a argument\n\nUse 'v freq' to change the frequency of the vibrato\nUse 'v mult' to change the multiplyer fo the vibrato")
                         pass
@@ -140,14 +142,16 @@ class Main():
                         print(f"argument '{self.action_selection_array[1]}' requires an argument in the form of an decimal")
                         pass
 
-                    elif self.action_selection_array[1] != "freq" or "mult":
+                    elif self.action_selection_array[1] != "freq" and self.action_selection_array[1] != "mult":
                         print("requires a argument\n\nUse 'v freq' to change the frequency of the vibrato\nUse 'v mult' to change the multiplyer fo the vibrato")
                         pass
 
                     else:
-                        if self.action_selection_array == "freq":
+                        if self.action_selection_array[1] == "freq":
+                            print("set freq")
                             self.music.pitch_lfo.setFreq(float(self.action_selection_array[2]))
-                        elif self.action_selection_array == "mult":
+                        elif self.action_selection_array[1] == "mult":
+                            print("set mult")
                             self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
 
                 case "q":
