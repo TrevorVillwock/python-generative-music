@@ -134,25 +134,14 @@ class Main():
                 case "v":
                     print("self.action_selection_array[1] != 'freq' or 'mult': " + str(self.action_selection_array[1] != "freq" or "mult"))
                     print("self.action_selection_array[1] != 'freq' and self.action_selection_array[1] != 'mult': " + str(self.action_selection_array[1] != "freq" and self.action_selection_array[1] !=  "mult"))
-                    if len(self.action_selection_array) == 1:
-                        print("requires a argument\n\nUse 'v freq' to change the frequency of the vibrato\nUse 'v mult' to change the multiplyer fo the vibrato")
-                        pass
-
-                    elif len(self.action_selection_array) == 2:
-                        print(f"argument '{self.action_selection_array[1]}' requires an argument in the form of an decimal")
-                        pass
-
-                    elif self.action_selection_array[1] != "freq" and self.action_selection_array[1] != "mult":
-                        print("requires a argument\n\nUse 'v freq' to change the frequency of the vibrato\nUse 'v mult' to change the multiplyer fo the vibrato")
-                        pass
-
-                    else:
-                        if self.action_selection_array[1] == "freq":
-                            print("set freq")
-                            self.music.pitch_lfo.setFreq(float(self.action_selection_array[2]))
-                        elif self.action_selection_array[1] == "mult":
-                            print("set mult")
-                            self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
+                    if len(self.action_selection_array) != 3 or (self.action_selection_array[1] != "freq" and self.action_selection_array[1] != "mult"):
+                        print("Usage: v [freq or mult] [value]\nExample: v freq 0.1")
+                    if self.action_selection_array[1] == "freq":
+                        print("set freq")
+                        self.music.pitch_lfo.setFreq(float(self.action_selection_array[2]))
+                    elif self.action_selection_array[1] == "mult":
+                        print("set mult")
+                        self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
 
                 case "q":
                     self.mixer.setMul(0.0)
