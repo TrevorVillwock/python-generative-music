@@ -21,17 +21,15 @@ TODO:
 - Instruments you can play from the command line
 - Potions/spells/powerups/knowledge - echoes, reversal in time, high pass, low pass, band pass, 7th chords, extensions, atonality, micropolyphony
 - Create commands for user to use similar to shell commands that activate certain instruments or turn on certain effects
-- Possible effects
-  - Delay
+
+Possible effects
   - High and Low Pass filters
   - Distortion
   - Pitch bend
   - Chromaticism
   - Reverb
-  - Reversed samples
 
 Backlog:
-
 - Counterpoint
 - Imitation
 - Control interval of harmonization

@@ -16,7 +16,7 @@ s.start()
 
 class Main():  
     def __init__(self):
-        self.input_is_valid = 0
+        self.input_is_valid = 1
         self.first_sound_started = 0
         self.music = Music("ionian") # default mode
         self.ambient_sounds = AmbientSounds()
@@ -61,6 +61,7 @@ class Main():
             match self.action_selection_array[0]:
                 case "1": 
                     # don't need to change modes since the default is ionian
+                    self.input_is_valid = 1
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("dining_hall")
                         self.first_sound_started = 1
@@ -68,7 +69,8 @@ class Main():
                         self.ambient_sounds.change_sound("dining_hall")
                         self.music.change_mode("ionian")
                         self.music.current_triad = 0    
-                case "2": 
+                case "2":
+                    self.input_is_valid = 1 
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("river")
                         self.first_sound_started = 1
@@ -77,6 +79,7 @@ class Main():
                         self.music.change_mode("dorian")
                         self.music.current_triad = 0
                 case "3": 
+                    self.input_is_valid = 1
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("top_of_castle")
                         self.first_sound_started = 1
@@ -85,6 +88,7 @@ class Main():
                         self.music.change_mode("phrygian")
                         self.music.current_triad = 0
                 case "4":
+                    self.input_is_valid = 1
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("birds")
                         self.first_sound_started = 1
@@ -92,7 +96,8 @@ class Main():
                         self.ambient_sounds.change_sound("birds")
                         self.music.change_mode("lydian")
                         self.music.current_triad = 0
-                case "5": 
+                case "5":
+                    self.input_is_valid = 1 
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("hike")
                         self.first_sound_started = 1
@@ -100,7 +105,8 @@ class Main():
                         self.ambient_sounds.change_sound("hike")
                         self.music.change_mode("mixolydian")
                         self.music.current_triad = 0
-                case "6": 
+                case "6":
+                    self.input_is_valid = 1 
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("underwater")
                         self.first_sound_started = 1
@@ -108,7 +114,8 @@ class Main():
                         self.ambient_sounds.change_sound("underwater")
                         self.music.change_mode("aeolian")
                         self.music.current_triad = 0
-                case "7": 
+                case "7":
+                    self.input_is_valid = 1 
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("dungeon")
                         self.first_sound_started = 1
@@ -117,21 +124,27 @@ class Main():
                         self.music.change_mode("locrian")
                         self.music.current_triad = 0
                 case "rt":
+                    self.input_is_valid = 1
                     self.music.reverse_samples()
                     self.ambient_sounds.reverse_sounds()
                 case "e":
+                    self.input_is_valid = 1
                     print("case e")
                     self.music.toggle_guitar_delay()
                     self.ambient_sounds.toggle_delay()
                 case "ge":
+                    self.input_is_valid = 1
                     self.music.toggle_guitar_delay()
                 case "as":
+                    self.input_is_valid = 1
                     self.ambient_sounds.volume_toggle()
                 case "time":
+                    self.input_is_valid = 1
                     delay = float(self.action_selection_array[1])
                     self.ambient_sounds.change_delay(delay)
                     self.music.change_guitar_delay(delay)
                 case "v":
+                    self.input_is_valid = 1
                     print("self.action_selection_array[1] != 'freq' or 'mult': " + str(self.action_selection_array[1] != "freq" or "mult"))
                     print("self.action_selection_array[1] != 'freq' and self.action_selection_array[1] != 'mult': " + str(self.action_selection_array[1] != "freq" and self.action_selection_array[1] !=  "mult"))
                     if len(self.action_selection_array) != 3 or (self.action_selection_array[1] != "freq" and self.action_selection_array[1] != "mult"):
@@ -142,8 +155,8 @@ class Main():
                     elif self.action_selection_array[1] == "mult":
                         print("set mult")
                         self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
-
                 case "q":
+                    self.input_is_valid = 1
                     self.mixer.setMul(0.0)
                     self.music.stop()
                     self.ambient_sounds.stop()
@@ -152,9 +165,11 @@ class Main():
                     s.shutdown()
                     sys.exit()
                 case _:
-                    self.action_selection = input("Please enter valid command: ")
-                    
-            self.action_selection = input("Enter next command: ")
+                    self.input_is_valid = 0
+                    self.action_selection = input("Please enter a valid command: ")
+            
+            if self.input_is_valid:        
+                self.action_selection = input("Enter next command: ")
             self.action_selection_array = self.action_selection.split(' ')
                      
 main = Main()
