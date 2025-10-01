@@ -152,7 +152,7 @@ class Main():
                     s.shutdown()
                     sys.exit()
                 case _:
-                    self.action_selection = input("Please enter a number between 1 and 7: ")
+                    self.action_selection = input("Please enter valid command: ")
                     
             self.action_selection = input("Enter next command: ")
             self.action_selection_array = self.action_selection.split(' ')
