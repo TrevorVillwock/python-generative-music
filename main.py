@@ -16,7 +16,7 @@ s.start()
 
 class Main():  
     def __init__(self):
-        self.input_is_valid = 0
+        self.input_is_valid = 1
         self.first_sound_started = 0
         self.music = Music("ionian") # default mode
         self.ambient_sounds = AmbientSounds()
@@ -142,7 +142,6 @@ class Main():
                     elif self.action_selection_array[1] == "mult":
                         print("set mult")
                         self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
-
                 case "q":
                     self.mixer.setMul(0.0)
                     self.music.stop()
@@ -152,9 +151,11 @@ class Main():
                     s.shutdown()
                     sys.exit()
                 case _:
-                    self.action_selection = input("Please enter a number between 1 and 7: ")
-                    
-            self.action_selection = input("Enter next command: ")
+                    self.input_is_valid = 0
+                    self.action_selection = input("Please enter a valid command: ")
+            
+            if self.input_is_valid:        
+                self.action_selection = input("Enter next command: ")
             self.action_selection_array = self.action_selection.split(' ')
                      
 main = Main()
