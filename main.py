@@ -56,23 +56,24 @@ class Main():
         
         print("\n\nWelcome to CASTLE OF SOUND\n\n")
         print("""
-              What do you want to do?
-              
-              1 - Eat breakfast (Ionian)
-              2 - Sit by the river (Dorian)
-              3 - Go to the top of the castle (Phrygian)
-              4 - Go to the garden (Lydian)
-              5 - Go for a hike (Mixolydian)
-              6 - Swim in the river (Aeolian)
-              7 - Go to the dungeon (Locrian)
-              e - Drink Essence of Bat
-              rt - Drink Elixir of Time
-              ge - Toggle guitar echo
-              time [seconds] - Change echo length
-              as - Toggle ambient sounds
-              f [frequency] - Change filter cutoff frequency
-              tf - Toggle filter
-              q - Quit """)
+What do you want to do?
+
+1 - Eat breakfast (Ionian)
+2 - Sit by the river (Dorian)
+3 - Go to the top of the castle (Phrygian)
+4 - Go to the garden (Lydian)
+5 - Go for a hike (Mixolydian)
+6 - Swim in the river (Aeolian)
+7 - Go to the dungeon (Locrian)
+e - Drink Essence of Bat
+rt - Drink Elixir of Time
+ge - Toggle guitar echo
+time [seconds] - Change echo length
+as - Toggle ambient sounds
+f [frequency] - Change filter cutoff frequency
+tf - Toggle filter
+q - Quit """
+              )
         self.action_selection = input("Input a number or letter to choose: ")
         self.action_selection_array = self.action_selection.split(' ')
         
