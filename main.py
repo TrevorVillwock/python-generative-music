@@ -22,7 +22,7 @@ class Main():
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0)
         self.filter = MoogLP(self.mixer[0], freq=1000)
-        self.filter_selector = Selector([self.mixer[0], self.filter], voice=1).out()
+        self.filter_selector = Selector([self.mixer[0], self.filter], voice=0).out()
 
         self.config = {}
         
