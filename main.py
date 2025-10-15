@@ -176,6 +176,22 @@ q - Quit """
                     elif self.action_selection_array[1] == "mult":
                         print("set mult")
                         self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
+
+                case "f":
+                    self.input_is_valid = 1
+                    self.filter.setFreq(int(self.action_selection_array[1]))
+                    
+                    if self.filter_selector.voice == 0:
+                        print("Filter is disabled, run tf to enable it.")
+
+                case "tf":
+                    self.input_is_valid = 1
+
+                    if self.filter_selector.voice == 0:
+                        self.filter_selector.setVoice(1)
+                    else:
+                        self.filter_selector.setVoice(0)
+
                 case "q":
                     self.input_is_valid = 1
                     self.mixer.setMul(0.0)
