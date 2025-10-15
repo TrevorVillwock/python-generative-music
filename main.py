@@ -1,6 +1,6 @@
 from music import Music
 from ambient_sounds import AmbientSounds
-from pyo import Server, Mixer, Record
+from pyo import Server, Mixer, Record, MoogLP, Selector
 import sys
 import time
 import yaml
@@ -20,7 +20,10 @@ class Main():
         self.first_sound_started = 0
         self.music = Music("ionian") # default mode
         self.ambient_sounds = AmbientSounds()
-        self.mixer = Mixer(outs=2, chnls=2, mul=0).out()
+        self.mixer = Mixer(outs=2, chnls=2, mul=0)
+        self.filter = MoogLP(self.mixer[0], freq=1000)
+        self.filter_selector = Selector([self.mixer[0], self.filter], voice=1).out()
+
         self.config = {}
         
         with open("config.yaml") as settings:
