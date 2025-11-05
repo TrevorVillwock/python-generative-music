@@ -192,6 +192,21 @@ q - Quit """
                     else:
                         self.filter_selector.setVoice(0)
 
+                case "d":
+                    self.input_is_valid = 1
+
+                    if len(self.action_selection_array) != 2:
+                        print('Usage: d [detune factor (float) ]\nExample: d 0.1')
+                    else:
+                        self.music.detune_factor = float(self.action_selection_array[1])
+
+                case 'td':
+                    self.input_is_valid = 1
+
+                    self.music.detune_factor = 0
+                    self.music.detune = not self.music.detune
+                    print('is detuning?', self.music.detune)
+
                 case "q":
                     self.input_is_valid = 1
                     self.mixer.setMul(0.0)

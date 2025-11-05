@@ -86,6 +86,9 @@ class Music():
         # Modulate is a fancy way of saying change over time
         self.pitch_lfo = Sine(freq=0, mul=1, add=1)
         
+        self.detune = True
+        self.detune_factor = 0.1
+
         # self.delay_mixer = Mixer().out()
         # self.delay_mixer.addInput(0, self.delay_selector)
         # self.delay_mixer.setAmp(0, 1, 0.5)
@@ -222,11 +225,15 @@ class Music():
     def play_guitar(self, note):
         dynamic_level = random.randint(1, 3)
         try:
+            if self.detune:
+                self.guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
             self.guitar_samples[f"{note}-{dynamic_level}"].play()
         except Exception as e:
+            if self.detune:
+                self.guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+                
             self.guitar_samples[f"{note}-{dynamic_level-1}"].play()
-            # print(e)
-            pass
+            
         
     def toggle_guitar_delay(self):
         # print("toggle delay start")
