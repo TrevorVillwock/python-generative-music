@@ -86,7 +86,7 @@ class Music():
         # Modulate is a fancy way of saying change over time
         self.pitch_lfo = Sine(freq=0, mul=1, add=1)
         
-        self.detune = True
+        self.detune = False
         self.detune_factor = 0.1
 
         # self.delay_mixer = Mixer().out()
