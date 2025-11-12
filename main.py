@@ -203,7 +203,6 @@ q - Quit """
                 case 'td':
                     self.input_is_valid = 1
 
-                    self.music.detune_factor = 0
                     self.music.detune = not self.music.detune
                     print('is detuning?', self.music.detune)
 
