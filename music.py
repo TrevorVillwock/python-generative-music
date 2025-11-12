@@ -227,10 +227,14 @@ class Music():
         try:
             if self.detune:
                 self.guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+            else:
+                self.guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo)
             self.guitar_samples[f"{note}-{dynamic_level}"].play()
         except Exception as e:
             if self.detune:
                 self.guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+            else:
+                self.guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo)
                 
             self.guitar_samples[f"{note}-{dynamic_level-1}"].play()
             
