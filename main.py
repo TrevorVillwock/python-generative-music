@@ -72,6 +72,8 @@ time [seconds] - Change echo length
 as - Toggle ambient sounds
 f [frequency] - Change filter cutoff frequency
 tf - Toggle filter
+td - Toggle detune
+d [float] - Change detune amount
 q - Quit """
               )
         self.action_selection = input("Input a number or letter to choose: ")
@@ -166,16 +168,20 @@ q - Quit """
                     self.music.change_guitar_delay(delay)
                 case "v":
                     self.input_is_valid = 1
-                    print("self.action_selection_array[1] != 'freq' or 'mult': " + str(self.action_selection_array[1] != "freq" or "mult"))
-                    print("self.action_selection_array[1] != 'freq' and self.action_selection_array[1] != 'mult': " + str(self.action_selection_array[1] != "freq" and self.action_selection_array[1] !=  "mult"))
-                    if len(self.action_selection_array) != 3 or (self.action_selection_array[1] != "freq" and self.action_selection_array[1] != "mult"):
+                    
+                    if len(self.action_selection_array) == 3:
+                        if (self.action_selection_array[1] != "freq" and self.action_selection_array[1] != "mult"):
+                            print("Usage: v [freq or mult] [value]\nExample: v freq 0.1")
+                        if self.action_selection_array[1] == "freq":
+                            print("set freq")
+                            self.music.pitch_lfo.setFreq(float(self.action_selection_array[2]))
+                        elif self.action_selection_array[1] == "mult":
+                            print("set mult")
+                            self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
+
+                    else:
                         print("Usage: v [freq or mult] [value]\nExample: v freq 0.1")
-                    if self.action_selection_array[1] == "freq":
-                        print("set freq")
-                        self.music.pitch_lfo.setFreq(float(self.action_selection_array[2]))
-                    elif self.action_selection_array[1] == "mult":
-                        print("set mult")
-                        self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
+
 
                 case "f":
                     self.input_is_valid = 1
