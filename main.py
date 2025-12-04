@@ -146,6 +146,11 @@ q - Quit """
                         self.ambient_sounds.change_sound("dungeon")
                         self.music.change_mode("locrian")
                         self.music.current_triad = 0
+                case "o":
+                    print("octatonic")
+                    self.input_is_valid = 1
+                    self.music.change_mode("octatonic")
+                    self.music.current_triad = 0
                 case "rt":
                     self.input_is_valid = 1
                     self.music.reverse_samples()

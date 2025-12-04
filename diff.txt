@@ -1,0 +1,151 @@
+diff --git a/config.yaml b/config.yaml
+index d3b5cdd..3b1c4b7 100644
+--- a/config.yaml
++++ b/config.yaml
+@@ -1 +1 @@
+-recording_number: 25
++recording_number: 36
+diff --git a/main.py b/main.py
+index 30b2950..03eb7f5 100644
+--- a/main.py
++++ b/main.py
+@@ -56,24 +56,25 @@ class Main():
+         
+         print("\n\nWelcome to CASTLE OF SOUND\n\n")
+         print("""
+-What do you want to do?
++            What do you want to do?
+ 
+-1 - Eat breakfast (Ionian)
+-2 - Sit by the river (Dorian)
+-3 - Go to the top of the castle (Phrygian)
+-4 - Go to the garden (Lydian)
+-5 - Go for a hike (Mixolydian)
+-6 - Swim in the river (Aeolian)
+-7 - Go to the dungeon (Locrian)
+-e - Drink Essence of Bat
+-rt - Drink Elixir of Time
+-ge - Toggle guitar echo
+-time [seconds] - Change echo length
+-as - Toggle ambient sounds
+-f [frequency] - Change filter cutoff frequency
+-tf - Toggle filter
+-q - Quit """
+-              )
++            1 - Eat breakfast (Ionian)
++            2 - Sit by the river (Dorian)
++            3 - Go to the top of the castle (Phrygian)
++            4 - Go to the garden (Lydian)
++            5 - Go for a hike (Mixolydian)
++            6 - Swim in the river (Aeolian)
++            7 - Go to the dungeon (Locrian)
++            O - Octatonic
++            e - Drink Essence of Bat
++            rt - Drink Elixir of Time
++            ge - Toggle guitar echo
++            time [seconds] - Change echo length
++            as - Toggle ambient sounds
++            f [frequency] - Change filter cutoff frequency
++            tf - Toggle filter
++            q - Quit """
++        )
+         self.action_selection = input("Input a number or letter to choose: ")
+         self.action_selection_array = self.action_selection.split(' ')
+         
+@@ -144,6 +145,10 @@ q - Quit """
+                         self.ambient_sounds.change_sound("dungeon")
+                         self.music.change_mode("locrian")
+                         self.music.current_triad = 0
++                case "o":
++                    self.input_is_valid = 1
++                    self.music.change_mode("octatonic")
++                    self.music.current_triad = 0
+                 case "rt":
+                     self.input_is_valid = 1
+                     self.music.reverse_samples()
+@@ -196,7 +201,7 @@ q - Quit """
+                     self.input_is_valid = 1
+ 
+                     if len(self.action_selection_array) != 2:
+-                        print('Usage: d [detune factor (float) ]\nExample: d 0.1')
++                        print('Usage: d [detune factor (float)]\nExample: d 0.1')
+                     else:
+                         self.music.detune_factor = float(self.action_selection_array[1])
+ 
+diff --git a/music.py b/music.py
+index d77ab13..0d6888e 100644
+--- a/music.py
++++ b/music.py
+@@ -26,10 +26,11 @@ class Music():
+                       "aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
+                                   14, 15, 17, 19, 20, 22, 24],
+                       "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
+-                                  13, 15, 17, 19, 20, 22, 24]}
++                                  13, 15, 17, 19, 20, 22, 24],
++                      "octatonic": [0, 1, 3, 4, 6, 7, 9, 10, 12, 
++                                    13, 15, 16, 18, 19, 21, 22, 24]}
+         
+         self.current_mode = self.modes[mode]
+-        
+         self.current_mode_name = mode
+         
+         # Simple progressions using the primary triads (I, IV, and V) in each mode.
+@@ -44,7 +45,9 @@ class Music():
+             "lydian": [['C2', 'E3', 'G2'], ['C2', 'E3', 'G2'], ['F#2', 'A3', 'C3'], ['G2', 'B3', 'D3']],
+             "mixolydian": [['D2', 'F#3', 'A2'], ['D2', 'F#3', 'A2'], ['G2', 'B3', 'D3'], ['A2', 'C4', 'E3']],
+             "aeolian": [['E1', 'G2', 'B1'], ['E1', 'G2', 'B1'], ['A1', 'C3', 'E2'], ['B1', 'D3', 'F#2']],
+-            "locrian": [['F#1', 'A2', 'C2'], ['F#1', 'A2', 'C2'], ['B1', 'D3', 'F#2'], ['C2', 'E3', 'G2']]}
++            "locrian": [['F#1', 'A2', 'C2'], ['F#1', 'A2', 'C2'], ['B1', 'D3', 'F#2'], ['C2', 'E3', 'G2']],
++            "octatonic": [[random.choice(self.modes["octatonic"]), random.choice(self.modes["octatonic"]), random.choice(self.modes["octatonic"])]]
++        }
+         
+         self.current_triad = 0
+ 
+@@ -224,19 +227,34 @@ class Music():
+         
+     def play_guitar(self, note):
+         dynamic_level = random.randint(1, 3)
+-        try:
+-            if self.detune:
+-                self.guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+-            else:
+-                self.guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo)
+-            self.guitar_samples[f"{note}-{dynamic_level}"].play()
+-        except Exception as e:
+-            if self.detune:
+-                self.guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+-            else:
+-                self.guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo)
+-                
+-            self.guitar_samples[f"{note}-{dynamic_level-1}"].play()
++        
++        if note in self.midi_numbers:
++            try:
++                if self.detune:
++                    self.guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
++                else:
++                    self.guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo)
++                self.guitar_samples[f"{note}-{dynamic_level}"].play()
++            except Exception as e:
++                if self.detune:
++                    self.guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
++                else:
++                    self.guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo)
++                    
++                self.guitar_samples[f"{note}-{dynamic_level-1}"].play()
++        else:
++            try:
++                if self.detune:
++                    self.guitar_samples[f"{note-1}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor)*1.059)
++                else:
++                    self.guitar_samples[f"{note-1}-{dynamic_level}"].setSpeed(self.pitch_lfo*1.059)
++                self.guitar_samples[f"{note-1}-{dynamic_level}"].play()
++            except:
++                if self.detune:
++                    self.guitar_samples[f"{note-1}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor)*1.059)
++                else:
++                    self.guitar_samples[f"{note-1}-{dynamic_level-1}"].setSpeed(self.pitch_lfo*1.059)
++                self.guitar_samples[f"{note-1}-{dynamic_level-1}"].play()
+             
+         
+     def toggle_guitar_delay(self):

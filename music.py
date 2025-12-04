@@ -26,7 +26,10 @@ class Music():
                       "aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
                                   14, 15, 17, 19, 20, 22, 24],
                       "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
-                                  13, 15, 17, 19, 20, 22, 24]}
+                                  13, 15, 17, 19, 20, 22, 24],
+                      "octatonic": [0, 1, 3, 4, 6, 7, 9, 10, 12, 
+                                    13, 15, 16, 18, 19, 21, 22, 24]
+        }
         
         self.current_mode = self.modes[mode]
         
@@ -44,7 +47,9 @@ class Music():
             "lydian": [['C2', 'E3', 'G2'], ['C2', 'E3', 'G2'], ['F#2', 'A3', 'C3'], ['G2', 'B3', 'D3']],
             "mixolydian": [['D2', 'F#3', 'A2'], ['D2', 'F#3', 'A2'], ['G2', 'B3', 'D3'], ['A2', 'C4', 'E3']],
             "aeolian": [['E1', 'G2', 'B1'], ['E1', 'G2', 'B1'], ['A1', 'C3', 'E2'], ['B1', 'D3', 'F#2']],
-            "locrian": [['F#1', 'A2', 'C2'], ['F#1', 'A2', 'C2'], ['B1', 'D3', 'F#2'], ['C2', 'E3', 'G2']]}
+            "locrian": [['F#1', 'A2', 'C2'], ['F#1', 'A2', 'C2'], ['B1', 'D3', 'F#2'], ['C2', 'E3', 'G2']],
+            "octatonic": [['G1', 'Bb2', 'Db2'], ['G1', 'Bb2', 'Db2'], ['C#2', 'E3', 'G2'], ['D2', 'F3', 'Ab2']]
+        }
         
         self.current_triad = 0
 
@@ -71,10 +76,15 @@ class Music():
         
         self.guitar_sample_speed = 1
         
-        self.guitar_samples = {}
-        self.midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
-                             50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
+        self.g_guitar_samples = {}
+        self.fsharp_guitar_samples = {}
         
+        self.g_midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
+                             50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 68]
+        
+        self.fsharp_midi_numbers = [27, 29, 32, 34, 37, 39, 41, 44, 46, 49, 51, 53,
+                                   56, 58, 61, 63, 65, 67, 69]
+
         self.guitar_mixer = Mixer()
         self.current_guitar_channel = 0
         
@@ -93,23 +103,39 @@ class Music():
         # self.delay_mixer.addInput(0, self.delay_selector)
         # self.delay_mixer.setAmp(0, 1, 0.5)
                  
-        for m in self.midi_numbers:
+        for m in self.g_midi_numbers:
             # print(f"m: {m}")
             for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    self.guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", speed=self.pitch_lfo, mul=[0.75, 0.75]).stop()
-                    if self.current_guitar_channel < 100:
-                        self.guitar_mixer.addInput(self.current_guitar_channel, self.guitar_samples[f"{m}-{i+1}"])
+                    self.g_guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", speed=self.pitch_lfo, mul=[0.75, 0.75]).stop()
+                    if self.current_guitar_channel < 200:
+                        self.guitar_mixer.addInput(self.current_guitar_channel, self.g_guitar_samples[f"{m}-{i+1}"])
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 1)
                         self.current_guitar_channel += 1
                     # print(f"self.guitar_channel: {self.guitar_channel}")
                 except Exception as e:
-                    # print("exception: " + str(e))
-                    pass
+                    print("g exception: " + str(e))
                     
-        # print(self.guitar_samples)                   
+        for m in self.fsharp_midi_numbers:
+            for i in range(0, 3):
+                try:
+                    # print(f"i: {i}")
+                    self.fsharp_guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m+1}-{i+1}.aif", speed=self.pitch_lfo*0.9438, mul=[0.75, 0.75]).stop()
+                    if self.current_guitar_channel < 200:
+                        self.guitar_mixer.addInput(self.current_guitar_channel, self.fsharp_guitar_samples[f"{m}-{i+1}"])
+                        self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
+                        self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 1)
+                        self.current_guitar_channel += 1
+                    # print(f"self.guitar_channel: {self.guitar_channel}")
+                except Exception as e:
+                    print("f# exception: " + str(e))
+                    
+        for f in self.fsharp_guitar_samples:
+            print(f)
+            
+        print(self.g_guitar_samples)                   
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
 
@@ -155,20 +181,20 @@ class Music():
             if self.motif_step < len(self.motifs[self.motif_num]) - 1:
                 # print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
                 
-                self.melody_note = self.midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
+                self.melody_note = self.g_midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
                 
                 # if the harmony note is out of range, don't play it
                 try:
-                    self.harmony_note = self.midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
+                    self.harmony_note = self.g_midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
                 except:
                     pass
                 
                 self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
                 self.motif_step += 1
             else:
-                self.melody_note = self.midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
+                self.melody_note = self.g_midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
                 try:
-                    self.harmony_note = self.midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
+                    self.harmony_note = self.g_midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
                 except:
                     pass
                 self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
@@ -176,9 +202,9 @@ class Music():
                 self.playing_motif = False
         else:
             random_degree = random.randint(0, 23)
-            self.melody_note = self.midi_numbers[random_degree]
+            self.melody_note = self.g_midi_numbers[random_degree]
             try:
-                self.harmony_note = self.midi_numbers[random_degree + self.harmony_interval]
+                self.harmony_note = self.g_midi_numbers[random_degree + self.harmony_interval]
             except:
                 pass
 
@@ -224,21 +250,35 @@ class Music():
         
     def play_guitar(self, note):
         dynamic_level = random.randint(1, 3)
-        try:
-            if self.detune:
-                self.guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
-            else:
-                self.guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo)
-            self.guitar_samples[f"{note}-{dynamic_level}"].play()
-        except Exception as e:
-            if self.detune:
-                self.guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
-            else:
-                self.guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo)
-                
-            self.guitar_samples[f"{note}-{dynamic_level-1}"].play()
-            
-        
+        if note in self.g_midi_numbers:    
+            try:
+                if self.detune:
+                    self.g_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+                else:
+                    self.g_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo)
+                self.g_guitar_samples[f"{note}-{dynamic_level}"].play()
+            except Exception as e:
+                if self.detune:
+                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+                else:
+                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo)
+                    
+                self.g_guitar_samples[f"{note}-{dynamic_level-1}"].play()
+        else:
+            try:
+                if self.detune:
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+                else:
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo)
+                self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].play()
+            except Exception as e:
+                if self.detune:
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+                else:
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo)
+                    
+                self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].play()
+  
     def toggle_guitar_delay(self):
         # print("toggle delay start")
         if self.delay_selector.voice == 0:
@@ -258,25 +298,25 @@ class Music():
     def reverse_samples(self):
         # print("reverse_samples")
         if self.guitar_sample_speed == 1:
-            for m in self.midi_numbers:
+            for m in self.g_midi_numbers:
                 # print(f"if m: {m}")
                 for i in range(0, 3):
                     try:
                         # print(f"i: {i}")
                         self.guitar_sample_speed = -1
-                        self.guitar_samples[f"{m}-{i+1}"].setSpeed(-1)
+                        self.g_guitar_samples[f"{m}-{i+1}"].setSpeed(-1)
                         # print(f"self.guitar_channel: {self.guitar_channel}")
                     except Exception as e:
                         # print("exception: " + str(e))
                         pass          
         else:
-            for m in self.midi_numbers:
+            for m in self.g_midi_numbers:
                 # print(f"else m: {m}")
                 for i in range(0, 3):
                     try:
                         # print(f"i: {i}")
                         self.guitar_sample_speed = 1
-                        self.guitar_samples[f"{m}-{i+1}"].setSpeed(1)
+                        self.g_guitar_samples[f"{m}-{i+1}"].setSpeed(1)
                         # print(f"self.guitar_channel: {self.guitar_channel}")
                     except Exception as e:
                         # print("exception: " + str(e))
@@ -291,7 +331,7 @@ class Music():
         }
         
         # Parse the note string
-        note = note.strip().upper()
+        note = note.strip()
         
         # Extract note name (first character)
         note_name = note[0]
@@ -323,7 +363,7 @@ class Music():
         for char in accidentals:
             if char == '#':
                 accidental_offset += 1
-            elif char == 'b':  # Flat
+            elif char == 'b' or char == 'B':  # Flat
                 accidental_offset -= 1
             else:
                 raise ValueError(f"Invalid accidental: {char}")
@@ -337,8 +377,8 @@ class Music():
         return midi_number
 
     def stop(self):
-        for s in self.guitar_samples:
-            self.guitar_samples[s].setMul(0)
+        for s in self.g_guitar_samples:
+            self.g_guitar_samples[s].setMul(0)
         self.melody_met.stop()
         self.chord_met.stop()
         self.bass_met.stop()
