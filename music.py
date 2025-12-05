@@ -84,6 +84,9 @@ class Music():
         
         self.fsharp_midi_numbers = [27, 29, 32, 34, 37, 39, 41, 44, 46, 49, 51, 53,
                                    56, 58, 61, 63, 65, 67, 68]
+        
+        self.octatonic_midi_numbers = [28, 29, 31, 32, 34, 35, 37, 38, 40, 41, 43, 44, 46, 47, 49, 
+                                       50, 52, 53, 55, 56, 58, 59, 60, 62, 63, 65, 66, 68, 69]
 
         self.guitar_mixer = Mixer()
         self.current_guitar_channel = 0
@@ -139,6 +142,7 @@ class Music():
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
 
+    # TODO: modify this function to work with the fsharp notes
     def play_melody(self):
         # print("play_melody")
         play_note = random.random()
@@ -178,35 +182,66 @@ class Music():
                 
             play_note = 1 # make sure no notes of the motif are replaced with rests
             
-            if self.motif_step < len(self.motifs[self.motif_num]) - 1:
-                # print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
-                
-                self.melody_note = self.g_midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
-                
-                # if the harmony note is out of range, don't play it
-                try:
-                    self.harmony_note = self.g_midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
-                except:
-                    pass
-                
-                self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
-                self.motif_step += 1
+            if self.current_mode_name == "octatonic":
+                if self.motif_step < len(self.motifs[self.motif_num]) - 1:
+                    # print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
+                    
+                    self.melody_note = self.octatonic_midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
+                    
+                    # if the harmony note is out of range, don't play it
+                    try:
+                        self.harmony_note = self.octatonic_midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
+                    except Exception as e:
+                        print(e)
+                    
+                    self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
+                    self.motif_step += 1
+                else:
+                    self.melody_note = self.octatonic_midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
+                    try:
+                        self.harmony_note = self.octatonic_midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
+                    except Exception as e:
+                        print(e)
+                    self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
+                    self.motif_step = 0
+                    self.playing_motif = False
             else:
-                self.melody_note = self.g_midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
-                try:
-                    self.harmony_note = self.g_midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
-                except:
-                    pass
-                self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
-                self.motif_step = 0
-                self.playing_motif = False
+                if self.motif_step < len(self.motifs[self.motif_num]) - 1:
+                    # print(f"motif {self.motif_num}, self.motif_step {self.motif_step}, motif degree: {self.motifs[self.motif_num][self.motif_step]}, scale_note: {self.current_mode[self.motifs[self.motif_num][self.motif_step][0] - 1]}")
+                    
+                    self.melody_note = self.g_midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
+                    
+                    # if the harmony note is out of range, don't play it
+                    try:
+                        self.harmony_note = self.g_midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
+                    except Exception as e:
+                        print(e)
+                    
+                    self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
+                    self.motif_step += 1
+                else:
+                    self.melody_note = self.g_midi_numbers[8 + self.motifs[self.motif_num][self.motif_step][0]]
+                    try:
+                        self.harmony_note = self.g_midi_numbers[8 + self.harmony_interval + self.motifs[self.motif_num][self.motif_step][0]]
+                    except Exception as e:
+                        print(e)
+                    self.melody_met.setTime(self.motifs[self.motif_num][self.motif_step][1])
+                    self.motif_step = 0
+                    self.playing_motif = False   
         else:
             random_degree = random.randint(0, 23)
-            self.melody_note = self.g_midi_numbers[random_degree]
-            try:
-                self.harmony_note = self.g_midi_numbers[random_degree + self.harmony_interval]
-            except:
-                pass
+            if self.current_mode_name == "octatonic":
+                self.melody_note = self.octatonic_midi_numbers[random_degree]
+                try:
+                    self.harmony_note = self.octatonic_midi_numbers[random_degree + self.harmony_interval]
+                except Exception as e:
+                    print(e)
+            else:
+                self.melody_note = self.g_midi_numbers[random_degree]
+                try:
+                    self.harmony_note = self.g_midi_numbers[random_degree + self.harmony_interval]
+                except Exception as e:
+                    print(e)
 
         # print(f"notes_to_harmonize: {notes_to_harmonize}")
         if self.notes_to_harmonize == 0:
@@ -234,7 +269,7 @@ class Music():
             # print("playing melody")
 
     def play_chords(self):
-        print(self.mode_primary_triads[self.current_mode_name][self.current_triad])
+        #print(self.mode_primary_triads[self.current_mode_name][self.current_triad])
         # print(len(self.mode_primary_triads[self.current_mode_name]))
         self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][0]))
         self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][1]))
@@ -245,7 +280,7 @@ class Music():
         else:
             self.current_triad = 0
 
-        print(f"self.current_triad after: {self.current_triad}")
+        #print(f"self.current_triad after: {self.current_triad}")
         
         
     def play_guitar(self, note):
@@ -291,11 +326,11 @@ class Music():
         self.guitar_delay.setDelay(delay)
         
     def change_mode(self, mode):
-        print("changing mode")
-        print(mode)
+        #print("changing mode")
+        #print(mode)
         self.current_mode_name = mode
         self.current_mode = self.modes[mode]
-        print(self.modes[mode])
+        #print(self.modes[mode])
         
     def reverse_samples(self):
         # print("reverse_samples")

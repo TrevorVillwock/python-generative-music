@@ -94,7 +94,6 @@ class AmbientSounds():
                 self.fader1.stop()
                 self.fader2.play()
             self.current_sound_set = 2
-            # print("if")
         else:
             while sounds_loaded < self.sound_count[new_sound]:
                 self.sound_set_1[sounds_loaded].setPath(self.sound_sets[new_sound][sounds_loaded])
@@ -108,9 +107,8 @@ class AmbientSounds():
                 self.fader2.stop()
                 self.fader1.play()
             self.current_sound_set = 1
-            # print("else")
         
-        print(f"self.current_sound_set: {self.current_sound_set}")
+        # print(f"self.current_sound_set: {self.current_sound_set}")
             
     def start_first_sound(self, first_sound):
         # print("start_first_sound")

@@ -80,7 +80,7 @@ q - Quit """
         self.action_selection_array = self.action_selection.split(' ')
         
         while True:
-            print("\n", self.action_selection_array, "\n", len(self.action_selection_array), "\n")
+            # print("\n", self.action_selection_array, "\n", len(self.action_selection_array), "\n")
             match self.action_selection_array[0]:
                 case "1": 
                     self.input_is_valid = 1
@@ -147,7 +147,7 @@ q - Quit """
                         self.music.change_mode("locrian")
                         self.music.current_triad = 0
                 case "o":
-                    print("octatonic")
+                    # print("octatonic")
                     self.input_is_valid = 1
                     self.music.change_mode("octatonic")
                     self.music.current_triad = 0
@@ -178,10 +178,10 @@ q - Quit """
                         if (self.action_selection_array[1] != "freq" and self.action_selection_array[1] != "mult"):
                             print("Usage: v [freq or mult] [value]\nExample: v freq 0.1")
                         if self.action_selection_array[1] == "freq":
-                            print("set freq")
+                            # print("set freq")
                             self.music.pitch_lfo.setFreq(float(self.action_selection_array[2]))
                         elif self.action_selection_array[1] == "mult":
-                            print("set mult")
+                            # print("set mult")
                             self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
 
                     else:
@@ -215,7 +215,7 @@ q - Quit """
                     self.input_is_valid = 1
 
                     self.music.detune = not self.music.detune
-                    print('is detuning?', self.music.detune)
+                    # print('is detuning?', self.music.detune)
 
                 case "q":
                     self.input_is_valid = 1
