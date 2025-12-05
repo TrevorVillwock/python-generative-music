@@ -83,50 +83,50 @@ q - Quit """
             print("\n", self.action_selection_array, "\n", len(self.action_selection_array), "\n")
             match self.action_selection_array[0]:
                 case "1": 
-                    # don't need to change modes since the default is ionian
                     self.input_is_valid = 1
+                    self.music.change_mode("ionian")
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("dining_hall")
                         self.first_sound_started = 1
                     else:
                         self.ambient_sounds.change_sound("dining_hall")
-                        self.music.change_mode("ionian")
                         self.music.current_triad = 0    
                 case "2":
                     self.input_is_valid = 1 
+                    self.music.change_mode("dorian")
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("river")
                         self.first_sound_started = 1
                     else:
                         self.ambient_sounds.change_sound("river")
-                        self.music.change_mode("dorian")
+                        
                         self.music.current_triad = 0
                 case "3": 
                     self.input_is_valid = 1
+                    self.music.change_mode("phrygian")
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("top_of_castle")
                         self.first_sound_started = 1
                     else:
                         self.ambient_sounds.change_sound("top_of_castle")
-                        self.music.change_mode("phrygian")
                         self.music.current_triad = 0
                 case "4":
                     self.input_is_valid = 1
+                    self.music.change_mode("lydian")
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("birds")
                         self.first_sound_started = 1
                     else:
                         self.ambient_sounds.change_sound("birds")
-                        self.music.change_mode("lydian")
                         self.music.current_triad = 0
                 case "5":
                     self.input_is_valid = 1 
+                    self.music.change_mode("mixolydian")
                     if not self.first_sound_started:
                         self.ambient_sounds.start_first_sound("hike")
                         self.first_sound_started = 1
                     else:
                         self.ambient_sounds.change_sound("hike")
-                        self.music.change_mode("mixolydian")
                         self.music.current_triad = 0
                 case "6":
                     self.input_is_valid = 1 

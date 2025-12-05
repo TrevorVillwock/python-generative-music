@@ -80,10 +80,10 @@ class Music():
         self.fsharp_guitar_samples = {}
         
         self.g_midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
-                             50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 68]
+                             50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
         
         self.fsharp_midi_numbers = [27, 29, 32, 34, 37, 39, 41, 44, 46, 49, 51, 53,
-                                   56, 58, 61, 63, 65, 67, 69]
+                                   56, 58, 61, 63, 65, 67, 68]
 
         self.guitar_mixer = Mixer()
         self.current_guitar_channel = 0
@@ -132,10 +132,10 @@ class Music():
                 except Exception as e:
                     print("f# exception: " + str(e))
                     
-        for f in self.fsharp_guitar_samples:
-            print(f)
+        # for f in self.fsharp_guitar_samples:
+        #     print(f)
             
-        print(self.g_guitar_samples)                   
+        # print(self.g_guitar_samples)                   
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
 
@@ -234,7 +234,7 @@ class Music():
             # print("playing melody")
 
     def play_chords(self):
-        # print(f"self.current_triad before: {self.current_triad}")
+        print(self.mode_primary_triads[self.current_mode_name][self.current_triad])
         # print(len(self.mode_primary_triads[self.current_mode_name]))
         self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][0]))
         self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][1]))
@@ -245,7 +245,7 @@ class Music():
         else:
             self.current_triad = 0
 
-        # print(f"self.current_triad after: {self.current_triad}")
+        print(f"self.current_triad after: {self.current_triad}")
         
         
     def play_guitar(self, note):
@@ -269,14 +269,13 @@ class Music():
                 if self.detune:
                     self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
                 else:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo)
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(0.9438*self.pitch_lfo)
                 self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].play()
             except Exception as e:
                 if self.detune:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(0.9438*self.pitch_lfo+(random.random()*self.detune_factor))
                 else:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo)
-                    
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(0.9438*self.pitch_lfo)    
                 self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].play()
   
     def toggle_guitar_delay(self):
@@ -292,8 +291,11 @@ class Music():
         self.guitar_delay.setDelay(delay)
         
     def change_mode(self, mode):
+        print("changing mode")
+        print(mode)
         self.current_mode_name = mode
         self.current_mode = self.modes[mode]
+        print(self.modes[mode])
         
     def reverse_samples(self):
         # print("reverse_samples")
