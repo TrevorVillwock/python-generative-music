@@ -65,6 +65,7 @@ What do you want to do?
 5 - Go for a hike (Mixolydian)
 6 - Swim in the river (Aeolian)
 7 - Go to the dungeon (Locrian)
+w - visit the wizard (octatonic)
 e - Drink Essence of Bat
 rt - Drink Elixir of Time
 ge - Toggle guitar echo

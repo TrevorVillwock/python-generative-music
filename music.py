@@ -28,7 +28,9 @@ class Music():
                       "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
                                   13, 15, 17, 19, 20, 22, 24],
                       "octatonic": [0, 1, 3, 4, 6, 7, 9, 10, 12, 
-                                    13, 15, 16, 18, 19, 21, 22, 24]
+                                    13, 15, 16, 18, 19, 21, 22, 24],
+                      "whole tone": [0, 2, 4, 6, 8, 10, 12, 14, 16,
+                                     18, 20, 22, 24]
         }
         
         self.current_mode = self.modes[mode]
@@ -282,7 +284,9 @@ class Music():
 
         #print(f"self.current_triad after: {self.current_triad}")
         
-        
+    # Plays a single note on the guitar
+    # The try...except statements here account for the difference in numbers of samples for each pitch.
+    # Some notes are sampled at 5 different dynamic levels, while others have only 2.
     def play_guitar(self, note):
         dynamic_level = random.randint(1, 3)
         if note in self.g_midi_numbers:    
