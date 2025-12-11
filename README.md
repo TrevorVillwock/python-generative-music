@@ -15,6 +15,22 @@ Playing with a command line program like this is also a fun way to connect to ou
 This project uses the `pyo` Python audio module: <https://github.com/belangeo/pyo>
 Listen to music created with pyo here: <https://radiopyo.acaia.ca/>
 
+# About the guitar samples
+
+The acoustic guitar samples for this project were taken from the Logic Pro sound library. Interestingly, this only includes the notes for G major (G A B C D E F#). To make playing notes outside this scale possible, we load two separate dictionaries with the soundfiles, with one of them pitched down by a half step (i.e. to F# major). To accomplish this, we multiply the speed of the soundfiles by 0.9438. We get this number by using the equation that relates difference in pitch by half steps to difference in frequency by Hertz. That equation is:
+
+[Frequency in Hertz of desired note] = [Frequency in Hertz of original note] * 2^(n/12)
+
+n here represents the number of half steps by which we want to change the note; in this case, it's -1 since we want to go down a half step. Using this method to find the frequency of the Ab below A (440 Hz), we get:
+
+[Frequency of Ab] = 440 Hz * 2^(-1/12) = 440 Hz * 0.9438 = 415.3 Hz
+
+Since we're doing the conversion with reference to soundfile speed instead of pitch in Hertz, we can simplify the equation somewhat:
+
+[Sample speed of desired note] = [Sample speed of original note] * 2^(n/12)
+[Sample speed of desired note] = 1 * 2^(n/12)
+[Sample speed of desired note] = 0.9438
+
 TODO:
 
 - Make each soundtrack more different musically

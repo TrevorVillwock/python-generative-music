@@ -77,6 +77,8 @@ class Music():
         self.notes_to_harmonize = 0
         
         self.guitar_sample_speed = 1
+        # 1 = forward, -1 = backward
+        self.guitar_sample_direction = 1
         
         self.g_guitar_samples = {}
         self.fsharp_guitar_samples = {}
@@ -144,7 +146,6 @@ class Music():
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
 
-    # TODO: modify this function to work with the fsharp notes
     def play_melody(self):
         # print("play_melody")
         play_note = random.random()
@@ -292,29 +293,29 @@ class Music():
         if note in self.g_midi_numbers:    
             try:
                 if self.detune:
-                    self.g_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+                    self.g_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
                 else:
-                    self.g_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo)
+                    self.g_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo * self.guitar_sample_direction)
                 self.g_guitar_samples[f"{note}-{dynamic_level}"].play()
             except Exception as e:
                 if self.detune:
-                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
                 else:
-                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo)
+                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo * self.guitar_sample_direction)
                     
                 self.g_guitar_samples[f"{note}-{dynamic_level-1}"].play()
         else:
             try:
                 if self.detune:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random()*self.detune_factor))
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
                 else:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(0.9438*self.pitch_lfo)
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(0.9438* self.pitch_lfo * self.guitar_sample_direction)
                 self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].play()
             except Exception as e:
                 if self.detune:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(0.9438*self.pitch_lfo+(random.random()*self.detune_factor))
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(0.9438*self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
                 else:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(0.9438*self.pitch_lfo)    
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(0.9438 * self.pitch_lfo * self.guitar_sample_direction)    
                 self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].play()
   
     def toggle_guitar_delay(self):
@@ -337,31 +338,32 @@ class Music():
         #print(self.modes[mode])
         
     def reverse_samples(self):
+        self.guitar_sample_direction = -1 * self.guitar_sample_direction
         # print("reverse_samples")
-        if self.guitar_sample_speed == 1:
-            for m in self.g_midi_numbers:
-                # print(f"if m: {m}")
-                for i in range(0, 3):
-                    try:
-                        # print(f"i: {i}")
-                        self.guitar_sample_speed = -1
-                        self.g_guitar_samples[f"{m}-{i+1}"].setSpeed(-1)
-                        # print(f"self.guitar_channel: {self.guitar_channel}")
-                    except Exception as e:
-                        # print("exception: " + str(e))
-                        pass          
-        else:
-            for m in self.g_midi_numbers:
-                # print(f"else m: {m}")
-                for i in range(0, 3):
-                    try:
-                        # print(f"i: {i}")
-                        self.guitar_sample_speed = 1
-                        self.g_guitar_samples[f"{m}-{i+1}"].setSpeed(1)
-                        # print(f"self.guitar_channel: {self.guitar_channel}")
-                    except Exception as e:
-                        # print("exception: " + str(e))
-                        pass
+        # if self.guitar_sample_speed == 1:
+        #     for m in self.g_midi_numbers:
+        #         # print(f"if m: {m}")
+        #         for i in range(0, 3):
+        #             try:
+        #                 # print(f"i: {i}")
+        #                 self.guitar_sample_speed = -1
+        #                 self.g_guitar_samples[f"{m}-{i+1}"].setSpeed(-1)
+        #                 # print(f"self.guitar_channel: {self.guitar_channel}")
+        #             except Exception as e:
+        #                 # print("exception: " + str(e))
+        #                 pass          
+        # else:
+        #     for m in self.g_midi_numbers:
+        #         # print(f"else m: {m}")
+        #         for i in range(0, 3):
+        #             try:
+        #                 # print(f"i: {i}")
+        #                 self.guitar_sample_speed = 1
+        #                 self.g_guitar_samples[f"{m}-{i+1}"].setSpeed(1)
+        #                 # print(f"self.guitar_channel: {self.guitar_channel}")
+        #             except Exception as e:
+        #                 # print("exception: " + str(e))
+        #                 pass
  
     # Converts notes written in pitch/octave format like "C4" to MIDI numbers 0-127
     # Written by Claude 4 Sonnet

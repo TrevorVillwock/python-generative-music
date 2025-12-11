@@ -100,7 +100,6 @@ q - Quit """
                         self.first_sound_started = 1
                     else:
                         self.ambient_sounds.change_sound("river")
-                        
                         self.music.current_triad = 0
                 case "3": 
                     self.input_is_valid = 1
@@ -147,7 +146,7 @@ q - Quit """
                         self.ambient_sounds.change_sound("dungeon")
                         self.music.change_mode("locrian")
                         self.music.current_triad = 0
-                case "o":
+                case "w":
                     # print("octatonic")
                     self.input_is_valid = 1
                     self.music.change_mode("octatonic")
