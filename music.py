@@ -13,27 +13,27 @@ class Music():
         # Sometimes more complicated definitions are given, but that's the most simple and practical one.
         # The numbers in these arrays represent the number of half steps above the first note of the mode.
         # The first mode Ionian is the same as the major scale.
-        self.modes = {"ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
-                                 14, 16, 17, 19, 21, 23, 24],
-                      "dorian": [0, 2, 3, 5, 7, 9, 10, 12, 
-                                 14, 15, 17, 19, 21, 22, 24],
-                      "phrygian": [0, 1, 3, 5, 7, 8, 10, 12, 
-                                   13, 15, 17, 19, 20, 22, 24],
-                      "lydian": [0, 2, 4, 6, 7, 9, 11, 12, 
-                                 14, 16, 18, 19, 21, 23, 24],
-                      "mixolydian": [0, 2, 4, 5, 7, 9, 11, 12, 
-                                     14, 16, 17, 19, 21, 22, 24],
-                      "aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
-                                  14, 15, 17, 19, 20, 22, 24],
-                      "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
-                                  13, 15, 17, 19, 20, 22, 24],
-                      "octatonic": [0, 1, 3, 4, 6, 7, 9, 10, 12, 
-                                    13, 15, 16, 18, 19, 21, 22, 24],
-                      "whole tone": [0, 2, 4, 6, 8, 10, 12, 14, 16,
-                                     18, 20, 22, 24]
-        }
+        # self.modes = {"ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
+        #                          14, 16, 17, 19, 21, 23, 24],
+        #               "dorian": [0, 2, 3, 5, 7, 9, 10, 12, 
+        #                          14, 15, 17, 19, 21, 22, 24],
+        #               "phrygian": [0, 1, 3, 5, 7, 8, 10, 12, 
+        #                            13, 15, 17, 19, 20, 22, 24],
+        #               "lydian": [0, 2, 4, 6, 7, 9, 11, 12, 
+        #                          14, 16, 18, 19, 21, 23, 24],
+        #               "mixolydian": [0, 2, 4, 5, 7, 9, 11, 12, 
+        #                              14, 16, 17, 19, 21, 22, 24],
+        #               "aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
+        #                           14, 15, 17, 19, 20, 22, 24],
+        #               "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
+        #                           13, 15, 17, 19, 20, 22, 24],
+        #               "octatonic": [0, 1, 3, 4, 6, 7, 9, 10, 12, 
+        #                             13, 15, 16, 18, 19, 21, 22, 24],
+        #               "whole tone": [0, 2, 4, 6, 8, 10, 12, 14, 16,
+        #                              18, 20, 22, 24]
+        # }
         
-        self.current_mode = self.modes[mode]
+        # self.current_mode = self.modes[mode]
         
         self.current_mode_name = mode
         
@@ -115,17 +115,17 @@ class Music():
             for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    sample_array = [Adsr(sustain=0.9, release=0.01), SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", 
-                                                                      speed=self.pitch_lfo, mul=[0.75, 0.75]
+                    sample_array = [Adsr(attack=0.1, sustain=1, release=0.1, dur=2), SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", 
+                                                                      speed=self.pitch_lfo
                                                                       ).stop()]
                     self.g_guitar_samples[f"{m}-{i+1}"] = sample_array
-                    self.g_guitar_samples[f"{m}-{i+1}"][1].setMul(self.g_guitar_samples[f"{m}-{i+1}"][0])
+                    self.g_guitar_samples[f"{m}-{i+1}"][1].mul = self.g_guitar_samples[f"{m}-{i+1}"][0]
                     if self.current_guitar_channel < 200:
                         self.guitar_mixer.addInput(self.current_guitar_channel, self.g_guitar_samples[f"{m}-{i+1}"][1])
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 1)
                         self.current_guitar_channel += 1
-                    # print(f"self.guitar_channel: {self.guitar_channel}")
+                    print(f"self.current_guitar_channel g: {self.current_guitar_channel}")
                 except Exception as e:
                     print("g exception: " + str(e))
                     
@@ -135,18 +135,18 @@ class Music():
             for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    sample_array = [Adsr(sustain=0.9, release=0.01), SfPlayer(f"soundfiles/guitar_samples/{m+1}-{i+1}.aif", 
-                                                                           speed=self.pitch_lfo*0.9438, mul=[0.75 * 0.75])
+                    sample_array = [Adsr(attack=0.1, sustain=1, release=0.1, dur=2), SfPlayer(f"soundfiles/guitar_samples/{m+1}-{i+1}.aif", 
+                                                                           speed=self.pitch_lfo*0.9438)
                                     ]
                     self.fsharp_guitar_samples[f"{m}-{i+1}"] = sample_array
-                    self.fsharp_guitar_samples[f"{m}-{i+1}"][1].setMul(self.fsharp_guitar_samples[f"{m}-{i+1}"][0])
+                    self.fsharp_guitar_samples[f"{m}-{i+1}"][1].mul = self.fsharp_guitar_samples[f"{m}-{i+1}"][0]
                     
                     if self.current_guitar_channel < 200:
                         self.guitar_mixer.addInput(self.current_guitar_channel, self.fsharp_guitar_samples[f"{m}-{i+1}"][1])
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 1)
                         self.current_guitar_channel += 1
-                    # print(f"self.guitar_channel: {self.guitar_channel}")
+                    print(f"self.current_guitar_channel fsharp: {self.current_guitar_channel}")
                 except Exception as e:
                     print("f# exception: " + str(e))
                     
@@ -352,7 +352,7 @@ class Music():
         #print("changing mode")
         #print(mode)
         self.current_mode_name = mode
-        self.current_mode = self.modes[mode]
+        # self.current_mode = self.modes[mode]
         #print(self.modes[mode])
         
     def reverse_samples(self):
