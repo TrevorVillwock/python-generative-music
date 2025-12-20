@@ -1,4 +1,4 @@
-from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine
+from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine, Adsr
 import random
 from math import floor
 
@@ -80,8 +80,8 @@ class Music():
         # 1 = forward, -1 = backward
         self.guitar_sample_direction = 1
         
-        self.g_guitar_samples = {}
-        self.fsharp_guitar_samples = {}
+        self.g_guitar_samples = {"dummy": []}
+        self.fsharp_guitar_samples = {"dummy": []}
         
         self.g_midi_numbers = [28, 30, 31, 33, 35, 36, 38, 40, 42, 43, 45, 47, 48, 
                              50, 52, 54, 55, 57, 59, 60, 62, 64, 66, 69]
@@ -115,9 +115,13 @@ class Music():
             for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    self.g_guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", speed=self.pitch_lfo, mul=[0.75, 0.75]).stop()
+                    sample_array = [Adsr(sustain=0.9, release=0.01), SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", 
+                                                                      speed=self.pitch_lfo, mul=[0.75, 0.75]
+                                                                      ).stop()]
+                    self.g_guitar_samples[f"{m}-{i+1}"] = sample_array
+                    self.g_guitar_samples[f"{m}-{i+1}"][1].setMul(self.g_guitar_samples[f"{m}-{i+1}"][0])
                     if self.current_guitar_channel < 200:
-                        self.guitar_mixer.addInput(self.current_guitar_channel, self.g_guitar_samples[f"{m}-{i+1}"])
+                        self.guitar_mixer.addInput(self.current_guitar_channel, self.g_guitar_samples[f"{m}-{i+1}"][1])
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 1)
                         self.current_guitar_channel += 1
@@ -125,13 +129,20 @@ class Music():
                 except Exception as e:
                     print("g exception: " + str(e))
                     
+            #print(self.g_guitar_samples)
+                    
         for m in self.fsharp_midi_numbers:
             for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    self.fsharp_guitar_samples[f"{m}-{i+1}"] = SfPlayer(f"soundfiles/guitar_samples/{m+1}-{i+1}.aif", speed=self.pitch_lfo*0.9438, mul=[0.75, 0.75]).stop()
+                    sample_array = [Adsr(sustain=0.9, release=0.01), SfPlayer(f"soundfiles/guitar_samples/{m+1}-{i+1}.aif", 
+                                                                           speed=self.pitch_lfo*0.9438, mul=[0.75 * 0.75])
+                                    ]
+                    self.fsharp_guitar_samples[f"{m}-{i+1}"] = sample_array
+                    self.fsharp_guitar_samples[f"{m}-{i+1}"][1].setMul(self.fsharp_guitar_samples[f"{m}-{i+1}"][0])
+                    
                     if self.current_guitar_channel < 200:
-                        self.guitar_mixer.addInput(self.current_guitar_channel, self.fsharp_guitar_samples[f"{m}-{i+1}"])
+                        self.guitar_mixer.addInput(self.current_guitar_channel, self.fsharp_guitar_samples[f"{m}-{i+1}"][1])
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 1)
                         self.current_guitar_channel += 1
@@ -145,6 +156,46 @@ class Music():
         # print(self.g_guitar_samples)                   
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
+        
+    # Plays a single note on the guitar
+    # The try...except statements here account for the difference in numbers of samples for each pitch.
+    # Some notes are sampled at 5 different dynamic levels, while others have only 2.
+    #
+    # [0] = envelope
+    # [1] = sfplayer
+    def play_guitar(self, note):
+        dynamic_level = random.randint(1, 3)
+        if note in self.g_midi_numbers:    
+            try:
+                if self.detune:
+                    self.g_guitar_samples[f"{note}-{dynamic_level}"][1].setSpeed(self.pitch_lfo + (random.random() * self.detune_factor * self.guitar_sample_direction))
+                else:
+                    self.g_guitar_samples[f"{note}-{dynamic_level}"][1].setSpeed(self.pitch_lfo * self.guitar_sample_direction)
+                self.g_guitar_samples[f"{note}-{dynamic_level}"][1].play()
+                self.g_guitar_samples[f"{note}-{dynamic_level}"][0].play()
+            except Exception as e:
+                if self.detune:
+                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"][1].setSpeed(self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
+                else:
+                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"][1].setSpeed(self.pitch_lfo * self.guitar_sample_direction)
+                
+                self.g_guitar_samples[f"{note}-{dynamic_level-1}"][1].play()
+                self.g_guitar_samples[f"{note}-{dynamic_level-1}"][0].play()
+        else:
+            try:
+                if self.detune:
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"][1].setSpeed(self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
+                else:
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"][1].setSpeed(0.9438 * self.pitch_lfo * self.guitar_sample_direction)
+                self.fsharp_guitar_samples[f"{note}-{dynamic_level}"][1].play()
+                self.fsharp_guitar_samples[f"{note}-{dynamic_level}"][0].play()
+            except Exception as e:
+                if self.detune:
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"][1].setSpeed(0.9438 * self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
+                else:
+                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"][1].setSpeed(0.9438 * self.pitch_lfo * self.guitar_sample_direction)    
+                self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"][1].play()
+                self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"][0].play()
 
     def play_melody(self):
         # print("play_melody")
@@ -284,39 +335,6 @@ class Music():
             self.current_triad = 0
 
         #print(f"self.current_triad after: {self.current_triad}")
-        
-    # Plays a single note on the guitar
-    # The try...except statements here account for the difference in numbers of samples for each pitch.
-    # Some notes are sampled at 5 different dynamic levels, while others have only 2.
-    def play_guitar(self, note):
-        dynamic_level = random.randint(1, 3)
-        if note in self.g_midi_numbers:    
-            try:
-                if self.detune:
-                    self.g_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
-                else:
-                    self.g_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo * self.guitar_sample_direction)
-                self.g_guitar_samples[f"{note}-{dynamic_level}"].play()
-            except Exception as e:
-                if self.detune:
-                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
-                else:
-                    self.g_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(self.pitch_lfo * self.guitar_sample_direction)
-                    
-                self.g_guitar_samples[f"{note}-{dynamic_level-1}"].play()
-        else:
-            try:
-                if self.detune:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
-                else:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].setSpeed(0.9438* self.pitch_lfo * self.guitar_sample_direction)
-                self.fsharp_guitar_samples[f"{note}-{dynamic_level}"].play()
-            except Exception as e:
-                if self.detune:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(0.9438*self.pitch_lfo+(random.random() * self.detune_factor * self.guitar_sample_direction))
-                else:
-                    self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].setSpeed(0.9438 * self.pitch_lfo * self.guitar_sample_direction)    
-                self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"].play()
   
     def toggle_guitar_delay(self):
         # print("toggle delay start")
@@ -421,7 +439,9 @@ class Music():
 
     def stop(self):
         for s in self.g_guitar_samples:
-            self.g_guitar_samples[s].setMul(0)
+            s[1].setMul(0)
+        for s in self.fsharp_guitar_samples:
+            s[1].setMul(0)
         self.melody_met.stop()
         self.chord_met.stop()
         self.bass_met.stop()

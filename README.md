@@ -17,7 +17,7 @@ Listen to music created with pyo here: <https://radiopyo.acaia.ca/>
 
 # About the guitar samples
 
-The acoustic guitar samples for this project were taken from the Logic Pro sound library. Interestingly, this only includes the notes for G major (G A B C D E F#). To make playing notes outside this scale possible, we load two separate dictionaries with the soundfiles, with one of them pitched down by a half step (i.e. to F# major). To accomplish this, we multiply the speed of the soundfiles by 0.9438. We get this number by using the equation that relates difference in pitch by half steps to difference in frequency by Hertz. That equation is:
+The acoustic guitar samples for this project were taken from the Logic Pro sound library. Interestingly, this only includes the notes for G major (G A B C D E F#). To playing notes outside this scale, we load two separate dictionaries with the soundfiles, with one of them pitched down by a half step (i.e. to F# major). To accomplish this, we multiply the speed of the soundfiles by 0.9438. We get this number by using the equation that relates difference in pitch by half steps to difference in frequency by Hertz. That equation is:
 
 [Frequency in Hertz of desired note] = [Frequency in Hertz of original note] * 2^(n/12)
 
