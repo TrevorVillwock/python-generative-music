@@ -115,7 +115,7 @@ class Music():
             for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    sample_array = [Adsr(attack=0.1, sustain=1, release=0.1, dur=2), SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", 
+                    sample_array = [Adsr(attack=0.1, sustain=1, release=0.1, dur=5), SfPlayer(f"soundfiles/guitar_samples/{m}-{i+1}.aif", 
                                                                       speed=self.pitch_lfo
                                                                       ).stop()]
                     self.g_guitar_samples[f"{m}-{i+1}"] = sample_array
