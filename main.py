@@ -18,7 +18,7 @@ class Main():
     def __init__(self):
         self.input_is_valid = 1
         self.first_sound_started = 0
-        self.music = Music("ionian") # default mode
+        self.music = Music("ionian", s) # default mode
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0)
         self.filter = MoogLP(self.mixer[0], freq=1000)

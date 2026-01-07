@@ -1,9 +1,11 @@
 from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine, Adsr
 import random
+import time
 from math import floor
 
 class Music():
-    def __init__(self, mode):
+    def __init__(self, mode, server):
+        self.server = server
         self.melody_met = Metro(0.5).play()
         self.bass_met = Metro(2).play()
         self.chord_met = Metro(2).play()
@@ -92,7 +94,7 @@ class Music():
         self.octatonic_midi_numbers = [28, 29, 31, 32, 34, 35, 37, 38, 40, 41, 43, 44, 46, 47, 49, 
                                        50, 52, 53, 55, 56, 58, 59, 60, 62, 63, 65, 66, 68, 69]
 
-        self.guitar_mixer = Mixer()
+        self.guitar_mixer = Mixer(time=0.2)
         self.current_guitar_channel = 0
         
         self.guitar_delay = Delay(self.guitar_mixer[0], 0.1, 0.7, 5)
@@ -119,6 +121,14 @@ class Music():
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
     
     def load_guitar_samples(self):
+        # print("load_guitar_samples")
+        print("Glug glug glug...", end="")
+        self.melody_met.stop()
+        self.chord_met.stop()
+        # time.sleep(2) # for debugging purposes
+        self.guitar_mixer.setMul(0)
+        time.sleep(2) # for debugging purposes
+        print(".", end="")
         self.guitar_mixer.clear()
         self.current_guitar_channel = 0
         if self.guitar_sample_direction == 1:
@@ -141,7 +151,7 @@ class Music():
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 1)
                         self.current_guitar_channel += 1
-                    print(f"self.current_guitar_channel g: {self.current_guitar_channel}")
+                    # print(f"self.current_guitar_channel g: {self.current_guitar_channel}")
                 except Exception as e:
                     print("g exception: " + str(e))
                     
@@ -162,9 +172,44 @@ class Music():
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 0, 1)
                         self.guitar_mixer.setAmp(self.current_guitar_channel, 1, 1)
                         self.current_guitar_channel += 1
-                    print(f"self.current_guitar_channel fsharp: {self.current_guitar_channel}")
+                    # print(f"self.current_guitar_channel fsharp: {self.current_guitar_channel}")
                 except Exception as e:
                     print("f# exception: " + str(e))
+        
+        # Claude suggested silently triggering the samples once like this would get rid of the clicking,
+        # but so far it doesn't seem to work
+                
+        # for key in self.g_guitar_samples.keys():
+        #     if key!= "dummy":
+        #         self.g_guitar_samples[key][1].setMul(0)
+        #         self.g_guitar_samples[key][1].play()
+        #         self.g_guitar_samples[key][0].play()
+        
+        # for key in self.fsharp_guitar_samples.keys():
+        #     if key!= "dummy":
+        #         self.fsharp_guitar_samples[key][1].setMul(0)
+        #         self.fsharp_guitar_samples[key][1].play()
+        #         self.fsharp_guitar_samples[key][0].play()
+        
+        time.sleep(2)
+        
+        # for key in self.g_guitar_samples.keys():
+        #     if key!= "dummy":
+        #         self.g_guitar_samples[key][1].setMul(1)
+        
+        # for key in self.fsharp_guitar_samples.keys():
+        #     if key!= "dummy":
+        #         self.fsharp_guitar_samples[key][1].setMul(1)
+        
+        self.guitar_mixer.setMul(1)
+        time.sleep(2) # for debugging purposes
+        print(".", end="")
+        self.melody_met.play()
+        self.chord_met.play()
+          
+        
+        
+    
     # Plays a single note on the guitar
     # The try...except statements here account for the difference in numbers of samples for each pitch.
     # Some notes are sampled at 5 different dynamic levels, while others have only 2.
@@ -447,10 +492,12 @@ class Music():
         return midi_number
 
     def stop(self):
-        for s in self.g_guitar_samples:
-            s[1].setMul(0)
-        for s in self.fsharp_guitar_samples:
-            s[1].setMul(0)
+        # for s in self.g_guitar_samples.values():
+        #     print(s)
+        #     s[1].setMul(0)
+        # for s in self.fsharp_guitar_samples.values():
+        #     print(s)
+        #     s[1].setMul(0)
         self.melody_met.stop()
         self.chord_met.stop()
         self.bass_met.stop()
