@@ -122,13 +122,13 @@ class Music():
     
     def load_guitar_samples(self):
         # print("load_guitar_samples")
-        print("Glug glug glug...", end="")
+        # print("Glug glug glug...", end="")
         self.melody_met.stop()
         self.chord_met.stop()
         # time.sleep(2) # for debugging purposes
         self.guitar_mixer.setMul(0)
         time.sleep(2) # for debugging purposes
-        print(".", end="")
+        # print(".", end="")
         self.guitar_mixer.clear()
         self.current_guitar_channel = 0
         if self.guitar_sample_direction == 1:
@@ -153,7 +153,8 @@ class Music():
                         self.current_guitar_channel += 1
                     # print(f"self.current_guitar_channel g: {self.current_guitar_channel}")
                 except Exception as e:
-                    print("g exception: " + str(e))
+                    # print("g exception: " + str(e))
+                    pass
                     
             #print(self.g_guitar_samples)
                     
@@ -174,7 +175,8 @@ class Music():
                         self.current_guitar_channel += 1
                     # print(f"self.current_guitar_channel fsharp: {self.current_guitar_channel}")
                 except Exception as e:
-                    print("f# exception: " + str(e))
+                    #print("f# exception: " + str(e))
+                    pass
         
         # Claude suggested silently triggering the samples once like this would get rid of the clicking,
         # but so far it doesn't seem to work
@@ -203,7 +205,7 @@ class Music():
         
         self.guitar_mixer.setMul(1)
         time.sleep(2) # for debugging purposes
-        print(".", end="")
+        # print(".")
         self.melody_met.play()
         self.chord_met.play()
           
