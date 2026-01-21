@@ -5,11 +5,10 @@ import sys
 import time
 import yaml
 
-"""
-TODO:
-Add command to change delay times
-Create other chord progressions
-"""
+try:
+    debug_time_delay = int(sys.argv[1])
+except:
+    debug_time_delay = 1
 
 s = Server().boot()
 s.start()
@@ -18,7 +17,7 @@ class Main():
     def __init__(self):
         self.input_is_valid = 1
         self.first_sound_started = 0
-        self.music = Music("ionian", s) # default mode
+        self.music = Music("ionian", debug_time_delay) # default mode
         self.ambient_sounds = AmbientSounds()
         self.mixer = Mixer(outs=2, chnls=2, mul=0)
         self.filter = MoogLP(self.mixer[0], freq=1000)
@@ -233,6 +232,6 @@ q - Quit """
             if self.input_is_valid:        
                 self.action_selection = input("Enter next command: ")
             self.action_selection_array = self.action_selection.split(' ')
-                     
+      
 main = Main()
 s.gui(locals)

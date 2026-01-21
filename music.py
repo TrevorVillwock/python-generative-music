@@ -4,39 +4,11 @@ import time
 from math import floor
 
 class Music():
-    def __init__(self, mode, server):
-        self.server = server
+    def __init__(self, mode, debug_time_delay):
         self.melody_met = Metro(0.5).play()
         self.bass_met = Metro(2).play()
         self.chord_met = Metro(2).play()
-        
-        # A "mode" in music theory is a version of a scale that starts on a different note than the 
-        # conventional one but retains the same collection and order of notes.
-        # Sometimes more complicated definitions are given, but that's the most simple and practical one.
-        # The numbers in these arrays represent the number of half steps above the first note of the mode.
-        # The first mode Ionian is the same as the major scale.
-        # self.modes = {"ionian": [0, 2, 4, 5, 7, 9, 11, 12, 
-        #                          14, 16, 17, 19, 21, 23, 24],
-        #               "dorian": [0, 2, 3, 5, 7, 9, 10, 12, 
-        #                          14, 15, 17, 19, 21, 22, 24],
-        #               "phrygian": [0, 1, 3, 5, 7, 8, 10, 12, 
-        #                            13, 15, 17, 19, 20, 22, 24],
-        #               "lydian": [0, 2, 4, 6, 7, 9, 11, 12, 
-        #                          14, 16, 18, 19, 21, 23, 24],
-        #               "mixolydian": [0, 2, 4, 5, 7, 9, 11, 12, 
-        #                              14, 16, 17, 19, 21, 22, 24],
-        #               "aeolian": [0, 2, 3, 5, 7, 8, 10, 12, 
-        #                           14, 15, 17, 19, 20, 22, 24],
-        #               "locrian": [0, 1, 3, 5, 7, 8, 10, 12, 
-        #                           13, 15, 17, 19, 20, 22, 24],
-        #               "octatonic": [0, 1, 3, 4, 6, 7, 9, 10, 12, 
-        #                             13, 15, 16, 18, 19, 21, 22, 24],
-        #               "whole tone": [0, 2, 4, 6, 8, 10, 12, 14, 16,
-        #                              18, 20, 22, 24]
-        # }
-        
-        # self.current_mode = self.modes[mode]
-        
+        self.debug_time_delay = debug_time_delay
         self.current_mode_name = mode
         
         # Simple progressions using the primary triads (I, IV, and V) in each mode.
@@ -107,27 +79,22 @@ class Music():
         
         self.detune = False
         self.detune_factor = 0.1
-
-        # self.delay_mixer = Mixer().out()
-        # self.delay_mixer.addInput(0, self.delay_selector)
-        # self.delay_mixer.setAmp(0, 1, 0.5)
                     
-        # for f in self.fsharp_guitar_samples:
-        #     print(f)
         self.load_guitar_samples()
-            
-        # print(self.g_guitar_samples)                   
+                             
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
     
     def load_guitar_samples(self):
+        """Loads guitar soundfiles into SfPlayers
+    Changes to reversed samples when user types 'rt'"""
         # print("load_guitar_samples")
         # print("Glug glug glug...", end="")
         self.melody_met.stop()
         self.chord_met.stop()
         # time.sleep(2) # for debugging purposes
         self.guitar_mixer.setMul(0)
-        time.sleep(2) # for debugging purposes
+        time.sleep(self.debug_time_delay) # for debugging purposes
         # print(".", end="")
         self.guitar_mixer.clear()
         self.current_guitar_channel = 0
@@ -193,7 +160,7 @@ class Music():
         #         self.fsharp_guitar_samples[key][1].play()
         #         self.fsharp_guitar_samples[key][0].play()
         
-        time.sleep(2)
+        time.sleep(self.debug_time_delay)
         
         # for key in self.g_guitar_samples.keys():
         #     if key!= "dummy":
@@ -204,7 +171,7 @@ class Music():
         #         self.fsharp_guitar_samples[key][1].setMul(1)
         
         self.guitar_mixer.setMul(1)
-        time.sleep(2) # for debugging purposes
+        time.sleep(self.debug_time_delay) # for debugging purposes
         # print(".")
         self.melody_met.play()
         self.chord_met.play()
