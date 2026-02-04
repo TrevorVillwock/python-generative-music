@@ -1,4 +1,4 @@
-from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine, Adsr
+from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine, Adsr, STRev
 import random
 import time
 from math import floor
@@ -84,6 +84,8 @@ class Music():
                              
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
+        
+        self.reverb = STRev(self.delay_selector, revtime=10).out()
     
     def load_guitar_samples(self):
         """Loads guitar soundfiles into SfPlayers\n
