@@ -76,7 +76,7 @@ class AmbientSounds():
         #print("toggled to", self.is_playing)
 
     def change_sound(self, new_sound):
-        # fade out old sounds and fade in new
+        """Fade out old sounds and fade in new"""
         # print(new_sound)
 
         sounds_loaded = 0
@@ -147,6 +147,9 @@ class AmbientSounds():
         
 
     def change_delay(self, delay):
+        """
+        Change delay time
+        """
         # print('called change_delay')
         self.delay.setDelay(delay)
 

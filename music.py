@@ -86,7 +86,7 @@ class Music():
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
     
     def load_guitar_samples(self):
-        """Loads guitar soundfiles into SfPlayers
+        """Loads guitar soundfiles into SfPlayers\n
     Changes to reversed samples when user types 'rt'"""
         # print("load_guitar_samples")
         # print("Glug glug glug...", end="")
@@ -186,6 +186,9 @@ class Music():
     # [0] = envelope
     # [1] = sfplayer
     def play_guitar(self, note):
+        """
+        Plays a single note on the guitar accounting for amount of detune and whether or not the note is the G major scale
+        """
         dynamic_level = random.randint(1, 3)
         if note in self.g_midi_numbers:    
             try:
@@ -220,6 +223,10 @@ class Music():
                 self.fsharp_guitar_samples[f"{note}-{dynamic_level-1}"][0].play()
 
     def play_melody(self):
+        """
+        Generates a melody using randomly generated notes and rhythms with the occasional inclusion of motifs\n
+        Harmonizes melody at randomized intervals for randomized lengths of time
+        """
         # print("play_melody")
         play_note = random.random()
         change_rhythm = random.random()
@@ -345,6 +352,9 @@ class Music():
             # print("playing melody")
 
     def play_chords(self):
+        """
+        Plays a chord in the progression
+        """
         #print(self.mode_primary_triads[self.current_mode_name][self.current_triad])
         # print(len(self.mode_primary_triads[self.current_mode_name]))
         self.play_guitar(self.note_to_midi(self.mode_primary_triads[self.current_mode_name][self.current_triad][0]))
@@ -367,6 +377,9 @@ class Music():
         # print("toggle delay end")
 
     def change_guitar_delay(self, delay):
+        """
+        Changes the delay time
+        """
         print('called change_guitar_delay')
         self.guitar_delay.setDelay(delay)
         
@@ -461,12 +474,6 @@ class Music():
         return midi_number
 
     def stop(self):
-        # for s in self.g_guitar_samples.values():
-        #     print(s)
-        #     s[1].setMul(0)
-        # for s in self.fsharp_guitar_samples.values():
-        #     print(s)
-        #     s[1].setMul(0)
         self.melody_met.stop()
         self.chord_met.stop()
         self.bass_met.stop()
