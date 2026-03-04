@@ -79,13 +79,14 @@ class Music():
         
         self.detune = False
         self.detune_factor = 0.1
-                    
+
         self.load_guitar_samples()
                              
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
         
-        self.reverb = STRev(self.delay_selector, revtime=10).out()
+        self.reverb = STRev(self.delay_selector, revtime=10)
+        self.reverb_selector = Selector(inputs=[self.guitar_mixer[0], self.reverb], mul=[0.5, 0.5], voice=1)
     
     def load_guitar_samples(self):
         """Loads guitar soundfiles into SfPlayers\n

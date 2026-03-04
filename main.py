@@ -10,7 +10,7 @@ try:
 except:
     debug_time_delay = 1
 
-s = Server().boot()
+s = Server(duplex=0, nchnls=2).boot().gui()
 s.start()
 
 class Main():  
@@ -47,7 +47,7 @@ class Main():
         
         
         self.mixer.addInput(0, self.ambient_sounds.delay_selector)
-        self.mixer.addInput(1, self.music.delay_selector)
+        self.mixer.addInput(1, self.music.reverb_selector)
         self.mixer.setAmp(0, 0, 0.5)
         self.mixer.setAmp(1, 0, 0.1)
         self.mixer.setTime(0.01)

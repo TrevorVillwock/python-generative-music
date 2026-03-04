@@ -1,4 +1,4 @@
-from pyo import SfPlayer, Fader, Delay, Mixer, Selector
+from pyo import SfPlayer, Fader, Delay, Mixer, Selector, STRev
 import os
 
 """
@@ -37,7 +37,7 @@ class AmbientSounds():
         self.mixer.addInput(3, self.sound_set_2[0])
         self.mixer.addInput(4, self.sound_set_2[1])
         self.mixer.addInput(5, self.sound_set_2[2])
-        
+        # zoom has frozen, its all frozen. if you are still here, bye!, i'll see you next time
         self.mixer.setAmp(0, 0, 0.5)
         self.mixer.setAmp(1, 0, 0.5)
         self.mixer.setAmp(2, 0, 0.5)
@@ -49,6 +49,9 @@ class AmbientSounds():
 
         self.delay = Delay(self.mixer[0], 0.5, 0.7, 5)
         self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=0)
+
+        self.reverb = STRev(self.delay_selector, revtime=10)
+        self.reverb_selector = Selector(inputs=[self.mixer[0], self.reverb], mul=[0.5, 0.5], voice=1)
         
         self.current_sound_set = 1
         self.sound_set_1_speed = 1
