@@ -37,7 +37,7 @@ class AmbientSounds():
         self.mixer.addInput(3, self.sound_set_2[0])
         self.mixer.addInput(4, self.sound_set_2[1])
         self.mixer.addInput(5, self.sound_set_2[2])
-        # zoom has frozen, its all frozen. if you are still here, bye!, i'll see you next time
+
         self.mixer.setAmp(0, 0, 0.5)
         self.mixer.setAmp(1, 0, 0.5)
         self.mixer.setAmp(2, 0, 0.5)
