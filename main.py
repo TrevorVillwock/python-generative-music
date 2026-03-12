@@ -10,7 +10,8 @@ try:
 except:
     debug_time_delay = 1
 
-s = Server(duplex=0, nchnls=2).boot().gui()
+s = Server(duplex=0, ichnls=0).boot()
+#s = Server(duplex=0).boot()
 s.start()
 
 class Main():  
