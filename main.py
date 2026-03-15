@@ -67,22 +67,24 @@ What do you want to do?
 7 - Go to the dungeon (Locrian)
 w - visit the wizard (octatonic)
 
-e - Drink Essence of Bat
-rt - Drink Elixir of Time
-s - Drink Elixir of Space
+e - Drink Essence of Bat (echo/delay)
+rt - Drink Elixir of Time (reverse samples)
+s - Drink Elixir of Space (reverb)
+dis [float] - Drink Elixir of Overdrive (distortion)
 v freq [frequency in Hertz] - set vibrato frequency
 v mult [float] - set vibrato amount
-ge - Toggle guitar echo
 time [seconds] - Change echo length
 rtime [seconds] - Change reverb length
 as - Toggle ambient sounds
 f [frequency] - Change filter cutoff frequency
+
+ge - Toggle guitar echo
 tf - Toggle filter
 td - Toggle detune
 tr - Toggle reverb
 d [float] - Change detune amount
 q - Quit """
-              )
+        )
         self.action_selection = input("Input a number or letter to choose: ")
         self.action_selection_array = self.action_selection.split(' ')
         
@@ -227,12 +229,16 @@ q - Quit """
                     else:
                         self.music.detune_factor = float(self.action_selection_array[1])
 
-                case 'td':
+                case 'tde':
                     self.input_is_valid = 1
 
                     self.music.detune = not self.music.detune
                     # print('is detuning?', self.music.detune)
-
+                
+                case 'dis':
+                    self.input_is_valid = 1
+                    self.music.distortion.setDrive(float(self.action_selection_array[1]))
+                        
                 case "q":
                     self.input_is_valid = 1
                     self.mixer.setMul(0.0)

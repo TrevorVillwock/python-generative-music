@@ -70,11 +70,10 @@ class Music():
         self.current_guitar_channel = 0
         
         # Effects signal chain: 
-        self.distortion = Disto(self.guitar_mixer[0], drive=10)
-        self.dist_selector = Selector(inputs=[self.guitar_mixer[0], self.distortion], voice=1)
+        self.distortion = Disto(self.guitar_mixer[0], drive=0)
         
-        self.guitar_delay = Delay(self.dist_selector, 0.1, 0.7, 5)
-        self.delay_selector = Selector(inputs=[self.dist_selector, self.guitar_delay], mul=[0.5, 0.5], voice=1)
+        self.guitar_delay = Delay(self.distortion, 0.1, 0.7, 5)
+        self.delay_selector = Selector(inputs=[self.distortion, self.guitar_delay], mul=[0.5, 0.5], voice=0)
         
         self.reverb = STRev(self.delay_selector, revtime=2)
         self.reverb_selector = Selector(inputs=[self.delay_selector, self.reverb], mul=[0.5, 0.5], voice=0)
