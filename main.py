@@ -66,6 +66,7 @@ What do you want to do?
 6 - Swim in the river (Aeolian)
 7 - Go to the dungeon (Locrian)
 w - visit the wizard (octatonic)
+
 e - Drink Essence of Bat
 rt - Drink Elixir of Time
 s - Drink Elixir of Space

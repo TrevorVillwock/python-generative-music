@@ -50,8 +50,8 @@ class AmbientSounds():
         self.delay = Delay(self.mixer[0], 0.5, 0.7, 5)
         self.delay_selector = Selector(inputs=[self.mixer[0], self.delay], voice=0)
 
-        self.reverb = STRev(self.delay_selector, revtime=10)
-        self.reverb_selector = Selector(inputs=[self.mixer[0], self.reverb], mul=[0.5, 0.5], voice=1)
+        self.reverb = STRev(self.delay_selector, revtime=2)
+        self.reverb_selector = Selector(inputs=[self.mixer[0], self.reverb], mul=[0.5, 0.5], voice=0)
         
         self.current_sound_set = 1
         self.sound_set_1_speed = 1

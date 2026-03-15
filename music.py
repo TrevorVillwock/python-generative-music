@@ -1,4 +1,4 @@
-from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine, Adsr, STRev
+from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine, Adsr, STRev, Disto
 import random
 import time
 from math import floor
@@ -69,9 +69,15 @@ class Music():
         self.guitar_mixer = Mixer(time=0.2)
         self.current_guitar_channel = 0
         
-        self.guitar_delay = Delay(self.guitar_mixer[0], 0.1, 0.7, 5)
+        # Effects signal chain: 
+        self.distortion = Disto(self.guitar_mixer[0], drive=10)
+        self.dist_selector = Selector(inputs=[self.guitar_mixer[0], self.distortion], voice=1)
         
-        self.delay_selector = Selector(inputs=[self.guitar_mixer[0], self.guitar_delay], mul=[0.5, 0.5])
+        self.guitar_delay = Delay(self.dist_selector, 0.1, 0.7, 5)
+        self.delay_selector = Selector(inputs=[self.dist_selector, self.guitar_delay], mul=[0.5, 0.5], voice=1)
+        
+        self.reverb = STRev(self.delay_selector, revtime=2)
+        self.reverb_selector = Selector(inputs=[self.delay_selector, self.reverb], mul=[0.5, 0.5], voice=0)
         
         # LFO = Low Frequency Oscillator - a signal used to modulate some paramater of the sound like pitch or volume 
         # Modulate is a fancy way of saying change over time
@@ -84,9 +90,6 @@ class Music():
                              
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
-        
-        self.reverb = STRev(self.delay_selector, revtime=10)
-        self.reverb_selector = Selector(inputs=[self.guitar_mixer[0], self.reverb], mul=[0.5, 0.5], voice=1)
     
     def load_guitar_samples(self):
         """Loads guitar soundfiles into SfPlayers\n
@@ -178,10 +181,7 @@ class Music():
         # print(".")
         self.melody_met.play()
         self.chord_met.play()
-          
         
-        
-    
     # Plays a single note on the guitar
     # The try...except statements here account for the difference in numbers of samples for each pitch.
     # Some notes are sampled at 5 different dynamic levels, while others have only 2.
