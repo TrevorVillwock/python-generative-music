@@ -68,12 +68,17 @@ What do you want to do?
 w - visit the wizard (octatonic)
 e - Drink Essence of Bat
 rt - Drink Elixir of Time
+s - Drink Elixir of Space
+v freq [frequency in Hertz] - set vibrato frequency
+v mult [float] - set vibrato amount
 ge - Toggle guitar echo
 time [seconds] - Change echo length
+rtime [seconds] - Change reverb length
 as - Toggle ambient sounds
 f [frequency] - Change filter cutoff frequency
 tf - Toggle filter
 td - Toggle detune
+tr - Toggle reverb
 d [float] - Change detune amount
 q - Quit """
               )
@@ -155,9 +160,17 @@ q - Quit """
                     self.input_is_valid = 1
                     self.music.reverse_samples()
                     self.ambient_sounds.reverse_sounds()
+                case "s":
+                    self.input_is_valid = 1
+                    self.music.toggle_guitar_reverb()
+                    self.ambient_sounds.toggle_reverb()
+                case "rtime":
+                    self.input_is_valid = 1
+                    time = float(self.action_selection_array[1])
+                    self.music.set_reverb_length(time)
+                    self.ambient_sounds.set_reverb_length(time)
                 case "e":
                     self.input_is_valid = 1
-                    print("case e")
                     self.music.toggle_guitar_delay()
                     self.ambient_sounds.toggle_delay()
                 case "ge":
@@ -183,10 +196,8 @@ q - Quit """
                         elif self.action_selection_array[1] == "mult":
                             # print("set mult")
                             self.music.pitch_lfo.setMul(float(self.action_selection_array[2]))
-
                     else:
                         print("Usage: v [freq or mult] [value]\nExample: v freq 0.1")
-
 
                 case "f":
                     self.input_is_valid = 1
@@ -202,6 +213,10 @@ q - Quit """
                         self.filter_selector.setVoice(1)
                     else:
                         self.filter_selector.setVoice(0)
+                        
+                case "tr":
+                    self.input_is_valid = 1
+                    
 
                 case "d":
                     self.input_is_valid = 1

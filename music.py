@@ -371,6 +371,15 @@ class Music():
 
         #print(f"self.current_triad after: {self.current_triad}")
   
+    def toggle_guitar_reverb(self):
+        if self.reverb_selector.voice == 0:
+            self.reverb_selector.voice = 1
+        else:
+            self.reverb_selector.voice = 0
+            
+    def set_reverb_length(self, time):
+        self.reverb.setRevtime(time)
+        
     def toggle_guitar_delay(self):
         # print("toggle delay start")
         if self.delay_selector.voice == 0:

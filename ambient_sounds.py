@@ -155,8 +155,16 @@ class AmbientSounds():
         """
         # print('called change_delay')
         self.delay.setDelay(delay)
-
         
+    def toggle_reverb(self):
+        if self.reverb_selector.voice == 0:
+            self.reverb_selector.voice = 1
+        else:
+            self.reverb_selector.voice = 0
+            
+    def set_reverb_length(self, time):
+        self.reverb.setRevtime(time)
+
     def stop(self):
         if self.current_sound_set == 1:
             self.fader1.stop()
