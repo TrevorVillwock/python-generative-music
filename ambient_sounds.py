@@ -38,12 +38,12 @@ class AmbientSounds():
         self.mixer.addInput(4, self.sound_set_2[1])
         self.mixer.addInput(5, self.sound_set_2[2])
 
-        self.mixer.setAmp(0, 0, 0.5)
-        self.mixer.setAmp(1, 0, 0.5)
-        self.mixer.setAmp(2, 0, 0.5)
-        self.mixer.setAmp(3, 0, 0.5)
-        self.mixer.setAmp(4, 0, 0.5)
-        self.mixer.setAmp(5, 0, 0.5)
+        self.mixer.setAmp(0, 0, 0.3)
+        self.mixer.setAmp(1, 0, 0.3)
+        self.mixer.setAmp(2, 0, 0.3)
+        self.mixer.setAmp(3, 0, 0.3)
+        self.mixer.setAmp(4, 0, 0.3)
+        self.mixer.setAmp(5, 0, 0.3)
         
         self.is_playing = False
 
@@ -88,7 +88,7 @@ class AmbientSounds():
             while sounds_loaded < self.sound_count[new_sound]:    
                 self.sound_set_2[sounds_loaded].setPath(self.sound_sets[new_sound][sounds_loaded])
                 self.sound_set_2[sounds_loaded].setMul(self.fader2)
-                self.sound_set_2[sounds_loaded].out()
+                # self.sound_set_2[sounds_loaded].out()
                 sounds_loaded += 1
             while sounds_loaded < 3:
                 self.sound_set_2[sounds_loaded].setMul(0)
@@ -101,7 +101,7 @@ class AmbientSounds():
             while sounds_loaded < self.sound_count[new_sound]:
                 self.sound_set_1[sounds_loaded].setPath(self.sound_sets[new_sound][sounds_loaded])
                 self.sound_set_1[sounds_loaded].setMul(self.fader1)
-                self.sound_set_1[sounds_loaded].out()
+                # self.sound_set_1[sounds_loaded].out()
                 sounds_loaded += 1
             while sounds_loaded < 3:
                 self.sound_set_1[sounds_loaded].setMul(0)

@@ -48,7 +48,7 @@ class Main():
         
         
         self.mixer.addInput(0, self.ambient_sounds.delay_selector)
-        self.mixer.addInput(1, self.music.reverb_selector)
+        self.mixer.addInput(1, self.music.delay_selector)
         self.mixer.setAmp(0, 0, 0.5)
         self.mixer.setAmp(1, 0, 0.1)
         self.mixer.setTime(0.01)
@@ -228,6 +228,7 @@ q - Quit """
                         print('Usage: d [detune factor (float) ]\nExample: d 0.1')
                     else:
                         self.music.detune_factor = float(self.action_selection_array[1])
+                        self.music.detune = True
 
                 case 'tde':
                     self.input_is_valid = 1

@@ -1,4 +1,4 @@
-from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine, Adsr, STRev, Disto
+from pyo import Metro, SfPlayer, Mixer, TrigFunc, Delay, Selector, Sine, Adsr, STRev, Disto, Fader
 import random
 import time
 from math import floor
@@ -69,14 +69,18 @@ class Music():
         self.guitar_mixer = Mixer(time=0.2)
         self.current_guitar_channel = 0
         
+        self.reverb_state = False
+        
         # Effects signal chain: 
         self.distortion = Disto(self.guitar_mixer[0], drive=0)
         
         self.guitar_delay = Delay(self.distortion, 0.1, 0.7, 5)
         self.delay_selector = Selector(inputs=[self.distortion, self.guitar_delay], mul=[0.5, 0.5], voice=0)
         
-        self.reverb = STRev(self.delay_selector, revtime=2)
-        self.reverb_selector = Selector(inputs=[self.delay_selector, self.reverb], mul=[0.5, 0.5], voice=0)
+        # We don't create a selector object for the reverb so we can directly control the amount 
+        # of wet reverb signal while leaving the original signal audible
+        self.reverb_fader = Fader()
+        self.reverb = STRev(self.delay_selector, revtime=10, mul=self.reverb_fader).out()
         
         # LFO = Low Frequency Oscillator - a signal used to modulate some paramater of the sound like pitch or volume 
         # Modulate is a fancy way of saying change over time
@@ -88,6 +92,7 @@ class Music():
         self.load_guitar_samples()
                              
         self.melody_player = TrigFunc(self.melody_met, self.play_melody)
+        # self.countermelody_player = TrigFunc(self.melody_met, self.play_melody)
         self.chord_player = TrigFunc(self.chord_met, self.play_chords)
     
     def load_guitar_samples(self):
@@ -113,7 +118,7 @@ class Music():
             for i in range(0, 3):
                 try:
                     # print(f"i: {i}")
-                    sample_array = [Adsr(attack=0.01, sustain=1, release=0.1, dur=5), SfPlayer(f"soundfiles/{samples}/{m}-{i+1}.aif", 
+                    sample_array = [Adsr(attack=0.01, sustain=1, release=0.1, dur=5, mul=1), SfPlayer(f"soundfiles/{samples}/{m}-{i+1}.aif", 
                                                                       speed=self.pitch_lfo
                                                                       ).stop()]
                     self.g_guitar_samples[f"{m}-{i+1}"] = sample_array
@@ -226,7 +231,7 @@ class Music():
 
     def play_melody(self):
         """
-        Generates a melody using randomly generated notes and rhythms with the occasional inclusion of motifs\n
+        Generates a melody using randomly chosen notes and rhythms with the occasional inclusion of motifs\n
         Harmonizes melody at randomized intervals for randomized lengths of time
         """
         # print("play_melody")
@@ -371,10 +376,12 @@ class Music():
         #print(f"self.current_triad after: {self.current_triad}")
   
     def toggle_guitar_reverb(self):
-        if self.reverb_selector.voice == 0:
-            self.reverb_selector.voice = 1
+        if self.reverb_state:
+            self.reverb_fader.stop()
+            self.reverb_state = False
         else:
-            self.reverb_selector.voice = 0
+            self.reverb_fader.play()
+            self.reverb_state = True
             
     def set_reverb_length(self, time):
         self.reverb.setRevtime(time)
